@@ -1,4 +1,4 @@
-#Set up project:
+# Set up project:
 
 ## One expo time setup
 1. Install node.js
