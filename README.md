@@ -1,5 +1,4 @@
-# book-buddy
-Set up project:
+#Set up project:
 
 ## One expo time setup
 1. Install node.js
@@ -11,3 +10,5 @@ Set up project:
 5. (make sure ur in project folder) and run ```npm install``` to recognize it as a project
 6. to run app: ```npx expo start```
 		 
+## Check if working
+Current app shows one blank screen with the word Empty! in the middle
