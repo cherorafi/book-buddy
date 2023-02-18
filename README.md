@@ -12,3 +12,4 @@
 		 
 ## Check if working
 Current app shows one blank screen with the word Empty! in the middle
+7. If you get connection error try ```npx expo start --tunnel```
