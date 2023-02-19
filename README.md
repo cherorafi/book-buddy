@@ -11,5 +11,5 @@
 6. to run app: ```npx expo start```
 		 
 ## Check if working
-#### Current app shows one blank screen with the word Empty! in the middle
+#### Current app shows a login page, registation still in works, to test login try the email ```bookbuddy@gmail.com``` with pass ```123456```
 7. If you get connection error try ```npx expo start --tunnel```
