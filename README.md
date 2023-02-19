@@ -11,5 +11,5 @@
 6. to run app: ```npx expo start```
 		 
 ## Check if working
-#### Current app shows a login page, registation still in works, to test login try the email ```bookbuddy@gmail.com``` with pass ```123456```
+#### Current app shows a login page, registation is working, after logged in dashboard has a hello message greeting user by name
 7. If you get connection error try ```npx expo start --tunnel```
