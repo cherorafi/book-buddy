@@ -1,6 +1,6 @@
 # Set up project:
 
-## One expo time setup
+## One time expo setup
 1. Install node.js
 2. Open terminal: ```npm install -g expo-cli```
 3. Check version with ```expo --version```
