@@ -4,7 +4,7 @@ const Chat = () => {
     return (
         <SafeAreaView style={styles.container}>
         <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-            My Messages
+            My Messages and other messages
         </Text>
         </SafeAreaView>
     )
