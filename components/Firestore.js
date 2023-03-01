@@ -49,7 +49,7 @@ const GetAllUserData = () => {
 
 }
 
-// Provides a text of current user's first Name
+// Provides a string of current user's first Name
 const GetName = () => {
   const [name, setName] = useState('')
 
@@ -67,12 +67,12 @@ const GetName = () => {
   }, [])
 
   return (
-    <Text>{name.firstName}</Text>
+    name.firstName
   )
 
 }
 
-// Provides a text of current user's last Name
+// Provides a string of current user's last Name
 const GetLastName = () => {
   const [name, setName] = useState('')
 
@@ -90,12 +90,12 @@ const GetLastName = () => {
   }, [])
 
   return (
-    <Text>{name.lastName}</Text>
+    name.lastName
   )
 
 }
 
-// Provides a text of current user's email
+// Provides a string of current user's email
 const GetEmail = () => {
   const [name, setName] = useState('')
 
@@ -113,16 +113,19 @@ const GetEmail = () => {
   }, [])
 
   return (
-    <Text>{name.email}</Text>
+    name.email
   )
 
 }
+
+
+
 
 export {
   GetAllUserData,
   GetName,
   GetLastName,
-  GetEmail
+  GetEmail,
 }
 
 const styles = StyleSheet.create({

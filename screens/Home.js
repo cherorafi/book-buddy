@@ -1,4 +1,5 @@
 import { Text, StyleSheet, SafeAreaView } from 'react-native'
+import CreateList from '../components/CreateReadingList'
 
 const Home = () => {
     return (
@@ -6,6 +7,7 @@ const Home = () => {
         <Text style={{fontSize: 20, fontWeight: 'bold'}}>
             My Books
         </Text>
+        <CreateList/>
         </SafeAreaView>
     )
 }
