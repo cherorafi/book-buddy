@@ -2,7 +2,7 @@ import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { firebase } from '../config'
 
-const Profile = () => {
+const Profile = () => { 
     return (
         <SafeAreaView style={styles.container}>
         <Text style={{fontSize: 20, fontWeight: 'bold'}}>
