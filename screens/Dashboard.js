@@ -1,9 +1,11 @@
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
+import { useNavigation } from '@react-navigation/native'
 import { firebase } from '../config'
 
 const Dashboard = () => {
   const [name, setName] = useState('')
+  const navigation = useNavigation();
 
   useEffect(() => {
     firebase.firestore().collection('users')
@@ -23,6 +25,15 @@ const Dashboard = () => {
       <Text style={{fontSize: 20, fontWeight: 'bold'}}>
         Hello, {name.firstName}
       </Text>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('BookView')}
+        style={styles.button}
+      >
+        <Text style={{fontsize: 20, fontWeight: 'bold'}}>
+          Book View
+        </Text>
+      </TouchableOpacity>
+     
       <TouchableOpacity
         onPress={() => {firebase.auth().signOut()}}
         style={styles.button}
