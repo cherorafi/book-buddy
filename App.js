@@ -6,7 +6,9 @@ import { firebase } from './config.js';
 import Login from "./screens/Login";
 import Registration from "./screens/Registration";
 import Dashboard from "./screens/Dashboard";
+import BookView from "./screens/BookView";
 import Header from "./components/Header";
+import AddToList from "./screens/AddToList.js";
 //import { Stack } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
@@ -82,6 +84,38 @@ function App(){
                     }
                 }}
             />
+
+            <Stack.Screen 
+                    name="BookView" 
+                    component={BookView}
+                    options = {{
+                        headerTitle: () => <Header name="Book Buddy" />,
+                        headerStyle: {
+                            height: 150,
+                            borderBottomLeftRadius: 50,
+                            borderBottomRightRadius: 50,
+                            backgroundColor: '#00e4d0',
+                            shadowColor: '#000',
+                            elevation: 25
+                        }
+                    }}
+                />
+
+            <Stack.Screen 
+                    name="AddToList" 
+                    component={AddToList}
+                    options = {{
+                        headerTitle: () => <Header name="Add to list" />,
+                        headerStyle: {
+                            height: 150,
+                            borderBottomLeftRadius: 50,
+                            borderBottomRightRadius: 50,
+                            backgroundColor: '#00e4d0',
+                            shadowColor: '#000',
+                            elevation: 25
+                        }
+                    }}
+                />
         </Stack.Navigator>
     );
 }
