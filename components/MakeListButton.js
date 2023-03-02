@@ -9,14 +9,14 @@ const CreateList= () => {
     const [listName, setName] = useState("Default");
 
     const create = () => {
-      firebase.firestore().collection('users')
+        firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
-        .collection(listName).add({
-          bookName: "Default book"
+        .update({
+            bookList: firebase.firestore.FieldValue.arrayUnion(listName)
         })
-        setModalVisible(!modalVisible)
-        alert("List Created");
-    }
+        setModalVisible(!modalVisible);
+      }
+      
 
     return (
     <View>
