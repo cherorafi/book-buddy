@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { firebase } from '../config'
 
 const Profile = () => { 
-    return (
-        <SafeAreaView style={styles.container}>
-        <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-            My Profile
-        </Text>
-        <TouchableOpacity
+  
+  return (
+    <SafeAreaView style={styles.container}>
+      <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+         My Profile
+      </Text>
+      <TouchableOpacity
         onPress={() => {firebase.auth().signOut()}}
         style={styles.button}
       >
@@ -16,8 +17,8 @@ const Profile = () => {
           Log Out
         </Text>
       </TouchableOpacity>
-        </SafeAreaView>
-    )
+    </SafeAreaView>
+  )
 }
 
 export default Profile

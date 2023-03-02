@@ -1,5 +1,9 @@
 import { Text, StyleSheet, SafeAreaView } from 'react-native'
-import CreateList from '../components/CreateReadingList'
+import CreateList from '../components/MakeListButton'
+import ShowReadingLists from '../components/ShowReadingLists'
+
+// Added unstyled functional components to make lists and show them
+// w/ real time changes
 
 const Home = () => {
     return (
@@ -8,6 +12,7 @@ const Home = () => {
             My Books
         </Text>
         <CreateList/>
+        <ShowReadingLists/>
         </SafeAreaView>
     )
 }
