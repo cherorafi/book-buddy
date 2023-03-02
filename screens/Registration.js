@@ -10,6 +10,7 @@ const Registration = () => {
 
   registerUser = async (email, password, firstName, lastName) => {
     await firebase.auth().createUserWithEmailAndPassword(email, password)
+    /* Removed email verification for now
     .then(() => {
       firebase.auth().currentUser.sendEmailVerification({
         handleCodeInApp: true,
@@ -20,6 +21,7 @@ const Registration = () => {
       }).catch((error) => {
         alert(error.message)
       })
+      */
       .then(() => {
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
@@ -27,12 +29,13 @@ const Registration = () => {
           firstName,
           lastName,
           email,
+          bookList: ["Read", "Wishlist", "Currently Reading"],
         })
       })
       .catch((error) => {
         alert(error.message)
       })
-    })
+    //})
     .catch((error => {
       alert(error.message)
     }))
