@@ -39,6 +39,24 @@ const Registration = () => {
     .catch((error => {
       alert(error.message)
     }))
+
+    firebase.firestore().collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .collection("Read").add({
+          bookName: "Default"
+    })
+
+    firebase.firestore().collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .collection("Wishlist").add({
+          bookName: "Default"
+    })
+
+    firebase.firestore().collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .collection("Currently Reading").add({
+          bookName: "Default"
+    })
   }
 
   return (
