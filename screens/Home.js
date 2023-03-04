@@ -20,6 +20,7 @@ const Home = () => {
         <SafeAreaView style={styles.container}>
         <Text style={{fontSize: 20, fontWeight: 'bold'}}>
             My Books
+            Test
         </Text>
         </SafeAreaView>
     )
