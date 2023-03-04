@@ -1,27 +1,59 @@
-import { Text, StyleSheet, SafeAreaView } from 'react-native'
-import CreateList from '../components/MakeList'
-import ShowReadingLists from '../components/ShowReadingLists'
-import AddBook from '../components/AddBook'
+import { Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import BookListCard from '../components/BookListCard';
+import { useNavigation } from '@react-navigation/native';
+import ContinueReading from '../components/CurrentlyReading';
 
-// Added unstyled functional components to make lists and show them
-// w/ real time changes
+const wantToReadBookList = [
+    {
+      id: 1,
+      title: 'Atomic Habits',
+      author: 'James Clear',
+      coverImage: require('../assets/book1.jpg'),
+    },
+    {
+      id: 2,
+      title: 'The Lean Startup',
+      author: 'Eric Ries',
+      coverImage: require('../assets/book2.jpg'),
+    },
+    {
+        id: 3,
+        title: 'The Lean Startup',
+        author: 'Eric Ries',
+        coverImage: require('../assets/book3.jpg'),
+      },
+  ];
+
+  const finishedBookList = [
+    {
+      id: 1,
+      title: 'Atomic Habits',
+      author: 'James Clear',
+      coverImage: require('../assets/book4.jpg'),
+    },
+    {
+      id: 2,
+      title: 'The Lean Startup',
+      author: 'Eric Ries',
+      coverImage: require('../assets/book5.jpg'),
+    },
+    {
+        id: 3,
+        title: 'The Lean Startup',
+        author: 'Eric Ries',
+        coverImage: require('../assets/book2.jpg'),
+      },
+  ];
 
 const Home = () => {
-    /* for testing u can add in the view
-    <CreateList/>                // will display a button to create a new reading list
-
-    <ShowReadingLists/>          // will show a list of user's current reading lists
-
-    <AddBook bookName="Hamlet"/> // should be on a book's page, 
-                                 // will bring out a menuu of current lists
-                                 // to pick from, pass in name of book for now
-    */
+    const navigation = useNavigation();
     return (
         <SafeAreaView style={styles.container}>
-        <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-            My Books
-            Test
-        </Text>
+            <ScrollView>
+                <BookListCard bookList={wantToReadBookList} heading="Want to read" nextScreen="WantToRead"></BookListCard>
+                <BookListCard bookList={finishedBookList} heading="Finished" nextScreen="Finished"></BookListCard>
+                <ContinueReading></ContinueReading>
+            </ScrollView>
         </SafeAreaView>
     )
 }
@@ -31,7 +63,7 @@ export default Home
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      alignItems: 'center',
-      marginTop: 100,
+      marginTop: 20,
+      width: '100%',
     }
 })

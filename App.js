@@ -10,6 +10,8 @@ import Chat from "./screens/Chat";
 import Search from "./screens/Search";
 import Profile from "./screens/Profile";
 import Header from "./components/Header";
+import WantToRead from "./screens/WantToRead.js";
+import Finished from "./screens/Finished.js";
 //import { Stack } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
@@ -19,10 +21,20 @@ import { Ionicons } from 'react-native-vector-icons';
 
 const Tab = createBottomTabNavigator();
 
+const HomeStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Home" Options={{ headerShown: false }} component={Home} />
+        <Stack.Screen name="WantToRead" component={WantToRead} />
+        <Stack.Screen name="Finished" component={Finished} />
+      </Stack.Navigator>
+    );
+};
+
 function MyTabs() {
     return (
         <Tab.Navigator>
-            <Tab.Screen name="Home" component={Home}
+            <Tab.Screen name="Home" component={HomeStack}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="ios-home" color={color} size={size} />
@@ -144,7 +156,27 @@ function App() {
             </Stack.Navigator>
         );
     }
-
+    // else{
+    //     return (
+    //         <Stack.Navigator>
+    //             <Stack.Screen
+    //                 name="WantToRead"
+    //                 component={WantToRead}
+    //                 options={{
+    //                     headerTitle: () => <Header name="Book Buddy" />,
+    //                     headerStyle: {
+    //                         height: 150,
+    //                         borderBottomLeftRadius: 50,
+    //                         borderBottomRightRadius: 50,
+    //                         backgroundColor: '#00e4d0',
+    //                         shadowColor: '#000',
+    //                         elevation: 25
+    //                     }
+    //                 }}
+    //             />
+    //         </Stack.Navigator>
+    //     )
+    // }
     return (
         <MyTabs></MyTabs>
         // <Stack.Navigator>

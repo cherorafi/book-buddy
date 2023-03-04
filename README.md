@@ -9,7 +9,7 @@
 4. Clone the repo
 5. (make sure ur in project folder) and run ```npm install``` to recognize it as a project
 6. to run app: ```npx expo start```
-
-## Trouble Shooting
+		 
+## Check if working
+#### Current app shows a login page, registation is working, after logged in dashboard has a hello message greeting user by name
 7. If you get connection error try ```npx expo start --tunnel```
-
