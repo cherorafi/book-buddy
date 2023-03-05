@@ -91,7 +91,7 @@ function App(){
                     options = {{
                         headerTitle: () => <Header name="Book Buddy" />,
                         headerStyle: {
-                            height: 150,
+                            height: 100,
                             borderBottomLeftRadius: 50,
                             borderBottomRightRadius: 50,
                             backgroundColor: '#00e4d0',
@@ -107,7 +107,7 @@ function App(){
                     options = {{
                         headerTitle: () => <Header name="Add to list" />,
                         headerStyle: {
-                            height: 150,
+                            height: 100,
                             borderBottomLeftRadius: 50,
                             borderBottomRightRadius: 50,
                             backgroundColor: '#00e4d0',
