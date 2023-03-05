@@ -2,27 +2,27 @@ import React, {useState} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { firebase } from '../config'
-import { GetAllLists } from './Firestore';
-import { Entypo } from '@expo/vector-icons';
 
 
-const AddBook = (bookName) => {
+const CreateList= () => {
     const [modalVisible, setModalVisible] = useState(false);
+    const [listName, setName] = useState("Default");
 
-    const myList = GetAllLists();
-
-    const SampleFunction = (item) => {
-        //console.log(item);
-        //console.log(bookName);
+    const create = () => {
+        firebase.firestore().collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .update({
+            bookList: firebase.firestore.FieldValue.arrayUnion(listName)
+        })
 
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
-        .collection(item).add(
-          bookName,
-        );
+        .collection(listName).add({
+          bookName: "Default"
+        })
 
         setModalVisible(!modalVisible);
-    }
+      }
       
 
     return (
@@ -57,13 +57,13 @@ const AddBook = (bookName) => {
             transparent: true,
           }}>
 
-            <View style={styles.MainContainer}>
-            
-                { myList.map((item, key)=>(
-                <Text key={key} style={styles.TextStyle} onPress={ SampleFunction.bind(this, item) }> { item } </Text>)
-            )}
-
-            </View>
+            <TextInput 
+                style={{height: 40, margin: 12, borderWidth: 1, padding: 10,}}
+                placeholder="Enter reading list name"
+                placeholderTextColor="lightgrey"
+                onChangeText={(val) => setName(val)}
+                
+            />
                 
 
             <View style={{ flexDirection:"row", margin:15 }}>
@@ -78,6 +78,16 @@ const AddBook = (bookName) => {
                 <Text style={{alignItems: 'center', justifyContent: 'center', fontSize: 18}}>Cancel</Text>
                 </Pressable>
 
+                <Pressable
+                    style={{
+                        borderRadius: 12,
+                        padding: 5,
+                        margin: 10,
+                        backgroundColor: 'lightgreen'
+                    }}
+                    onPress={() => create()}>
+                <Text style={{alignItems: 'center', justifyContent: 'center', fontSize: 18}}>Create</Text>
+                </Pressable>
             </View>
 
           </View>
@@ -85,29 +95,15 @@ const AddBook = (bookName) => {
       </Modal>
       <Pressable
         style={{
-            borderRadius: 17,
+            borderRadius: 25,
             padding: 10,
             elevation: 2,
         }}
         onPress={() => setModalVisible(true)}>
-        <Entypo name="add-to-list" size={23} color="black" />
+        <Text>Create a reading list</Text>
       </Pressable>
     </View>
     )
 }
 
-export default AddBook;
-
-const styles = StyleSheet.create({
- 
-    MainContainer: {
-      flex: 1,
-      margin: 10
-      
-    },
-    
-    TextStyle:{
-      fontSize : 25,
-       textAlign: 'center'
-    }
-});
+export default CreateList;
