@@ -1,4 +1,5 @@
-import { View, SafeAreaView, StyleSheet,  } from 'react-native'
+import { View, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 //new 
 import {
   Avatar,
@@ -10,12 +11,13 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useState } from 'react';
 
-import {GetName} from "../components/Firestore.js";
+import {GetFirstName} from "../components/Firestore.js";
 import {GetLastName} from "../components/Firestore.js";
 import {GetEmail} from "../components/Firestore.js";
 
 const Profile = () => {
-  const name = GetName();
+  
+  const name = GetFirstName();
   const lastName = GetLastName();
   const email = GetEmail();
   const [city, setCity] = useState("Queens");
@@ -23,6 +25,8 @@ const Profile = () => {
   const [phoneNumber, setPhoneNumber] = useState("+000-111-2222");
   const [booksFinished, setBooksFinished] = useState(10);
   const [minutesRead, setMinutesRead] = useState(12);
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
 
@@ -98,11 +102,14 @@ const Profile = () => {
           <View style={styles.menuItem}>
             <Icon name="cog" color="#FF6347" size={25}/>
             <Text style={styles.menuItemText}>Settings</Text>
-          </View>
+            </View>
           
           </TouchableRipple>
-      
-      </View>
+          <TouchableOpacity onPress={() => navigation.navigate('Settings')} >
+          </TouchableOpacity> 
+    </View>
+  
+
       
     </SafeAreaView>
   );
