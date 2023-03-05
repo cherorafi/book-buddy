@@ -53,10 +53,10 @@ export default function SearchPage() {
               source={{ uri: result.volumeInfo.imageLinks?.thumbnail ?? defaultImage }}      
             />
 
-          <View style={styles.details}>   
-            <TouchableOpacity onPress={() => navigation.navigate('BookView')} >
-              <Text style={styles.title}>{result.volumeInfo.title}</Text>
-              <Text style={styles.author}>{result.volumeInfo.authors?.[0]}</Text>
+            <View style={styles.details}>   
+              <TouchableOpacity onPress={() => navigation.navigate('BookView')} >
+                <Text style={styles.title}>{result.volumeInfo.title}</Text>
+                <Text style={styles.author}>{result.volumeInfo.authors?.[0]}</Text>
               </TouchableOpacity>
               {/* <Text style={styles.description}>{result.volumeInfo.description }</Text> */}
             </View>
