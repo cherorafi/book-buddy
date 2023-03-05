@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, TextInput, Button, ScrollView, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import axios from 'axios';
@@ -11,16 +10,6 @@ const defaultImage = 'https://via.placeholder.com/64';
 export default function SearchPage() {
   const navigation = useNavigation();
   const [query, setQuery] = useState('');       // making Two variables so that we can store input and display output
-
-import { View, Text, TextInput, Button, ScrollView, StyleSheet, Image } from 'react-native';
-import axios from 'axios';
-// import { Touchable } from 'react-native';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
-
-
-export default function SearchPage() {
-  const [query, setQuery] = useState('');       // making Two variables so thiat we can store input and display output
-
   const [results, setResults] = useState([]);
 
   const handleSearch = async () => {               //Axios library provides functions like get this library helps handle web requests 
@@ -39,7 +28,6 @@ export default function SearchPage() {
   return (          //user input and setting the variable value 
     <View style={styles.container}>
       <Text style={styles.title}>Search Page</Text>
-
       {/* SEARCH bar with side by side view button and input  */}
       <View style={styles.input}>      
       <TextInput
@@ -62,7 +50,6 @@ export default function SearchPage() {
           <View key={result.id} style={styles.result}>
             <Image
               style={styles.thumbnail}
-
               source={{ uri: result.volumeInfo.imageLinks?.thumbnail ?? defaultImage }}      
             />
 
@@ -71,30 +58,6 @@ export default function SearchPage() {
               <Text style={styles.title}>{result.volumeInfo.title}</Text>
               <Text style={styles.author}>{result.volumeInfo.authors?.[0]}</Text>
               </TouchableOpacity>
-
-              source={{ uri: result.volumeInfo.imageLinks.thumbnail }}      
-            />
-
-            {/* The Output From API We have access to more info from API
-            HERE IS A LIST:
-             subtitle: The book's subtitle, if available.
-            publisher: The name of the book's publisher.
-            publishedDate: The date the book was published.
-            description: A brief summary or description of the book.
-            pageCount: The number of pages in the book.
-            categories: An array of categories or genres that the book belongs to.
-            averageRating: The average rating of the book, based on user reviews.
-            ratingsCount: The number of ratings that the book has received.
-            maturityRating: The book's maturity rating, which can be "NOT_MATURE", "MATURE", or "UNKNOWN".
-            language: The language that the book is written in.
-            previewLink: A link to a preview of the book, if available.
-            infoLink: A link to more information about the book.  */}
-
-            
-            <View style={styles.details}>   
-              <Text style={styles.title}>{result.volumeInfo.title}</Text>
-              <Text style={styles.author}>{result.volumeInfo.authors?.[0]}</Text>
-
               {/* <Text style={styles.description}>{result.volumeInfo.description }</Text> */}
             </View>
             <View style={styles.separator} />
@@ -173,7 +136,7 @@ const styles = StyleSheet.create({
 
 
 
-
+//run this before npm install axios
 
  {/* The Output From API We have access to more info from API
             HERE IS A LIST:
@@ -189,4 +152,3 @@ const styles = StyleSheet.create({
             language: The language that the book is written in.
             previewLink: A link to a preview of the book, if available.
             infoLink: A link to more information about the book.  */}
-
