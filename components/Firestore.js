@@ -129,12 +129,77 @@ const GetAllLists = () => {
   
 }
 
+const ChangeFirstName = (newName) => {
+  firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+  .update({
+      firstName: newName
+  })
+}
+
+const ChangeLastName = (newName) => {
+  firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+  .update({
+      lastName: newName
+  })
+}
+
+const ChangeEmail = (newEmail) => {
+  firebase.auth().currentUser.updateEmail(newEmail)
+  firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+  .update({
+      email: newEmail
+  })
+}
+
+const ChangePass = (newPass) => {
+  firebase.auth().currentUser.updatePassword(newPass)
+}
+
+const CreateBookList = (listName) => {
+  firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+  .update({
+      bookList: firebase.firestore.FieldValue.arrayUnion(listName)
+  })
+
+  firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+  .collection(listName).add({
+    bookName: "Default"
+  })
+}
+
+const AddBook = (listName, bookId, bookName) => {
+  firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+  .collection(listName).doc(bookId)
+  .set({
+    bookName,
+  });
+}
+
+const DeleteBook = (listName, bookId) => {
+  firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+  .collection(listName).doc(bookId).delete();
+}
+
 export {
   GetAllUserData,
   GetLastName,
   GetEmail,
   GetAllLists,
   GetFirstName,
+  ChangeFirstName,
+  ChangeLastName,
+  ChangeEmail,
+  ChangePass,
+  CreateBookList,
+  //AddBook,
+  DeleteBook
 }
 
 // Styling for listed data
