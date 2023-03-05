@@ -1,17 +1,28 @@
-import React from 'react';
 import { View, SafeAreaView, StyleSheet,  } from 'react-native'
+//new 
 import {
   Avatar,
   Title,
   Caption,
-  Text,
+  Text, 
   TouchableRipple,
 }  from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { useState } from 'react';
 
-
+import {GetName} from "../components/Firestore.js";
+import {GetLastName} from "../components/Firestore.js";
+import {GetEmail} from "../components/Firestore.js";
 
 const Profile = () => {
+  const name = GetName();
+  const lastName = GetLastName();
+  const email = GetEmail();
+  const [city, setCity] = useState("Queens");
+  const [state, setState] = useState("New York");
+  const [phoneNumber, setPhoneNumber] = useState("+000-111-2222");
+  const [booksFinished, setBooksFinished] = useState(10);
+  const [minutesRead, setMinutesRead] = useState(12);
   return (
     <SafeAreaView style={styles.container}>
 
@@ -27,8 +38,14 @@ const Profile = () => {
             <Title style={[styles.title, {
               marginTop:15,
               marginBottom: 5,
-            }]}>John Smith</Title>
-            <Caption style={styles.caption}>@j_smith</Caption>
+            }]}>{name} {lastName} </Title>
+           
+           
+           
+            
+
+
+           
           </View>
         </View>
       </View>
@@ -36,33 +53,32 @@ const Profile = () => {
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>Queens, New York</Text>
-
-          </View>
+          <Text style={{color:"#777777", marginLeft: 20}}>{city}, {state}</Text>
+        </View>
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>+000-111-2222</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>{phoneNumber}</Text>
         </View>
         <View style={styles.row}>
           <Icon name="email" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>john.smith@gmail.com</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>{email}</Text>
         </View>
       </View>
+
       <View style={styles.infoBoxWrapper}>
-      
           <View style={[styles.infoBox, {
             borderRightColor: '#dddddd',
             borderRightWidth: 1
           }]}>
           <Icon name="book" color="#777777" size={20}/>
-            <Title>10</Title>
+            <Title>{booksFinished}</Title>
             <Caption>Books Finished</Caption>
           </View>
           <View style={styles.infoBox}>
           <Icon name="book-clock-outline" color="#777777" size={20}/>
-            <Title>12</Title>
-            <Caption>Mintues Read</Caption>
-          </View>
+            <Title>{minutesRead}</Title>
+            <Caption>Minutes Read</Caption>
+            </View>
       </View>
 
       <View style={styles.menuWrapper}>
