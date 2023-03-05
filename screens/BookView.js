@@ -2,8 +2,11 @@ import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, Image } from 'r
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import AddBook from '../components/AddBook.js'
-import { firebase } from '../config'
-import {examplecover} from '../assets/examplecover.jpg'
+//import { firebase } from '../config'
+//import {examplecover} from '../assets/examplecover.jpg'
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { AntDesign } from '@expo/vector-icons';
+
 
 const BookView = () => {
   const navigation = useNavigation();
@@ -11,6 +14,18 @@ const BookView = () => {
   const [author, setAuthor] = useState('Jane Smith')
   const [score, setScore] = useState(4)
   const [review, setReview] = useState('')
+
+  //get number of stars
+
+  let stars = [];
+  let emptystars = [];
+  for (let i = 0; i < score; i++){
+    stars.push(<AntDesign name="star" key={i} size={24} color="#FFE75C" />)
+  }
+
+  for (let j = 0; j < 5-score; j++){
+    emptystars.push(<AntDesign name="star" key={j} size={24} color="gray" />)
+  }
 
 
   return (
@@ -21,6 +36,11 @@ const BookView = () => {
           {title}
         </Text>
         <Text style={{fontSize: 15, textAlignVertical: "top"}}>{author}</Text>
+        <View style={{flexDirection: "row", paddingVertical: 10,}}>
+          <View style={{flexDirection: "row"}}>{stars}</View>
+          <View style={{flexDirection: "row"}}>{emptystars}</View>
+          <Text> ({score.toFixed(1)})</Text>
+        </View>
         <AddBook/>
       </View>
       

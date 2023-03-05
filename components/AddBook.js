@@ -3,6 +3,7 @@ import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { firebase } from '../config'
 import { GetAllLists } from './Firestore';
+import { Entypo } from '@expo/vector-icons';
 
 
 const AddBook = (bookName) => {
@@ -84,12 +85,12 @@ const AddBook = (bookName) => {
       </Modal>
       <Pressable
         style={{
-            borderRadius: 25,
+            borderRadius: 17,
             padding: 10,
             elevation: 2,
         }}
         onPress={() => setModalVisible(true)}>
-        <Text>Add Book</Text>
+        <Entypo name="add-to-list" size={23} color="black" />
       </Pressable>
     </View>
     )
