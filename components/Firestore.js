@@ -198,7 +198,7 @@ export {
   ChangeEmail,
   ChangePass,
   CreateBookList,
-  //AddBook,
+  AddBook,
   DeleteBook
 }
 
