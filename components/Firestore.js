@@ -49,6 +49,7 @@ const GetAllUserData = () => {
 
 }
 
+// Provides a string of the current user's first name
 const GetFirstName = () => {
   const nameRef = firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
@@ -105,6 +106,7 @@ const GetEmail = () => {
   
 }
 
+// Provides an array of all reading lists by the user
 const GetAllLists = () => {
   const listRef = firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
@@ -112,11 +114,11 @@ const GetAllLists = () => {
   const [myBookList, setBookList] = useState("");
 
   const observer = listRef.onSnapshot(docSnapshot => {
-    setBookList(docSnapshot.data().bookList)
+    setBookList(Object.keys(docSnapshot.data().bookLists))
     // ...
   }, err => {
     setBookList(["Error"])
-    console.log(`Encountered error: ${err}`);
+    console.log('Encountered error: ${err}');
   });
 
   
@@ -129,6 +131,57 @@ const GetAllLists = () => {
   
 }
 
+// @Param takes a listName, returns # of books in list
+const GetNumOfBooksInList = (listName) => {
+  const listRef = firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+
+  const [bookCount, setBookCount] = useState("");
+
+  const observer = listRef.onSnapshot(docSnapshot => {
+    const map = docSnapshot.data().bookLists
+    const map2 = new Map(Object.entries(map));
+
+    setBookCount(map2.get(listName))
+    // ...
+  }, err => {
+    setBookCount(["Error"])
+    console.log('Encountered error: ${err}');
+  });
+
+  
+  if (bookCount != ""){
+    observer()
+    return(bookCount);
+  }
+  
+  return ("Loading");
+}
+
+// Provides a map of names of reading lists and keys as the
+// Number of books in that reading list
+const GetBookListMap = () => {
+  const listRef = firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+
+  const [BookList, setBookList] = useState ("");
+
+  const observer = listRef.onSnapshot(docSnapshot => {
+    setBookList(docSnapshot.data().bookLists)
+  }, err => {
+    setBookList({"Error" : 0})
+    console.log('Encountered error: ${err}');
+  })
+
+  if (BookList != ""){
+    observer();
+    return(BookList);
+  }
+
+  return({"Loading": 0})
+}
+
+// @Param takes a string, changes the user's first name
 const ChangeFirstName = (newName) => {
   firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
@@ -137,6 +190,7 @@ const ChangeFirstName = (newName) => {
   })
 }
 
+// @Param takes a string, changes the user's last name
 const ChangeLastName = (newName) => {
   firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
@@ -145,6 +199,7 @@ const ChangeLastName = (newName) => {
   })
 }
 
+// @Param takes a string, changes the user's email
 const ChangeEmail = (newEmail) => {
   firebase.auth().currentUser.updateEmail(newEmail)
   firebase.firestore().collection('users')
@@ -154,52 +209,102 @@ const ChangeEmail = (newEmail) => {
   })
 }
 
+// @Param takes a string, changes the user's pass
 const ChangePass = (newPass) => {
   firebase.auth().currentUser.updatePassword(newPass)
 }
 
+// @Param takes a string list name, and makes a new list
 const CreateBookList = (listName) => {
   firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
   .update({
-      bookList: firebase.firestore.FieldValue.arrayUnion(listName)
+    [`bookLists.${listName}`]: 0
   })
 
   firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
-  .collection(listName).add({
-    bookName: "Default"
+  .update({
+    [`${listName}`]: {}
   })
 }
 
-const AddBook = (listName, bookId, bookName) => {
-  firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-  .collection(listName).doc(bookId)
-  .set({
-    bookName,
-  });
+// @Param takes a book list name, and a bookID (used to find info from Google Books API)
+// Adds the book to the user's book list
+// Adds the book to the book collections if it already didnt exist b4
+const AddBook = (listName, bookId) => {
+  const docRef = firebase.firestore().collection('books')
+  .doc(bookId);
+
+    docRef.get().then((doc) => {
+    if (doc.exists) {
+        // Exists
+        // Add book ref into book list
+        firebase.firestore().collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .update({
+            [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp() 
+        })
+
+        // Increment # of books in list
+        firebase.firestore().collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .update({
+          [`bookLists.${listName}`]: firebase.firestore.FieldValue.increment(1)
+        })
+
+    } else {
+        // doc.data() will be undefined in this case
+        // create the new book doc
+        // which will hold empty reviews
+        firebase.firestore().collection('books')
+        .doc(bookId)
+        .set({
+          reviews: {}
+        });
+
+        // Add book ref into book list
+        firebase.firestore().collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .update({
+            [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp() 
+        })
+
+        // Increment # of books in list
+        firebase.firestore().collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .update({
+          [`bookLists.${listName}`]: firebase.firestore.FieldValue.increment(1)
+        })
+
+    }
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
 }
 
-const DeleteBook = (listName, bookId) => {
-  firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-  .collection(listName).doc(bookId).delete();
-}
 
 export {
+  // All Get Funcs
   GetAllUserData,
   GetLastName,
   GetEmail,
   GetAllLists,
   GetFirstName,
+  GetBookListMap,
+  GetNumOfBooksInList,
+
+  // All Update Funcs
   ChangeFirstName,
   ChangeLastName,
   ChangeEmail,
   ChangePass,
+
+  // All Create Funcs
   CreateBookList,
   AddBook,
-  DeleteBook
+
+  // Delete Funcs Underway
 }
 
 // Styling for listed data
