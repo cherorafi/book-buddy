@@ -54,49 +54,40 @@ const GetFirstName = () => {
   const nameRef = firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
 
-  useEffect(() => {
-    firebase.firestore().collection('users')
-    .doc(firebase.auth().currentUser.uid).get()
-    .then((snapshot) => {
-      if(snapshot.exists){
-        setName(snapshot.data())
-      }
-      else {
-        console.log('User does not exist')
-      }
-    })
-  }, [])
+  const [myFirstName, setFirstName] = useState("Loading...");
 
-  return (
-    <Text>{name.firstName}</Text>
-  )
+  const observer = nameRef.onSnapshot(docSnapshot => {
+    setFirstName(docSnapshot.data().firstName);
+    // ...
+  }, err => {
+    console.log(`Encountered error: ${err}`);
+    setFirstName("Error");
+  });
 
+  return (myFirstName);
+  
 }
 
-// Provides a text of current user's last Name
+// Provides a string of current user's last Name
 const GetLastName = () => {
-  const [name, setName] = useState('')
+  const nameRef = firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
 
-  useEffect(() => {
-    firebase.firestore().collection('users')
-    .doc(firebase.auth().currentUser.uid).get()
-    .then((snapshot) => {
-      if(snapshot.exists){
-        setName(snapshot.data())
-      }
-      else {
-        console.log('User does not exist')
-      }
-    })
-  }, [])
+  const [myLastName, setLastName] = useState("");
 
-  return (
-    <Text>{name.lastName}</Text>
-  )
+  const observer = nameRef.onSnapshot(docSnapshot => {
+    setLastName(docSnapshot.data().lastName)
+    // ...
+  }, err => {
+    console.log(`Encountered error: ${err}`);
+    setLastName("Error")
+  });
 
+  return (myLastName);
+  
 }
 
-// Provides a text of current user's email
+// Provides a string of current user's email
 const GetEmail = () => {
   const emailRef = firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
@@ -296,7 +287,6 @@ const AddBook = (listName, bookId) => {
 export {
   // All Get Funcs
   GetAllUserData,
-  GetName,
   GetLastName,
   GetEmail,
   GetAllLists,
@@ -328,6 +318,7 @@ export {
   */
 }
 
+// Styling for listed data
 const styles = StyleSheet.create({
   container:{
     backgroundColor: '#e5e5e5',
