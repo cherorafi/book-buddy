@@ -49,160 +49,82 @@ const GetAllUserData = () => {
 
 }
 
-const GetFirstName = () => {
-  const nameRef = firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
+// Provides a text of current user's first Name
+const GetName = () => {
+  const [name, setName] = useState('')
 
-  const [myFirstName, setFirstName] = useState("Loading...");
+  useEffect(() => {
+    firebase.firestore().collection('users')
+    .doc(firebase.auth().currentUser.uid).get()
+    .then((snapshot) => {
+      if(snapshot.exists){
+        setName(snapshot.data())
+      }
+      else {
+        console.log('User does not exist')
+      }
+    })
+  }, [])
 
-  const observer = nameRef.onSnapshot(docSnapshot => {
-    setFirstName(docSnapshot.data().firstName);
-    // ...
-  }, err => {
-    console.log(`Encountered error: ${err}`);
-    setFirstName("Error");
-  });
+  return (
+    <Text>{name.firstName}</Text>
+  )
 
-  return (myFirstName);
-  
 }
 
-// Provides a string of current user's last Name
+// Provides a text of current user's last Name
 const GetLastName = () => {
-  const nameRef = firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
+  const [name, setName] = useState('')
 
-  const [myLastName, setLastName] = useState("");
+  useEffect(() => {
+    firebase.firestore().collection('users')
+    .doc(firebase.auth().currentUser.uid).get()
+    .then((snapshot) => {
+      if(snapshot.exists){
+        setName(snapshot.data())
+      }
+      else {
+        console.log('User does not exist')
+      }
+    })
+  }, [])
 
-  const observer = nameRef.onSnapshot(docSnapshot => {
-    setLastName(docSnapshot.data().lastName)
-    // ...
-  }, err => {
-    console.log(`Encountered error: ${err}`);
-    setLastName("Error")
-  });
+  return (
+    <Text>{name.lastName}</Text>
+  )
 
-  return (myLastName);
-  
 }
 
-// Provides a string of current user's email
+// Provides a text of current user's email
 const GetEmail = () => {
-  const emailRef = firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
+  const [name, setName] = useState('')
 
-  const [myEmail, setEmail] = useState("Loading...");
+  useEffect(() => {
+    firebase.firestore().collection('users')
+    .doc(firebase.auth().currentUser.uid).get()
+    .then((snapshot) => {
+      if(snapshot.exists){
+        setName(snapshot.data())
+      }
+      else {
+        console.log('User does not exist')
+      }
+    })
+  }, [])
 
-  const observer = emailRef.onSnapshot(docSnapshot => {
-    setEmail(docSnapshot.data().email)
-    // ...
-  }, err => {
-    console.log(`Encountered error: ${err}`);
-    setEmail("Error")
-  });
+  return (
+    <Text>{name.email}</Text>
+  )
 
-  return (myEmail);
-  
-}
-
-const GetAllLists = () => {
-  const listRef = firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-
-  const [myBookList, setBookList] = useState("");
-
-  const observer = listRef.onSnapshot(docSnapshot => {
-    setBookList(docSnapshot.data().bookList)
-    // ...
-  }, err => {
-    setBookList(["Error"])
-    console.log(`Encountered error: ${err}`);
-  });
-
-  
-  if (myBookList != ""){
-    observer()
-    return(myBookList);
-  }
-  
-  return (["Loading"]);
-  
-}
-
-const ChangeFirstName = (newName) => {
-  firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-  .update({
-      firstName: newName
-  })
-}
-
-const ChangeLastName = (newName) => {
-  firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-  .update({
-      lastName: newName
-  })
-}
-
-const ChangeEmail = (newEmail) => {
-  firebase.auth().currentUser.updateEmail(newEmail)
-  firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-  .update({
-      email: newEmail
-  })
-}
-
-const ChangePass = (newPass) => {
-  firebase.auth().currentUser.updatePassword(newPass)
-}
-
-const CreateBookList = (listName) => {
-  firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-  .update({
-      bookList: firebase.firestore.FieldValue.arrayUnion(listName)
-  })
-
-  firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-  .collection(listName).add({
-    bookName: "Default"
-  })
-}
-
-const AddBook = (listName, bookId, bookName) => {
-  firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-  .collection(listName).doc(bookId)
-  .set({
-    bookName,
-  });
-}
-
-const DeleteBook = (listName, bookId) => {
-  firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-  .collection(listName).doc(bookId).delete();
 }
 
 export {
   GetAllUserData,
+  GetName,
   GetLastName,
-  GetEmail,
-  GetAllLists,
-  GetFirstName,
-  ChangeFirstName,
-  ChangeLastName,
-  ChangeEmail,
-  ChangePass,
-  CreateBookList,
-  AddBook,
-  DeleteBook
+  GetEmail
 }
 
-// Styling for listed data
 const styles = StyleSheet.create({
   container:{
     backgroundColor: '#e5e5e5',
