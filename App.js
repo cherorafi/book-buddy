@@ -34,7 +34,7 @@ const HomeStack = () => {
 function MyTabs() {
     return (
         <Tab.Navigator>
-            <Tab.Screen name="Home" component={HomeStack}
+            <Tab.Screen name="HomeMain" component={HomeStack}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="ios-home" color={color} size={size} />
