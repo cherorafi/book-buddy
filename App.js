@@ -12,6 +12,7 @@ import Profile from "./screens/Profile";
 import Header from "./components/Header";
 import WantToRead from "./screens/WantToRead.js";
 import Finished from "./screens/Finished.js";
+import Settings from "./screens/Settings.js";
 //import { Stack } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
@@ -19,14 +20,28 @@ const Stack = createStackNavigator();
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from 'react-native-vector-icons';
 
+/* // For demos only
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
+*/
+
 const Tab = createBottomTabNavigator();
 
 const HomeStack = () => {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="Home" Options={{ headerShown: false }} component={Home} />
+        <Stack.Screen name="Home " Options={{ headerShown: false }} component={Home} />
         <Stack.Screen name="WantToRead" component={WantToRead} />
         <Stack.Screen name="Finished" component={Finished} />
+      </Stack.Navigator>
+    );
+};
+
+const ProfileStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Profile " Options={{ headerShown: false }} component={Profile} />
+        <Stack.Screen name="Settings" component={Settings} />
       </Stack.Navigator>
     );
 };
@@ -41,11 +56,12 @@ function MyTabs() {
                     ),
                     headerTitle: () => <Header name="Book Buddy" />,
                     headerStyle: {
-                        height: 150,
+                        height: 35,
                         borderBottomLeftRadius: 50,
                         borderBottomRightRadius: 50,
-                        backgroundColor: '#00e4d0',
+                        backgroundColor: '#111111',
                         shadowColor: '#000',
+                        opacity: 0,
                         elevation: 25
                     }
                 }}
@@ -57,10 +73,11 @@ function MyTabs() {
                     ),
                     headerTitle: () => <Header name="Book Buddy" />,
                     headerStyle: {
-                        height: 150,
+                        height: 5,
                         borderBottomLeftRadius: 50,
                         borderBottomRightRadius: 50,
-                        backgroundColor: '#00e4d0',
+                        backgroundColor: '#111111',
+                        opacity: 0,
                         shadowColor: '#000',
                         elevation: 25
                     }
@@ -73,26 +90,28 @@ function MyTabs() {
                     ),
                     headerTitle: () => <Header name="Book Buddy" />,
                     headerStyle: {
-                        height: 150,
+                        height: 20,
                         borderBottomLeftRadius: 50,
                         borderBottomRightRadius: 50,
-                        backgroundColor: '#00e4d0',
+                        backgroundColor: '#111111',
+                        opacity: 0,
                         shadowColor: '#000',
                         elevation: 25
                     }
                 }} 
             />
-            <Tab.Screen name="Profile" component={Profile} 
+            <Tab.Screen name="Profile" component={ProfileStack} 
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="ios-person" color={color} size={size} />
                     ),
                     headerTitle: () => <Header name="Book Buddy" />,
                     headerStyle: {
-                        height: 150,
+                        height: 50,
                         borderBottomLeftRadius: 50,
                         borderBottomRightRadius: 50,
-                        backgroundColor: '#00e4d0',
+                        backgroundColor: '#111111',
+                        opacity: 0,
                         shadowColor: '#000',
                         elevation: 25
                     }

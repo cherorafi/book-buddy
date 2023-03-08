@@ -27,6 +27,10 @@ const Registration = () => {
           firstName,
           lastName,
           email,
+          bookLists: {"Want to Read":0, "Finished":0, "Currently Reading":0},
+          "Want to Read": {},
+          Finished: {},
+          "Current Reading": {}
         })
       })
       .catch((error) => {
