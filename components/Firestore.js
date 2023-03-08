@@ -304,7 +304,18 @@ export {
   CreateBookList,
   AddBook,
 
-  // Delete Funcs Underway
+  // Future
+  /*
+  DeleteList
+  ChangeListName
+  DeleteBook
+  AddReview
+  EditReview
+  DeleteReview
+  AddSummary
+  EditSummary
+  DeleteSummary
+  */
 }
 
 // Styling for listed data
