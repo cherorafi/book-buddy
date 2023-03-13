@@ -10,16 +10,18 @@ const Registration = () => {
 
   registerUser = async (email, password, firstName, lastName) => {
     await firebase.auth().createUserWithEmailAndPassword(email, password)
+    /*
     .then(() => {
       firebase.auth().currentUser.sendEmailVerification({
         handleCodeInApp: true,
         url: 'https://book-buddy-f712f.firebaseapp.com'
-      })
+      })/*
       .then(() => {
         alert('Verification email sent')
       }).catch((error) => {
         alert(error.message)
       })
+      */
       .then(() => {
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
@@ -29,14 +31,14 @@ const Registration = () => {
           email,
           bookLists: {"Want to Read":0, "Finished":0, "Currently Reading":0},
           "Want to Read": {},
-          Finished: {},
-          "Current Reading": {}
+          "Finished": {},
+          "Currently Reading": {}
         })
       })
       .catch((error) => {
         alert(error.message)
       })
-    })
+    //})
     .catch((error => {
       alert(error.message)
     }))
