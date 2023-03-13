@@ -9,7 +9,7 @@ class Chat extends Component {
     messages: [
       {
         _id: 1,
-        text: `Hi, I’m BookBuddy! How can I help you?`,
+        text: `Hi, I'm BookBuddy! How can I help you?`,
         createdAt: new Date(),
         user: {
           _id: 2,

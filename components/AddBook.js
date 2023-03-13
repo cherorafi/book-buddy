@@ -61,7 +61,7 @@ const AddBook = (bookName) => {
             
                 { myList.map((item, key)=>(
                 <Text key={key} style={styles.TextStyle} onPress={ SampleFunction.bind(this, item) }> { item } </Text>)
-            )}
+                )}
 
             </View>
                 

@@ -6,16 +6,16 @@ import { Icon } from 'react-native-elements';
 const bookList = [
   {
     id: 1,
-    title: 'Atomic Habits',
-    author: 'James Clear',
-    coverImage: require('../assets/book1.jpg'),
+    title: 'The Fault in Our Stars',
+    author: 'John Green',
+    coverImage: require('../assets/book8.jpg'),
     progress: 0.5, // 50% read
   },
   {
     id: 2,
-    title: 'The Lean Startup',
-    author: 'Eric Ries',
-    coverImage: require('../assets/book2.jpg'),
+    title: 'Jane Eyre',
+    author: 'Charlotte Brontë',
+    coverImage: require('../assets/book9.jpg'),
     progress: 0.2, // 20% read
   },
   // add more books here
@@ -25,7 +25,7 @@ const ContinueReading = () => {
   return (
     <View style={styles.container}>
       <View style={styles.navBar}>
-        <Text style={styles.heading}>Continue Reading</Text>
+        <Text style={styles.heading}>Currently Reading</Text>
         {/* <Ionicons name="menu-outline" size={28} color="#fff" style={styles.icon} /> */}
         {/* <Ionicons name="search-outline" size={28} color="#fff" style={styles.icon} /> */}
       </View>
@@ -42,10 +42,10 @@ const ContinueReading = () => {
             <View style={styles.bookDetails}>
               <Text style={styles.title}>{item.title}</Text>
               <Text style={styles.author}>{item.author}</Text>
-              <View style={styles.progressBar}>
+              {/* <View style={styles.progressBar}>
                 <View style={[styles.progress, { width: item.progress * 100 + '%' }]} />
                 <Text style={styles.progressText}>{(item.progress * 100).toFixed(0)}%</Text>
-              </View>
+              </View> */}
             </View>
           </View>
         )}

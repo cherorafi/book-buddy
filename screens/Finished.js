@@ -2,18 +2,24 @@ import { Text, StyleSheet, SafeAreaView, ScrollView, FlatList } from 'react-nati
 import SingleBookCard from '../components/SingleBookCard';
 
 const bookList = [
-    {
-      id: 1,
-      title: 'Atomic Habits',
-      author: 'James Clear',
-      coverImage: require('../assets/book1.jpg'),
-    },
-    {
-      id: 2,
-      title: 'The Lean Startup',
-      author: 'Eric Ries',
-      coverImage: require('../assets/book2.jpg'),
-    },
+  {
+    id: 1,
+    title: 'Sejarah Al Qur-an',
+    author: 'JAboebakar Atjeh',
+    coverImage: require('../assets/book7.jpg'),
+  },
+  {
+    id: 2,
+    title: 'The Book Thief',
+    author: 'Markus Zusak',
+    coverImage: require('../assets/book5.jpg'),
+  },
+  {
+    id: 3,
+    title: 'Pride and Prejudice',
+    author: 'Jane Austen',
+    coverImage: require('../assets/book6.jpg'),
+  },
     // add more books here
 ];
 
