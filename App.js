@@ -9,6 +9,7 @@ import Home from "./screens/Home";
 import Chat from "./screens/Chat";
 import Search from "./screens/Search";
 import Profile from "./screens/Profile";
+import BookView from "./screens/BookView.js";
 import Header from "./components/Header";
 import WantToRead from "./screens/WantToRead.js";
 import Finished from "./screens/Finished.js";
@@ -37,11 +38,22 @@ const HomeStack = () => {
     );
 };
 
+
+const SearchStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Search" Options={{ headerShown: false }} component={Search} />
+        <Stack.Screen name="BookView" component={BookView} />
+      </Stack.Navigator>
+    );
+};
+
 const ProfileStack = () => {
     return (
       <Stack.Navigator>
         <Stack.Screen name="Profile " Options={{ headerShown: false }} component={Profile} />
         <Stack.Screen name="Settings" component={Settings} />
+
       </Stack.Navigator>
     );
 };
@@ -83,7 +95,7 @@ function MyTabs() {
                     }
                 }} 
             />
-            <Tab.Screen name="Search" component={Search} 
+            <Tab.Screen name="Search" component={SearchStack} 
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="ios-search" color={color} size={size} />
@@ -175,32 +187,9 @@ function App() {
             </Stack.Navigator>
         );
     }
-    // else{
-    //     return (
-    //         <Stack.Navigator>
-    //             <Stack.Screen
-    //                 name="WantToRead"
-    //                 component={WantToRead}
-    //                 options={{
-    //                     headerTitle: () => <Header name="Book Buddy" />,
-    //                     headerStyle: {
-    //                         height: 150,
-    //                         borderBottomLeftRadius: 50,
-    //                         borderBottomRightRadius: 50,
-    //                         backgroundColor: '#00e4d0',
-    //                         shadowColor: '#000',
-    //                         elevation: 25
-    //                     }
-    //                 }}
-    //             />
-    //         </Stack.Navigator>
-    //     )
-    // }
+    
     return (
         <MyTabs></MyTabs>
-        // <Stack.Navigator>
-        //     <MyTabs></MyTabs>
-        // </Stack.Navigator>
     );
 }
 
