@@ -54,7 +54,7 @@ const GetFirstName = () => {
   const nameRef = firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
 
-  const [myFirstName, setFirstName] = useState("Loading...");
+  const [myFirstName, setFirstName] = useState("");
 
   const observer = nameRef.onSnapshot(docSnapshot => {
     setFirstName(docSnapshot.data().firstName);
@@ -64,7 +64,12 @@ const GetFirstName = () => {
     setFirstName("Error");
   });
 
-  return (myFirstName);
+  if (myFirstName != ""){
+    observer()
+    return(myFirstName);
+  }
+  
+  return ("Loading...");
   
 }
 
@@ -83,8 +88,12 @@ const GetLastName = () => {
     setLastName("Error")
   });
 
-  return (myLastName);
+  if (myLastName != ""){
+    observer()
+    return(myLastName);
+  }
   
+  return ("");
 }
 
 // Provides a string of current user's email
@@ -92,7 +101,7 @@ const GetEmail = () => {
   const emailRef = firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
 
-  const [myEmail, setEmail] = useState("Loading...");
+  const [myEmail, setEmail] = useState("");
 
   const observer = emailRef.onSnapshot(docSnapshot => {
     setEmail(docSnapshot.data().email)
@@ -102,8 +111,12 @@ const GetEmail = () => {
     setEmail("Error")
   });
 
-  return (myEmail);
+  if (myEmail != ""){
+    observer()
+    return(myEmail);
+  }
   
+  return ("Loading...");
 }
 
 // Provides an array of all reading lists by the user
@@ -283,6 +296,33 @@ const AddBook = (listName, bookId) => {
     });
 }
 
+const GetBooks = (bookListName) => {
+  const listRef = firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+
+  const [myBookList, setBookList] = useState("");
+
+  const observer = listRef.onSnapshot(docSnapshot => {
+    const map = docSnapshot.data()[bookListName];
+    try {
+      const mapKeys = Object.keys(map);
+      setBookList(mapKeys);
+    } catch(error){
+
+    }
+    // ...
+  }, err => {
+    setBookList(["Error"])
+    console.log('Encountered error: ${err}');
+  });
+
+  
+  if (myBookList != ""){
+    observer()
+    return(myBookList);
+  } 
+  return (["Loading"]);
+}
 
 export {
   // All Get Funcs
@@ -293,6 +333,7 @@ export {
   GetFirstName,
   GetBookListMap,
   GetNumOfBooksInList,
+  GetBooks,
 
   // All Update Funcs
   ChangeFirstName,
