@@ -95,7 +95,7 @@ function MyTabs() {
                     }
                 }} 
             />
-            <Tab.Screen name="Search" component={SearchStack} 
+            <Tab.Screen name="Search " component={SearchStack} 
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="ios-search" color={color} size={size} />
