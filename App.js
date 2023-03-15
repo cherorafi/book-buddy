@@ -11,8 +11,7 @@ import Search from "./screens/Search";
 import Profile from "./screens/Profile";
 import BookView from "./screens/BookView.js";
 import Header from "./components/Header";
-import WantToRead from "./screens/WantToRead.js";
-import Finished from "./screens/Finished.js";
+import BookListPage from "./screens/BookListPage.js";
 import Settings from "./screens/Settings.js";
 //import { Stack } from "@react-navigation/stack";
 
@@ -32,8 +31,7 @@ const HomeStack = () => {
     return (
       <Stack.Navigator>
         <Stack.Screen name="Home " Options={{ headerShown: false }} component={Home} />
-        <Stack.Screen name="WantToRead" component={WantToRead} />
-        <Stack.Screen name="Finished" component={Finished} />
+        <Stack.Screen name="BookList" component={BookListPage} />
       </Stack.Navigator>
     );
 };
@@ -61,7 +59,7 @@ const ProfileStack = () => {
 function MyTabs() {
     return (
         <Tab.Navigator>
-            <Tab.Screen name="HomeMain" component={HomeStack}
+            <Tab.Screen name="Home" component={HomeStack}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="ios-home" color={color} size={size} />

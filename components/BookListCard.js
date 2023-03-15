@@ -2,36 +2,50 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
+import { GetBooks, GetNumOfBooksInList } from './Firestore';
+import { BookImageLink, BookTitle, BookCover } from './GoogleBooks';
 
-const BookListCard = ({ heading, bookList, nextScreen }) => {
+const BookListCard = ({ heading, identity }) => {
+  let bookList = GetBooks(identity);
+  let nextScreen = 'BookList';
+
+  const renderBookItem = (isbn) => {
+    return (
+      <View style={styles.imageContainer}>
+        <BookCover isbn={isbn} style={styles.image} />
+        {/* <Image source={{ uri: bookImageLink }} style={styles.image} /> */}
+      </View>
+    );
+  };
+
+  const bookComponents = bookList.map((isbn) => renderBookItem(isbn));
+
   const navigation = useNavigation();
+
+  const noBooks = bookList.length > 0;
   return (
     <View style={styles.card}>
       <View style={styles.navBar}>
         <Text style={styles.heading}>{heading}</Text>
-        <Ionicons name="arrow-forward-outline" size={28} style={styles.icon} 
-                  onPress={() => navigation.navigate(nextScreen)}/>
+        <Ionicons name="arrow-forward-outline" size={28} style={styles.icon}
+          onPress={() => navigation.navigate(nextScreen, { listName: identity })} />
       </View>
-      {/* <TouchableOpacity style={styles.headingContainer} onPress={() => navigation.navigate('Registration')}>
-        <Text style={styles.heading}>{heading}</Text>
-        <Ionicons name="menu-outline" size={28} color="#fff" style={styles.icon} />
-        <Icon name="arrow-right" size={20} color="black" type="entypo" style={styles.arrow}/>
-      </TouchableOpacity> */}
-      {/* <View style={styles.imageContainer}>
-        {imageKeys.map((image, index) => (
-          <Image key={index} source={images[image]} style={styles.image} />
-        ))}
-      </View> */}
-      <FlatList
-        data={bookList}
-        keyExtractor={(item) => item.id.toString()}
-        horizontal={true}
-        renderItem={({ item }) => (
-          <View style={styles.imageContainer}>
-            <Image source={item.coverImage} style={styles.image} />
-          </View>
-        )}
-      />
+      {
+        noBooks ? (
+          <FlatList
+            data={bookComponents}
+            keyExtractor={(item, index) => index.toString()}
+            horizontal={true}
+            renderItem={({ item }) => item}
+          />
+        )
+          :
+          (
+            <View style={styles.noBooksContainer}>
+              <Text style={styles.noBooksMessage}>There are no books.</Text>
+            </View>
+          )
+      }
     </View>
   );
 };
@@ -91,6 +105,15 @@ const styles = StyleSheet.create({
   image: {
     width: 96,
     height: 144,
+  },
+  noBooksContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noBooksMessage: {
+    fontSize: 18,
+    color: '#ccc',
   },
 });
 
