@@ -21,7 +21,7 @@ const BookTitle = ({ isbn }) => {
         const bookData = response.data.items[0].volumeInfo;
         setTitle(bookData.title);
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       }
     };
     fetchBookTitle();
@@ -40,7 +40,7 @@ const BookAuthor = ({ isbn }) => {
         const bookData = response.data.items[0].volumeInfo;
         setAuthor(bookData.authors[0]);
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       }
     };
     fetchBookAuthor();
@@ -59,7 +59,7 @@ const BookPages = ({ isbn }) => {
         const bookData = response.data.items[0].volumeInfo;
         setAuthor(bookData.pageCount);
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       }
     };
     fetchBookTitle();
@@ -78,7 +78,7 @@ const BookRating = ({ isbn }) => {
         const bookData = response.data.items[0].volumeInfo;
         setAuthor(bookData.averageRating);
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       }
     };
     fetchBookTitle();
@@ -97,7 +97,7 @@ const BookImageLink = ({ isbn }) => {
         const bookData = response.data.items[0].volumeInfo;
         setAuthor(bookData.imageLinks.thumbnail);
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       }
     };
     fetchBookTitle();
@@ -121,7 +121,7 @@ const BookCover = ({ isbn }) => {
           data.items[0].volumeInfo.imageLinks.smallThumbnail;
         setBookCover(bookCoverUrl);
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       }
     };
     fetchBookCover();

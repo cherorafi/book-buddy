@@ -1,21 +1,16 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, FlatList } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { Icon } from 'react-native-elements';
-
-const SingleBookCard = ({book}) => {
+import { BookAuthor, BookTitle, BookCover } from './GoogleBooks';
+const SingleBookCard = ({ isbn }) => {
   return (
     <View style={styles.container}>
-      {/* <View style={styles.navBar}>
-        <Text style={styles.heading}>Want To Read</Text>
-      </View> */}
       <View style={styles.bookContainer}>
-        <Image source={book.coverImage} style={styles.coverImage} />
+        <BookCover isbn={isbn}></BookCover>
         <View style={styles.bookDetails}>
-            <Text style={styles.title}>{book.title}</Text>
-            <Text style={styles.author}>{book.author}</Text>
+          <Text style={styles.title}><BookTitle isbn={isbn}></BookTitle></Text>
+          <Text style={styles.author}><BookAuthor isbn={isbn}></BookAuthor></Text>
         </View>
-      </View> 
+      </View>
     </View>
   );
 };
@@ -63,10 +58,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    marginLeft: 8,
   },
   author: {
     fontSize: 16,
     color: '#757575',
     marginBottom: 16,
+    marginLeft: 8,
   },
 })
