@@ -45,7 +45,7 @@ const BookView = () => {
       </View>
 
       <View style={styles.summary}>
-        <Text style={{fontFamily: 17}}>{summary}</Text>
+        <Text style={{fontSize: 17}}>{summary}</Text>
       </View>
       
       {/* <TouchableOpacity
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   },
   summary: {
     flex: 1,
-    backgroundColor: "white"
+    //backgroundColor: "white"
+    marign: 10,
   }
 })

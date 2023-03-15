@@ -40,7 +40,7 @@ const HomeStack = () => {
 const SearchStack = () => {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="Search" Options={{ headerShown: false }} component={Search} />
+        <Stack.Screen name="Search " Options={{ headerShown: false }} component={Search} />
         <Stack.Screen name="BookView" component={BookView} />
       </Stack.Navigator>
     );
@@ -59,7 +59,7 @@ const ProfileStack = () => {
 function MyTabs() {
     return (
         <Tab.Navigator>
-            <Tab.Screen name="Home" component={HomeStack}
+            <Tab.Screen name="HomeMain" component={HomeStack}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="ios-home" color={color} size={size} />
