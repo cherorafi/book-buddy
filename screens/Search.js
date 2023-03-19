@@ -54,7 +54,7 @@ export default function SearchPage() {
             />
 
             <View style={styles.details}>   
-              <TouchableOpacity onPress={() => navigation.navigate('BookView')} >
+              <TouchableOpacity onPress={() => navigation.navigate('BookView', { isbn: result.volumeInfo.industryIdentifiers.find((identifier) => identifier.type === 'ISBN_13').identifier })} >
                 <Text style={styles.title}>{result.volumeInfo.title}</Text>
                 <Text style={styles.author}>{result.volumeInfo.authors?.[0]}</Text>
               </TouchableOpacity>
