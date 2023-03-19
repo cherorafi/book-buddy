@@ -8,7 +8,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons';
 
 
-const BookView = () => {
+const BookView = (isbn_) => {
+  const isbn13 = isbn_.route.params.isbn
+  //console.log(isbn13)
   const navigation = useNavigation();
   const [title, setTitle] = useState('This Is The Title')
   const [author, setAuthor] = useState('Jane Smith')
