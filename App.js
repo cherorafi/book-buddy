@@ -13,6 +13,7 @@ import BookView from "./screens/BookView.js";
 import Header from "./components/Header";
 import BookListPage from "./screens/BookListPage.js";
 import Settings from "./screens/Settings.js";
+import EditYourProfile from "./screens/EditYourProfile"
 //import { Stack } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
@@ -51,6 +52,7 @@ const ProfileStack = () => {
       <Stack.Navigator>
         <Stack.Screen name="Profile " Options={{ headerShown: false }} component={Profile} />
         <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="Edit Your Profile" component={EditYourProfile} />
 
       </Stack.Navigator>
     );

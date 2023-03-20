@@ -9,8 +9,8 @@ const Settings = () => {
             onPress={() => {firebase.auth().signOut()}}
             style={styles.button}
           >
-            <Text style={{fontsize: 20, fontWeight: 'bold'}}>
-              Log Out
+            <Text style={styles.buttonText}>
+              Sign Out
             </Text>
           </TouchableOpacity>
         </SafeAreaView>
@@ -23,15 +23,29 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
-      marginTop: 100,
+      justifyContent: 'center',
+      backgroundColor: '#f5f5f5',
     },
     button: {
       marginTop: 50,
-      height: 70,
-      width: 250,
+      height: 50,
+      width: 200,
       backgroundColor: '#026efd',
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: 50,
-    }
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
+    buttonText: {
+      color: '#fff',
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
   })
