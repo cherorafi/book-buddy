@@ -1,16 +1,20 @@
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
+import { BookRatingToStar } from '../components/BookRatingToStar';
+import { BookAuthor, BookTitle, BookCover, BookRating, BookDescription } from '../components/GoogleBooks';
 import AddBook from '../components/AddBook.js'
-//import { firebase } from '../config'
-//import {examplecover} from '../assets/examplecover.jpg'
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { AntDesign } from '@expo/vector-icons';
+import Reviews from './Reviews.js'
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const BookView = (isbn_) => {
   const isbn13 = isbn_.route.params.isbn
-  //console.log(isbn13)
+  console.log(isbn13)
+  console.log('hi')
+  
+ 
+  
   const navigation = useNavigation();
   const [title, setTitle] = useState('This Is The Title')
   const [author, setAuthor] = useState('Jane Smith')
@@ -19,35 +23,42 @@ const BookView = (isbn_) => {
   const [review, setReview] = useState('')
   //get number of stars
 
-  let stars = [];
-  let emptystars = [];
-  for (let i = 0; i < score; i++){
-    stars.push(<AntDesign name="star" key={i} size={24} color="#FFE75C" />)
-  }
+  // let stars = [];
+  // let emptystars = [];
+  // for (let i = 0; i < score; i++){
+  //   stars.push(<AntDesign name="star" key={i} size={24} color="#FFE75C" />)
+  // }
 
-  for (let j = 0; j < 5-score; j++){
-    emptystars.push(<AntDesign name="star" key={j} size={24} color="gray" />)
-  }
+  // for (let j = 0; j < 5-score; j++){
+  //   emptystars.push(<AntDesign name="star" key={j} size={24} color="gray" />)
+  // }
+// style={{width: 134, height: 213}
+// height: '50%'
 
-
+// console.log()
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={{height: '50%', justifyContent: 'center', alignItems: 'center'}}>
-        <Image source={require('../assets/examplecover.jpg')} style={{width: 134, height: 213}}/>
-        <Text style={{fontSize: 20, fontWeight: 'bold', textAlignVertical: "top", textAlign: "center"}}>
-          {title}
+    <ScrollView>
+      <View style={styles.container}>
+      <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: 10, padding: 15, minWidth: '100%' }}>
+        <BookCover isbn={isbn13} />
+        <Text style={{marginTop: 10, fontSize: 20, fontWeight: 'bold', textAlignVertical: "top", textAlign: "center"}}>
+          <BookTitle isbn={isbn13}></BookTitle>
         </Text>
-        <Text style={{fontSize: 15, textAlignVertical: "top"}}>{author}</Text>
-        <View style={{flexDirection: "row", paddingVertical: 10,}}>
+        <Text style={{fontSize: 15, textAlignVertical: "top"}}><BookAuthor isbn={isbn13}></BookAuthor></Text>
+        {/* <View style={{flexDirection: "row", paddingVertical: 10}}>
           <View style={{flexDirection: "row"}}>{stars}</View>
           <View style={{flexDirection: "row"}}>{emptystars}</View>
           <Text> ({score.toFixed(1)})</Text>
-        </View>
+        </View> */}
+        <TouchableOpacity onPress={() => navigation.navigate('Reviews', isbn13)} style={{flexDirection: 'row'}}>
+          <BookRatingToStar isbn={isbn13}></BookRatingToStar> 
+          <Text style={{marginTop: 2, marginLeft: 5}}><BookRating isbn={isbn13}></BookRating></Text>
+        </TouchableOpacity>
         <AddBook/>
       </View>
 
       <View style={styles.summary}>
-        <Text style={{fontSize: 17}}>{summary}</Text>
+        <Text style={{fontSize: 17}}><BookDescription isbn={isbn13}></BookDescription></Text>
       </View>
       
       {/* <TouchableOpacity
@@ -58,7 +69,8 @@ const BookView = (isbn_) => {
           AddToList
         </Text>
       </TouchableOpacity> */}
-    </SafeAreaView>
+      </View>
+    </ScrollView>
   )
 }
 
@@ -66,8 +78,10 @@ export default BookView
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
+    shadowColor: '#000'
+    
   },
   button: {
     marginTop: 50,
@@ -79,8 +93,12 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   summary: {
-    flex: 1,
-    //backgroundColor: "white"
-    marign: 10,
+    // flex: 1,
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 15,
+    marginTop: 17,
+    alignItems: 'center',
+    shadowColor: '#000'
   }
 })

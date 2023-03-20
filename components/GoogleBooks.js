@@ -136,6 +136,25 @@ const BookCover = ({ isbn }) => {
   );
 };
 
+const BookDescription = ({ isbn }) => {
+  const [author, setAuthor] = useState('');
+
+  useEffect(() => {
+    const fetchBookTitle = async () => {
+      try {
+        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
+        const bookData = response.data.items[0].volumeInfo;
+        setAuthor(bookData.description);
+      } catch (error) {
+        //console.error(error);
+      }
+    };
+    fetchBookTitle();
+  }, [isbn]);
+
+  return author;
+};
+
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -153,7 +172,8 @@ export {
   BookPages,
   BookRating,
   BookImageLink,
-  BookCover
+  BookCover,
+  BookDescription
 }
 
 /* 
