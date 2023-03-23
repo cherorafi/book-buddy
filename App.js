@@ -14,6 +14,7 @@ import Header from "./components/Header";
 import BookListPage from "./screens/BookListPage.js";
 import Settings from "./screens/Settings.js";
 import EditYourProfile from "./screens/EditYourProfile"
+import Browse from "./screens/Browse.js";
 //import { Stack } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
@@ -33,6 +34,15 @@ const HomeStack = () => {
       <Stack.Navigator>
         <Stack.Screen name="Home " Options={{ headerShown: false }} component={Home} />
         <Stack.Screen name="BookList" component={BookListPage} />
+      </Stack.Navigator>
+    );
+};
+
+const BrowseStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Browse " Options={{ headerShown: false }} component={Browse} />
+        <Stack.Screen name="BookView" component={BookView} />
       </Stack.Navigator>
     );
 };
@@ -94,6 +104,23 @@ function MyTabs() {
                         elevation: 25
                     }
                 }} 
+            />
+            <Tab.Screen name="Browse" component={BrowseStack}
+                options={{
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="book" color={color} size={size} />
+                    ),
+                    headerTitle: () => <Header name="Book Buddy" />,
+                    headerStyle: {
+                        height: 35,
+                        borderBottomLeftRadius: 50,
+                        borderBottomRightRadius: 50,
+                        backgroundColor: '#111111',
+                        shadowColor: '#000',
+                        opacity: 0,
+                        elevation: 25
+                    }
+                }}
             />
             <Tab.Screen name="Search" component={SearchStack} 
                 options={{
