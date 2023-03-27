@@ -11,6 +11,7 @@ export default function SearchPage() {
   const navigation = useNavigation();
   const [query, setQuery] = useState('');       // making Two variables so that we can store input and display output
   const [results, setResults] = useState([]);
+  const [isbn, setIsbn] = useState('');
 
   const handleSearch = async () => {               //Axios library provides functions like get this library helps handle web requests 
     try {
@@ -20,29 +21,49 @@ export default function SearchPage() {
         
       );
       setResults(response.data.items);
+      setQuery('')
+      
+      
     } catch (error) {
       console.error(error);             // preWriten functions to catch error 
     }
   };
+  function handlePress(result) {
+    setIsbn(result.volumeInfo.industryIdentifiers?.[0]?.identifier);
+    navigation.navigate('Chat', { isbn });
+  }
+  function handleClear(){
+    
+setQuery("           ");
+  }
+  
 
   return (          //user input and setting the variable value 
     <View style={styles.container}>
-      <Text style={styles.title}>Search Page</Text>
+     <Text style={styles.title}>Search Page</Text>
       {/* SEARCH bar with side by side view button and input  */}
       <View style={styles.input}>      
-      <TextInput
+      <TextInput style={styles.barSearch}
         onChangeText={setQuery}
         placeholder="Search query"
         value={query}
       />
+      <View style={styles.botn}>
       <Button 
         title="Search"
         onPress={handleSearch}      // Calls our function which makes the call to the Api
       /> 
+      <Button 
+        title="X"
+        onPress={handleClear}      // Calls our function which to clear
+      /> 
+
+      </View>
+      
         
     </View>
      
-
+     
       {/* //Scroll view helps fit the thing */}
       <ScrollView style={styles.results}> 
                  
@@ -89,8 +110,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
+    
     flexDirection:'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+    
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'gray',
@@ -98,6 +121,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 8,
     marginBottom: 16,
+  },
+  barSearch:{
+    justifyContent:'flex-start',
+    // position:'absoulute',
+    // right:150,
+  },
+  botn:{
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   results: {
     //borderWidth: 5,
