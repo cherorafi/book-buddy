@@ -10,8 +10,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 const BookView = (isbn_) => {
   const isbn13 = isbn_.route.params.isbn
-  console.log(isbn13)
-  console.log('hi')
+  // console.log(isbn13)
+  // console.log('hi')
   
  
   

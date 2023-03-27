@@ -23,7 +23,7 @@ const BookRatingToStar = ({ isbn }) => {
   }, [isbn]);
   let stars = [];
   let scorefloor = Math.floor(score)
-  console.log(scorefloor)
+  // console.log(scorefloor)
   for (let i = 0; i < scorefloor; i++){
     stars.push(<AntDesign name="star" key={i} size={24} color="#FFE75C" />)
   }
