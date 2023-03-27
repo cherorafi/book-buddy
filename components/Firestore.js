@@ -245,6 +245,7 @@ const CreateBookList = (listName) => {
 // @Param takes a book list name, and a bookID (used to find info from Google Books API)
 // Adds the book to the user's book list
 // Adds the book to the book collections if it already didnt exist b4
+// Needs fixing, dont commit
 const AddBooks = (listName, isbn) => {
   const bookId = isbn.bookName
   console.log(listName, bookId);
@@ -255,55 +256,35 @@ const AddBooks = (listName, isbn) => {
     if (doc.exists) {
         // Exists
         // Add book ref into book list
-        console.log("It does exist, adding to book list with timestamp")
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
         .update({
-            [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp() 
+            [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp(),
+            [`bookLists.${listName}`]: firebase.firestore.FieldValue.increment(1)
         })
-
-        console.log("Incrementing count of books in book list")
-        // Increment # of books in list
-        firebase.firestore().collection('users')
-        .doc(firebase.auth().currentUser.uid)
-        .update({
-          [`bookLists.${listName}`]: firebase.firestore.FieldValue.increment(1)
-        })
-
     } else {
         // doc.data() will be undefined in this case
         // create the new book doc
         // which will hold empty reviews
-
-        console.log("It does not exist, adding to book collection")
         firebase.firestore().collection('books')
         .doc(bookId)
         .set({
           reviews: {}
         });
 
-        console.log("Adding to book list with timestamp")
         // Add book ref into book list
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
         .update({
-            [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp() 
+            [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp(),
+            [`bookLists.${listName}`]: firebase.firestore.FieldValue.increment(1) 
         })
 
-        console.log("Incrementing count of books in book list")
-        // Increment # of books in list
-        firebase.firestore().collection('users')
-        .doc(firebase.auth().currentUser.uid)
-        .update({
-          [`bookLists.${listName}`]: firebase.firestore.FieldValue.increment(1)
-        })
 
     }
     }).catch((error) => {
       console.log("Error getting document:", error);
     });
-
-    console.log("All done")
 }
 
 const GetBooks = (bookListName) => {
