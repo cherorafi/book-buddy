@@ -10,6 +10,7 @@ import Chat from "./screens/Chat";
 import Search from "./screens/Search";
 import Profile from "./screens/Profile";
 import BookView from "./screens/BookView.js";
+import Reviews from "./screens/Reviews.js";
 import Header from "./components/Header";
 import BookListPage from "./screens/BookListPage.js";
 import Settings from "./screens/Settings.js";
@@ -53,6 +54,7 @@ const SearchStack = () => {
       <Stack.Navigator>
         <Stack.Screen name="Search " Options={{ headerShown: false }} component={Search} />
         <Stack.Screen name="BookView" component={BookView} />
+        <Stack.Screen name="Reviews" component={Reviews} />
       </Stack.Navigator>
     );
 };
