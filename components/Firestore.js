@@ -245,13 +245,10 @@ const CreateBookList = (listName) => {
 // @Param takes a book list name, and a bookID (used to find info from Google Books API)
 // Adds the book to the user's book list
 // Adds the book to the book collections if it already didnt exist b4
-// Needs fixing, dont commit
 const AddBooks = (listName, isbn) => {
   const bookId = isbn.bookName
-  console.log(listName, bookId);
   const docRef = firebase.firestore().collection('books')
   .doc(bookId);
-    console.log("Checking if book exists")
     docRef.get().then((doc) => {
     if (doc.exists) {
         // Exists
