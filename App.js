@@ -17,6 +17,8 @@ import EditYourProfile from "./screens/EditYourProfile"
 import Browse from "./screens/Browse.js";
 //import { Stack } from "@react-navigation/stack";
 
+import RegistrationScreen from "./screens/NewRegistration.js";
+
 const Stack = createStackNavigator();
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -198,7 +200,7 @@ function App() {
                 />
                 <Stack.Screen
                     name="Registration"
-                    component={Registration}
+                    component={RegistrationScreen}
                     options={{
                         headerTitle: () => <Header name="Book Buddy" />,
                         headerStyle: {
