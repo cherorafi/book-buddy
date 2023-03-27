@@ -245,20 +245,24 @@ const CreateBookList = (listName) => {
 // @Param takes a book list name, and a bookID (used to find info from Google Books API)
 // Adds the book to the user's book list
 // Adds the book to the book collections if it already didnt exist b4
-const AddBook = (listName, bookId) => {
+const AddBooks = (listName, isbn) => {
+  const bookId = isbn.bookName
+  console.log(listName, bookId);
   const docRef = firebase.firestore().collection('books')
   .doc(bookId);
-
+    console.log("Checking if book exists")
     docRef.get().then((doc) => {
     if (doc.exists) {
         // Exists
         // Add book ref into book list
+        console.log("It does exist, adding to book list with timestamp")
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
         .update({
             [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp() 
         })
 
+        console.log("Incrementing count of books in book list")
         // Increment # of books in list
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
@@ -270,12 +274,15 @@ const AddBook = (listName, bookId) => {
         // doc.data() will be undefined in this case
         // create the new book doc
         // which will hold empty reviews
+
+        console.log("It does not exist, adding to book collection")
         firebase.firestore().collection('books')
         .doc(bookId)
         .set({
           reviews: {}
         });
 
+        console.log("Adding to book list with timestamp")
         // Add book ref into book list
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
@@ -283,6 +290,7 @@ const AddBook = (listName, bookId) => {
             [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp() 
         })
 
+        console.log("Incrementing count of books in book list")
         // Increment # of books in list
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
@@ -294,6 +302,8 @@ const AddBook = (listName, bookId) => {
     }).catch((error) => {
       console.log("Error getting document:", error);
     });
+
+    console.log("All done")
 }
 
 const GetBooks = (bookListName) => {
@@ -343,7 +353,7 @@ export {
 
   // All Create Funcs
   CreateBookList,
-  AddBook,
+  AddBooks,
 
   // Future
   /*
