@@ -245,10 +245,13 @@ const CreateBookList = (listName) => {
 // @Param takes a book list name, and a bookID (used to find info from Google Books API)
 // Adds the book to the user's book list
 // Adds the book to the book collections if it already didnt exist b4
-const AddBook = (listName, bookId) => {
+// Needs fixing, dont commit
+const AddBooks = (listName, isbn) => {
+  const bookId = isbn.bookName
+  console.log(listName, bookId);
   const docRef = firebase.firestore().collection('books')
   .doc(bookId);
-
+    console.log("Checking if book exists")
     docRef.get().then((doc) => {
     if (doc.exists) {
         // Exists
@@ -256,16 +259,9 @@ const AddBook = (listName, bookId) => {
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
         .update({
-            [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp() 
+            [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp(),
+            [`bookLists.${listName}`]: firebase.firestore.FieldValue.increment(1)
         })
-
-        // Increment # of books in list
-        firebase.firestore().collection('users')
-        .doc(firebase.auth().currentUser.uid)
-        .update({
-          [`bookLists.${listName}`]: firebase.firestore.FieldValue.increment(1)
-        })
-
     } else {
         // doc.data() will be undefined in this case
         // create the new book doc
@@ -280,15 +276,10 @@ const AddBook = (listName, bookId) => {
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
         .update({
-            [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp() 
+            [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp(),
+            [`bookLists.${listName}`]: firebase.firestore.FieldValue.increment(1) 
         })
 
-        // Increment # of books in list
-        firebase.firestore().collection('users')
-        .doc(firebase.auth().currentUser.uid)
-        .update({
-          [`bookLists.${listName}`]: firebase.firestore.FieldValue.increment(1)
-        })
 
     }
     }).catch((error) => {
@@ -343,7 +334,7 @@ export {
 
   // All Create Funcs
   CreateBookList,
-  AddBook,
+  AddBooks,
 
   // Future
   /*

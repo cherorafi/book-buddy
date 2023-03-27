@@ -4,6 +4,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { firebase } from '../config'
 import { GetAllLists } from './Firestore';
 import { Entypo } from '@expo/vector-icons';
+import { AddBooks } from './Firestore';
 
 
 const AddBook = (bookName) => {
@@ -14,12 +15,14 @@ const AddBook = (bookName) => {
     const SampleFunction = (item) => {
         //console.log(item);
         //console.log(bookName);
-
+        /*
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
         .collection(item).add(
           bookName,
         );
+        */
+        AddBooks(item, bookName);
 
         setModalVisible(!modalVisible);
     }

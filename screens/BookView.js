@@ -54,7 +54,7 @@ const BookView = (isbn_) => {
           <BookRatingToStar isbn={isbn13}></BookRatingToStar> 
           <Text style={{marginTop: 2, marginLeft: 5}}><BookRating isbn={isbn13}></BookRating></Text>
         </TouchableOpacity>
-        <AddBook/>
+        <AddBook bookName={isbn13}/>
       </View>
 
       <View style={styles.summary}>
