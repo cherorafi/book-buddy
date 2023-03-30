@@ -248,10 +248,8 @@ const CreateBookList = (listName) => {
 // Needs fixing, dont commit
 const AddBooks = (listName, isbn) => {
   const bookId = isbn.bookName
-  console.log(listName, bookId);
   const docRef = firebase.firestore().collection('books')
   .doc(bookId);
-    console.log("Checking if book exists")
     docRef.get().then((doc) => {
     if (doc.exists) {
         // Exists
