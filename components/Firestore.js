@@ -238,7 +238,7 @@ const CreateBookList = (listName) => {
   firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
   .update({
-    [`${listName}`]: {}
+    [`${listName}`]: {"Initialize":"List"}
   })
 }
 
