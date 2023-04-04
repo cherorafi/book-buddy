@@ -8,13 +8,18 @@ import {
   Image,
   Modal
 } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState, useEffect } from 'react';
-// import { GetReviews } from '../components/GetReviews';
+import {BookRatingToStar, UserRatingToStar} from './components/BookRatingToStar.js';
 import { ScrollView } from 'react-native-gesture-handler';
+import { BookRating, BookAuthor, BookTitle } from '../components/GoogleBooks.js';
+import { ClickableStars } from '../components/BookRatingToStar.js';
 
-const Reviews = () => {
+const Reviews = ({isbn}) => {
   const [showField, setShowField] = useState(false);
+  const [showEditField, setShowEditField] = useState(false);
   const [newuserReview, setnewUserReview] = useState('');
+  const [userScore, setUserScore] = useState();
   const [review1, setReview1] = useState(
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mattis vulputate enim nulla aliquet porttitor lacus. Dignissim sodales ut eu sem integer. Nunc sed velit dignissim sodales ut. At tellus at urna condimentum mattis pellentesque id nibh. Nisi porta lorem mollis aliquam ut porttitor leo. '
   );
@@ -33,27 +38,59 @@ const Reviews = () => {
   const [review6, setReview6] = useState(
     'Donec massa sapien faucibus et molestie ac. Diam vel quam elementum pulvinar etiam. Turpis egestas maecenas pharetra convallis posuere morbi leo urna. Tellus id interdum velit laoreet id donec ultrices tincidunt arcu. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus. Faucibus vitae aliquet nec ullamcorper sit. Id diam vel quam elementum pulvinar etiam. Dignissim cras tincidunt lobortis feugiat vivamus at augue. Sagittis orci a scelerisque purus semper eget duis. Ornare lectus sit amet est. In fermentum et sollicitudin ac orci phasellus. Proin libero nunc consequat interdum varius sit. '
   );
+  const score1 = 5;
+  const score2 = 3.4;
+  const score3 = 4;
+  const score4 = 1;
+  const score5 = 0;
+  const score6 = 2.5;
   //const [value, onChangeText] = useState('Useless Multiline Placeholder');
 
   const handleSubmit = () => {
    // setnewUserReview();
     setShowField(false);
   };
+  const handleEdit = () => {
+    setShowEditField(false);
+  };
+  const handleStarClick = (starClicked) => {
+    setUserScore()
+  }
 
   return (
-    <ScrollView>
-      <Text>Reviews</Text>
-      <TouchableOpacity style={styles.button} onPress={() => setShowField(true)}>
-        <Text>Write a Review</Text>
-      </TouchableOpacity>
+    <ScrollView style={styles.container}>
+      <Text style={styles.bookTitle}>
+        <BookTitle isbn={isbn}></BookTitle> Reviews
+      </Text>
+      <Text style={styles.bookAuthor}>
+        <BookAuthor isbn={isbn}></BookAuthor>
+      </Text>
+      <View style={{marginTop: 7, flexDirection: "row"}}>
+        <BookRatingToStar isbn={isbn}></BookRatingToStar>
+        <Text style={{marginLeft: 5, marginTop: .5 }} >
+          <BookRating isbn={isbn}></BookRating>
+        </Text>
+        <TouchableOpacity style={styles.button} onPress={() => setShowField(true)}>
+          <Text>Write a Review</Text>
+        </TouchableOpacity>
+      </View>
+
+     {/* brand new review */}
       <Modal visible={showField}>
         <View>
+          <Text style={styles.bookTitle}>
+            <BookTitle></BookTitle>
+          </Text>
+          <View style={{flexDirection: "row"}}>
+          <Text>Rating: </Text>
+          <ClickableStars></ClickableStars>
+          </View>
+          
           <TextInput
             style={styles.input}
             editable
             multiline
             numberOfLines={5}
-            maxLength={1000}
             onChangeText={setnewUserReview}
             ></TextInput>
           <TouchableOpacity onPress={() => handleSubmit()}>
@@ -61,13 +98,73 @@ const Reviews = () => {
           </TouchableOpacity>
         </View>
       </Modal>
-      {newuserReview != '' ? <Text>{newuserReview}</Text> : null}
-      <Text>{review1}</Text>
-      <Text>{review2}</Text>
-      <Text>{review3}</Text>
-      <Text>{review4}</Text>
-      <Text>{review5}</Text>
-      <Text>{review6}</Text>
+
+    {/* edit review */}
+
+    <Modal visible={showEditField}>
+        <View>
+          <TextInput
+            style={styles.input}
+            editable
+            multiline
+            numberOfLines={5}
+            placeholder={newuserReview}
+            onChangeText={setnewUserReview}
+            ></TextInput>
+          <TouchableOpacity onPress={() => handleEdit()}>
+            <Text>Save</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+
+      {newuserReview != '' ? 
+        <View>
+          <View style={{flexDirection: "row"}}>
+            <Text style={styles.bookTitle}></Text>
+            <BookRatingToStar score={3}></BookRatingToStar>
+          </View>
+          <Text style={styles.reviewBox}>{newuserReview}</Text>
+          <TouchableOpacity style={{alignItems: "right"}} onPress={() => setShowEditField(true)}>
+            <Text style={{color: "gray", fontSize: 10, textDecorationLine: "underline" }}>Edit your review</Text>
+            <MaterialCommunityIcons name="lead-pencil" size={10} color="gray" />
+          </TouchableOpacity>
+        </View>
+      : null}
+      <View style={{flexDirection: "row"}}>
+        <Text style={styles.bookTitle}>Loved it!</Text>
+        <BookRatingToStar score={score1}></BookRatingToStar>
+      </View>
+      <Text style={styles.reviewBox}>{review1}</Text>
+      
+      <View style={{flexDirection: "row"}}>
+        <Text style={styles.bookTitle}>My review on book</Text>
+        <BookRatingToStar score={score2}></BookRatingToStar>
+      </View>
+      <Text style={styles.reviewBox}>{review2}</Text>
+
+      <View style={{flexDirection: "row"}}>
+        <Text style={styles.bookTitle}>Hated it!</Text>
+        <BookRatingToStar score={score3}></BookRatingToStar>
+      </View>
+      <Text style={styles.reviewBox}>{review3}</Text>
+
+      <View style={{flexDirection: "row"}}>
+        <Text style={styles.bookTitle}>Thoughts so far...</Text>
+        <BookRatingToStar score={score4}></BookRatingToStar>
+      </View>
+      <Text style={styles.reviewBox}>{review4}</Text>
+
+      <View style={{flexDirection: "row"}}>
+        <Text style={styles.bookTitle}>Suzanne Slays</Text>
+        <BookRatingToStar score={score5}></BookRatingToStar>
+      </View>
+      <Text style={styles.reviewBox}>{review5}</Text>
+
+      <View style={{flexDirection: "row"}}>
+        <Text style={styles.bookTitle}>Really good</Text>
+        <BookRatingToStar score={score6}></BookRatingToStar>
+      </View>
+      <Text style={styles.reviewBox}>{review6}</Text>
     </ScrollView>
   );
 };
@@ -75,17 +172,50 @@ const Reviews = () => {
 export default Reviews;
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center'
+  },
+
   input: {
     backgroundColor: 'pink',
     borderBottomColor: '#000000',
     borderBottomWidth: 1,
   },
+  bookTitle: {
+    // textAlign: "center",
+    fontFamily: "Hind",
+    fontSize: 25,
+    marginTop: 20,
+
+  },
+  bookAuthor: {
+    // textAlign: "center",
+    fontFamily: "Hind",
+    fontSize: 17,
+    color: 'gray'
+    
+  },
+  titleText: {
+    fontFamily: "Hind",
+    fontSize: 30,
+    marginTop: 20,
+
+  },
   button: {
-    backgroundColor: '#026efd',
+    backgroundColor: '#C2B7C8',
   borderRadius: 5,
   paddingHorizontal: 15,
   paddingVertical: 10,
-  alignSelf: 'center',
-  marginTop: 20,
+  alignSelf: 'right',
+  },
+  reviewBox: {
+    fontFamily: "Hind",
+    fontSize: 15,
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 15,
+    marginTop: 17,
+    alignItems: 'center',
+    shadowColor: '#000'
   }
 });
