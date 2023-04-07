@@ -1,0 +1,12 @@
+export const dialogflowConfig = {
+    "type": "service_account",
+    "project_id": "newagent-oydi",
+    "private_key_id": "96c0f07791693018e81ed51a501f8518d01acf70",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCZVbVUAS1xg/sp\nSfkyYL3GSrNVw76w6GLJawCTSoTuBf9R37avnLWivJzrhDhRv/cS8WcbmHRrG6kA\nmPa12UiHmTESUAYhXjFUTptWfblDNpY3cmXs0+9SmpU6lpf/gsQYY9cy2fKGiE/q\nV1UNTGmis2HhZppPrneTK6aTdjG2+X9N6avHWahv6QV+xPnvFCJb1Zfvx/PBvYdY\np7kF7fj40ii7ruVUgpwCIXIgzhrWmF7AxGhNXJzAeyzGyemtXx3q6toE9KquvUJn\n/KQFH4gKjvrPtLPk7+lQpCuZCfVD36/hGwtrX2M+i1uP24RqBa6rJHk3/Dib9gsU\niT9No13RAgMBAAECggEAC8lil6tCgMIWNbGNwhFdLSezWuGh4Cvw4g5DXE8jYj+c\nRYEmpB+t9607e8Atax1QQwjC9gRVWKFm75iSiF6EPIYqVz/HBNweex5SwwaFjfTd\nfbQhwR92e1lOJNOMKhQ1ejF8iphl0/EZAYjGjS/lQ+A5oy+1p2/gGbRGiPnSLwAm\ntisy9pKac29XPhMJtMs520/y1HPkJMzCUcX4AipN5hv+US4hhirJ/ekDpUPQIiGE\nnm27Tdjabr2SacLk33NJcaWHON2cd5BYoezhvfu6WdkATuUO519e2tVsIJGN/57Z\nspB9coKzrg49c7HQYo8wGTmBt4+ofUX8v0TcoIiORQKBgQDX74Ja49MVLEwABETN\nobGPCFsVxJ7czFwWaJfhe/yVExtm6s5BSqcgg4G9pz7A6L1jqjljAGhiQNFHKvv5\nMZhojWhMymji/ik0M2hv482x6S0S39c8AVmtWutyJsOylF+Souy6QSuAYoh8D0ab\nZkGN3z+2aWpbXyj9J3XbcOPuHQKBgQC1yMrIQVeLJO5OSjk+ng83YnqxGj15jtNT\nxHwkhM6qrRjmXpTc/Qxl0vQIJ7jsmcJl/uIIJ69Yb/yROU6JOEv0Sr9Y7m5+MA+E\nOajqXUjTMSFcgJJId9rgIxYjt20ebpCZxczZyNf848PIwKkHiU7JAMM848Q7u+TS\nnEJwR43wRQKBgQCzrct1X9+z3ZE77lFmHibGUvif62UZaz8xMkU3TllFnomNoNKR\nh9H7fxIFQtY35TI6bVmlJKC3KSI7KuxSVc9xKEFirIaMY1rb4e8EM7VkVhe4feP2\nPVVmp6IE8Xaj8Ux5kvKSpUnSYasaOAfTpUnlCKBWY+8pKszLofsy5wPyjQKBgQCk\n+PivDD26lWV/v3R8E02T4dee6kVoD+pRVzuimLRFyJmUV7mZZDzgG7ZDwGjesBvw\nHIRdCkbjZ5463VscxO6JYVyOBLRZ6JvsT7ewGcCBiVDRdg1LnxoP10e8Wja5K3Yn\nV481BkSdyMZhZhcAM+hAGmUU2U+5NifPyuewpf92UQKBgQDB5ESDmPz2bY0NTSNC\n0qLaoaXKQNcm68CMryWaS52qMwlpnxVY5ByqKlkWu36Mg6Vli3V5Ay0VTVklTCWF\nnMpXtUOddw+GWZPyV+7L/hPhNRg6TPI96Kwnxcz3psPlUgXBsvhiihWHW8ZM5CuX\nzMARXxm2PIvVo7Il6aSh+lLbzA==\n-----END PRIVATE KEY-----\n",
+    "client_email": "book-889@newagent-oydi.iam.gserviceaccount.com",
+    "client_id": "100788976059425774678",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/book-889%40newagent-oydi.iam.gserviceaccount.com"
+}
