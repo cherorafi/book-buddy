@@ -35,6 +35,7 @@ const HomeStack = () => {
       <Stack.Navigator>
         <Stack.Screen name="Home" Options={{ headerShown: false }} component={Home} />
         <Stack.Screen name="BookList" component={BookListPage} />
+        <Stack.Screen name="BookView" component={BookView} />
       </Stack.Navigator>
     );
 };
