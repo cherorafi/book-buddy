@@ -16,6 +16,7 @@ import BookListPage from "./screens/BookListPage.js";
 import Settings from "./screens/Settings.js";
 import EditYourProfile from "./screens/EditYourProfile"
 import Browse from "./screens/Browse.js";
+import ColorSchemeContext from './ColorSchemeContext';
 //import { Stack } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
@@ -33,7 +34,7 @@ const Tab = createBottomTabNavigator();
 const HomeStack = () => {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="Home" Options={{ headerShown: false }} component={Home} />
+        <Stack.Screen name="Home " Options={{ headerShown: false }} component={Home} />
         <Stack.Screen name="BookList" component={BookListPage} />
       </Stack.Navigator>
     );
@@ -73,7 +74,7 @@ const ProfileStack = () => {
 function MyTabs() {
     return (
         <Tab.Navigator>
-            <Tab.Screen name="Home " component={HomeStack}
+            <Tab.Screen name="HomeMain" component={HomeStack}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="ios-home" color={color} size={size} />
@@ -223,9 +224,17 @@ function App() {
 }
 
 export default () => {
+    const [colorScheme, setColorScheme] = useState('light');
+    const toggleColorScheme = () => {
+        const nextColorScheme = colorScheme === 'light' ? 'dark' : 'light';
+        setColorScheme(nextColorScheme);
+    };
+    
     return (
-        <NavigationContainer>
-            <App></App>
-        </NavigationContainer>
+        <ColorSchemeContext.Provider value={{ colorScheme, toggleColorScheme }}>
+            <NavigationContainer>
+                <App></App>
+            </NavigationContainer>
+        </ColorSchemeContext.Provider>
     )
 }

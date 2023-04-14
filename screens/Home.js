@@ -1,16 +1,13 @@
 import { Text, StyleSheet, SafeAreaView, ScrollView, FlatList, Button, Modal, TextInput, View } from 'react-native';
 import BookListCard from '../components/BookListCard';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Ionicons, Entypo  } from '@expo/vector-icons';
-import { CreateBookList } from '../components/Firestore';
-import { GetUserData } from '../components/Database';
-
+import { GetAllLists, CreateBookList } from '../components/Firestore';
+import ColorSchemeContext from './../ColorSchemeContext';
 
 const Home = () => {
-  const userInfo = GetUserData();
-  const bookLists = Object.keys(userInfo.bookLists);
-
+  const bookLists = GetAllLists();
   const data = bookLists.map((key, index) => {
     let title = key.charAt(0).toUpperCase() + key.slice(1);
     return { key, title };
@@ -18,6 +15,7 @@ const Home = () => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [textInputValue, setTextInputValue] = useState('');
+  const { colorScheme } = useContext(ColorSchemeContext);
 
   const onModalOpen = () => {
     setIsModalVisible(true);
@@ -40,14 +38,14 @@ const Home = () => {
   const navigation = useNavigation();
   return (
 
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }]}>
       <View>
-        <View style={styles.addListButton}>
-          <Ionicons name="add" size={25}
+        <View style={[styles.addListButton, {backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5'}]}>
+          <Ionicons name="add" size={25} style={[{color: colorScheme === 'dark' ? 'white' : 'black'}]}
               onPress={onModalOpen} />
-          <Text style={styles.addListText} onPress={onModalOpen}>Create List</Text>
+          <Text style={[styles.addListText, {color: colorScheme === 'dark' ? 'white' : 'black'}]} onPress={onModalOpen}>Create List</Text>
         </View>
-
+     
         <FlatList
           data={data}
           renderItem={({ item }) => <BookListCard heading={item.title} identity={item.key} />}

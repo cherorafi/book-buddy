@@ -3,6 +3,8 @@ import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity } from 'rea
 import { Button, ListItem } from 'react-native-elements';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { useContext } from 'react';
+import ColorSchemeContext from './../ColorSchemeContext';
 
 const Browse = () => {
   const navigation = useNavigation();
@@ -35,12 +37,14 @@ const Browse = () => {
   const handleGenreUnselect = () => {
     setSelectedGenre(null);
   }
+  const { colorScheme } = useContext(ColorSchemeContext);
+
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <View style={[{ flex: 1, padding: 20 , backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5'}]}>
       {selectedGenre == null &&(
           <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
-          <Text style={{ fontSize: 24, }}>Book Genres</Text>
+          <Text style={{ fontSize: 24, color: colorScheme === 'dark' ? 'white' : 'black' }}>Book Genres</Text>
           {genres.map((genre, index) => (
             <Button
               key={index}

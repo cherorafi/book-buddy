@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, TextInput, Button, ScrollView, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import axios from 'axios';
-
+import { useContext } from 'react';
+import ColorSchemeContext from './../ColorSchemeContext';
 // import { Touchable } from 'react-native';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -12,6 +13,7 @@ export default function SearchPage() {
   const [query, setQuery] = useState('');       // making Two variables so that we can store input and display output
   const [results, setResults] = useState([]);
   const [isbn, setIsbn] = useState('');
+  const { colorScheme } = useContext(ColorSchemeContext);
 
   const handleSearch = async () => {               //Axios library provides functions like get this library helps handle web requests 
     try {
@@ -39,10 +41,10 @@ setQuery("           ");
   
 
   return (          //user input and setting the variable value 
-    <View style={styles.container}>
-     <Text style={styles.title}>Search Page</Text>
+    <View style= {[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }]}>
+     <Text style={[styles.title, {color: colorScheme === 'dark' ? 'white' : 'black'}]}>Search Page</Text>
       {/* SEARCH bar with side by side view button and input  */}
-      <View style={styles.input}>      
+      <View style={[styles.input,{color: colorScheme === 'dark' ? 'white' : 'black'}]}>      
       <TextInput style={styles.barSearch}
         onChangeText={setQuery}
         placeholder="Search query"

@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import { View, Text, Modal, TextInput, TouchableHighlight, StyleSheet, Pressable, } from 'react-native';
-import { ChangeFirstName, ChangeLastName, ChangeEmail, ChangePass } from '../components/Firestore.js';
-import { GetUserData } from '../components/Database.js';
+import { useContext } from 'react';
+import { GetFirstName, GetLastName, GetEmail,
+ChangeFirstName, ChangeLastName, ChangeEmail, ChangePass
+} from '../components/Firestore.js';
+import ColorSchemeContext from './../ColorSchemeContext';
 
 const EditYourProfile = () => {
 const [nameModalVisible, setNameModalVisible] = useState(false);
 const [lastNameModalVisible, setLastNameModalVisible] = useState(false);
 const [emailModalVisible, setEmailModalVisible] = useState(false);
 const [passModalVisible, setPassModalVisible] = useState(false);
+const { colorScheme } = useContext(ColorSchemeContext);
 
-const userInfo = GetUserData();
-const name = userInfo.firstName;
-const lastName = userInfo.lastName;
-const email = userInfo.email;
+const name = GetFirstName();
+const lastName = GetLastName();
+const email = GetEmail();
 
 const [newPassword, setNewPassword] = useState('');
 const [newName, setNewName] = useState(name);
@@ -98,7 +101,7 @@ const EditProfilePass = ({ label, placeholder, onChangeText }) => (
 );
 
 return (
-  <View style={styles.container}>
+  <View style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }] }>
     <EditProfileName
       label="First Name"
       placeholder={name}
@@ -253,7 +256,7 @@ return (
 
     <Pressable
       style={{
-          borderRadius: 35,
+          borderRadius: 25,
           padding: 10,
           elevation: 2,
           alignItems: 'center',
