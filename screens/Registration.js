@@ -61,7 +61,8 @@ const Registration = () => {
           bookLists: {"Want to Read":0, "Finished":0, "Currently Reading":0},
           "Want to Read": {"Initialize":"List"},
           "Finished": {"Initialize":"List"},
-          "Currently Reading": {"Initialize":"List"}
+          "Currently Reading": {"Initialize":"List"},
+          "profilePic": "",
         })
       })
       .catch((error) => {
