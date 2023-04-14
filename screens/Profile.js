@@ -1,28 +1,47 @@
-// Whats left is profile pics **
-
-import { View, SafeAreaView, StyleSheet } from 'react-native';
+import { View, SafeAreaView, StyleSheet, TouchableOpacity,ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Avatar, Title, Caption, Text, TouchableRipple }  from 'react-native-paper';
+//new
+import {
+Avatar,
+Title,
+Caption,
+Text,
+TouchableRipple,
+}  from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useState } from 'react';
-import { GetUserData } from '../components/Database.js';
+import { useContext } from 'react';
+import ColorSchemeContext from './../ColorSchemeContext';
+
+
+
+
+
+
+import {GetFirstName} from "../components/Firestore.js";
+import {GetLastName} from "../components/Firestore.js";
+import {GetEmail} from "../components/Firestore.js";
+
+
+
 
 const Profile = () => {
-const userInfo = GetUserData();
-const name = userInfo.firstName;
-const lastName = userInfo.lastName;
-const email = userInfo.email;
-const location = userInfo.loc;
-const phoneNumber = userInfo.phoneNum;
-
-const map = new Map(Object.entries(userInfo.bookLists));
-const booksFinished = map.get("Finished");
-
+ const name = GetFirstName();
+const lastName = GetLastName();
+const email = GetEmail();
+const [city, setCity] = useState("Queens");
+const [state, setState] = useState("New York");
+const [phoneNumber, setPhoneNumber] = useState("+000-111-2222");
+const [booksFinished, setBooksFinished] = useState(10);
+const [minutesRead, setMinutesRead] = useState(12);
 const navigation = useNavigation();
+const { colorScheme } = useContext(ColorSchemeContext);
+
 
 return (
-  <SafeAreaView style={styles.container}>
-    <View style={styles.userInfoSection}>
+  <SafeAreaView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }] }>
+    <ScrollView>
+    <View style={[styles.userInfoSection, {backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5'}]}>
       <View style={{flexDirection: 'row', marginTop: 15}}>
         <Avatar.Image
           source={{
@@ -30,19 +49,23 @@ return (
           }}
           size={80}
         />
-        <View style={{marginLeft: 20}}>
+        <View style={{marginLeft: 20} } >
           <Title style={[styles.title, {
             marginTop:15,
             marginBottom: 5,
-          }]}>{name} {lastName} </Title>    
+            color: colorScheme === 'dark' ? 'white' : 'black'
+          }]}>{name} {lastName} </Title>
         </View>
       </View>
     </View>
 
-    <View style={styles.userInfoSection}>
+
+
+
+    <View style={[styles.userInfoSection, {backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5'}]}>
       <View style={styles.row}>
         <Icon name="map-marker-radius" color="#777777" size={20}/>
-        <Text style={{color:"#777777", marginLeft: 20}}>{location}</Text>
+        <Text style={{color:"#777777", marginLeft: 20}}>{city}, {state}</Text>
       </View>
       <View style={styles.row}>
         <Icon name="phone" color="#777777" size={20}/>
@@ -54,23 +77,40 @@ return (
       </View>
     </View>
 
-    <View style={styles.infoBoxWrapper}>
-        <View style={[styles.infoBox, {
+
+
+
+    <View style={[styles.infoBoxWrapper, {backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5'}]}>
+    <View style={[styles.infoBox, {
           borderRightColor: '#dddddd',
           borderRightWidth: 1,
           flex: 1,
         }]}>
-        <Icon name="book" color="#777777" size={20}/>
-          <Title>{booksFinished}</Title>
+        <Icon name="book" color="#777777" size={20} style={[{color: colorScheme === 'dark' ? 'white' : 'black'}]}/>
+          <Title style={[styles.title, {color: colorScheme === 'dark' ? 'white' : 'black'}]}>{booksFinished} </Title>
           <Caption>Books Finished</Caption>
         </View>
+        <View style={styles.infoBox}>
+        <Icon name="book-clock-outline" color="#777777" size={20} style={[{color: colorScheme === 'dark' ? 'white' : 'black'}]}  />
+          <Title style={[styles.title, {color: colorScheme === 'dark' ? 'white' : 'black'}]}>{minutesRead}</Title>
+          <Caption>Minutes Read</Caption>
+          </View>
     </View>
 
+
+
+
     <View style={styles.menuWrapper}>
-      <TouchableRipple onPress={() => navigation.navigate('Home')}>
+      <TouchableRipple onPress={() => {}}>
         <View style={styles.menuItem}>
           <Icon name="heart" color="#FF6347" size={25}/>
-          <Text style={styles.menuItemText}>My Lists</Text>
+          <Text style={styles.menuItemText}>My Favorites</Text>
+        </View>
+        </TouchableRipple>
+      <TouchableRipple onPress={() => {}}>
+        <View style={styles.menuItem}>
+          <Icon name="share" color="#FF6347" size={25}/>
+          <Text style={styles.menuItemText}>Tell Your Friends</Text>
         </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate('Edit Your Profile')}>
@@ -86,12 +126,19 @@ return (
    </View>
  </TouchableRipple>
 </View>
+</ScrollView>
+</SafeAreaView>
   
-  </SafeAreaView>
 );
 };
 
+
+
+
 export default Profile;
+
+
+
 
 const styles = StyleSheet.create({
 container: {
