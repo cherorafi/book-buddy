@@ -1,198 +1,5 @@
-import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { firebase } from '../config'
-
-// Provides a flatlist of all User Info
-const GetAllUserData = () => {
-  const [users, setUsers] = useState([]);
-  const todoRef = firebase.firestore().collection('users');
-
-  useEffect(() => {
-    todoRef
-    .onSnapshot(
-      querySnapshot => {
-        const users = []
-        querySnapshot.forEach((doc) => {
-          const { email, firstName, lastName } = doc.data()
-          users.push({
-            id: doc.id,
-            email,
-            firstName,
-            lastName,
-          })
-        })
-        setUsers(users)
-      }
-    )
-  }, [])
-
-  return (
-    <View style = {{ flex: 1, marginTop: 100}}>
-      <FlatList
-        style={{height:'100%'}}
-        data={users}
-        numColumns={1}
-        renderItem={({item}) => (
-          <Pressable style={styles.container}>
-            <View style={styles.innerContainer}>
-              <Text style={styles.itemHeading}>{item.email}</Text>
-              <Text style={styles.itemText}>{item.firstName} {item.lastName}</Text>
-              <Text style={styles.itemText}>UserId: {item.id}</Text>
-            </View>
-          </Pressable>
-        )}
-      >
-
-      </FlatList>
-    </View>
-  )
-
-}
-
-// Provides a string of the current user's first name
-const GetFirstName = () => {
-  const nameRef = firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-
-  const [myFirstName, setFirstName] = useState("");
-
-  const observer = nameRef.onSnapshot(docSnapshot => {
-    setFirstName(docSnapshot.data().firstName);
-    // ...
-  }, err => {
-    console.log(`Encountered error: ${err}`);
-    setFirstName("Error");
-  });
-
-  if (myFirstName != ""){
-    observer()
-    return(myFirstName);
-  }
-  
-  return ("Loading...");
-  
-}
-
-// Provides a string of current user's last Name
-const GetLastName = () => {
-  const nameRef = firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-
-  const [myLastName, setLastName] = useState("");
-
-  const observer = nameRef.onSnapshot(docSnapshot => {
-    setLastName(docSnapshot.data().lastName)
-    // ...
-  }, err => {
-    console.log(`Encountered error: ${err}`);
-    setLastName("Error")
-  });
-
-  if (myLastName != ""){
-    observer()
-    return(myLastName);
-  }
-  
-  return ("");
-}
-
-// Provides a string of current user's email
-const GetEmail = () => {
-  const emailRef = firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-
-  const [myEmail, setEmail] = useState("");
-
-  const observer = emailRef.onSnapshot(docSnapshot => {
-    setEmail(docSnapshot.data().email)
-    // ...
-  }, err => {
-    console.log(`Encountered error: ${err}`);
-    setEmail("Error")
-  });
-
-  if (myEmail != ""){
-    observer()
-    return(myEmail);
-  }
-  
-  return ("Loading...");
-}
-
-// Provides an array of all reading lists by the user
-const GetAllLists = () => {
-  const listRef = firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-
-  const [myBookList, setBookList] = useState("");
-
-  const observer = listRef.onSnapshot(docSnapshot => {
-    setBookList(Object.keys(docSnapshot.data().bookLists))
-    // ...
-  }, err => {
-    setBookList(["Error"])
-    console.log('Encountered error: ${err}');
-  });
-
-  
-  if (myBookList != ""){
-    observer()
-    return(myBookList);
-  }
-  
-  return (["Loading"]);
-  
-}
-
-// @Param takes a listName, returns # of books in list
-const GetNumOfBooksInList = (listName) => {
-  const listRef = firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-
-  const [bookCount, setBookCount] = useState("");
-
-  const observer = listRef.onSnapshot(docSnapshot => {
-    const map = docSnapshot.data().bookLists
-    const map2 = new Map(Object.entries(map));
-
-    setBookCount(map2.get(listName))
-    // ...
-  }, err => {
-    setBookCount(["Error"])
-    console.log('Encountered error: ${err}');
-  });
-
-  
-  if (bookCount != ""){
-    observer()
-    return(bookCount);
-  }
-  
-  return ("Loading");
-}
-
-// Provides a map of names of reading lists and keys as the
-// Number of books in that reading list
-const GetBookListMap = () => {
-  const listRef = firebase.firestore().collection('users')
-  .doc(firebase.auth().currentUser.uid)
-
-  const [BookList, setBookList] = useState ("");
-
-  const observer = listRef.onSnapshot(docSnapshot => {
-    setBookList(docSnapshot.data().bookLists)
-  }, err => {
-    setBookList({"Error" : 0})
-    console.log('Encountered error: ${err}');
-  })
-
-  if (BookList != ""){
-    observer();
-    return(BookList);
-  }
-
-  return({"Loading": 0})
-}
 
 // @Param takes a string, changes the user's first name
 const ChangeFirstName = (newName) => {
@@ -284,6 +91,8 @@ const AddBooks = (listName, isbn) => {
     });
 }
 
+// @Param takes in a book list name
+// Returns an array of ISBNs of the books in that book list
 const GetBooks = (bookListName) => {
   const listRef = firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
@@ -312,16 +121,89 @@ const GetBooks = (bookListName) => {
   return (["Loading"]);
 }
 
+// @Param a string of the book list name, and a string of the isbn of a book
+// Removes the book from that list
+const DeleteBook = (listName, isbn) => {
+  firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+  .update({
+    [`${listName}.${isbn}`] : firebase.firestore.FieldValue.delete(),
+    [`bookLists.${listName}`]: firebase.firestore.FieldValue.increment(-1)
+  });
+
+}
+
+
+/*******
+        IMPORTANT READ IF FUNCTIONS BELOW ARE NOT WORKING ACCORDINGLY
+        May need to be adjusted based on how the paramaters are being passed in
+*******/
+
+// @Param takes in a book isbn and a string of the user review of that book
+// Can be used to add or update a review of the book
+const AddReview = (bookId, review) => {
+  const docRef = firebase.firestore().collection('books')
+  .doc(bookId);
+    docRef.get().then((doc) => {
+    if (doc.exists) {
+        firebase.firestore().collection('books')
+        .doc(bookId)
+        .update({
+          reviews: { [`${firebase.auth().currentUser.uid}`] : `${review}`}
+        });
+
+    } else {
+        firebase.firestore().collection('books')
+        .doc(bookId)
+        .set({
+          reviews: { [`${firebase.auth().currentUser.uid}`] : `${review}`}
+        });
+    }
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+}
+
+// @Param takes in a book isbn
+// Returns a map of all the reviews of a single book, each key being the userID
+// And the corresponding value is the review from the userID
+const GetReviews = (bookId) => {
+  const nameRef = firebase.firestore().collection('books')
+  .doc(bookId)
+
+  const [myData, setData] = useState("");
+  
+  const observer = nameRef.onSnapshot(docSnapshot => {
+    setData(docSnapshot.data().reviews);
+  }, err => {
+    console.log(`Encountered error: ${err}`);
+    setData("Error");
+  });
+
+  if (myData != ""){
+    observer()
+    return(myData);
+  }
+  
+  return({
+    "Loading": "Loading"
+    });;
+}
+
+// @Param takes in a book isbn
+// Delete review of the book
+const DeleteReview = (bookId) => {
+  firebase.firestore().collection('books')
+  .doc(bookId)
+  .update({
+    [`reviews.${firebase.auth().currentUser.uid}`] : firebase.firestore.FieldValue.delete()
+  });
+}
+
 export {
   // All Get Funcs
-  GetAllUserData,
-  GetLastName,
-  GetEmail,
-  GetAllLists,
-  GetFirstName,
-  GetBookListMap,
-  GetNumOfBooksInList,
   GetBooks,
+  GetReviews,
 
   // All Update Funcs
   ChangeFirstName,
@@ -332,38 +214,9 @@ export {
   // All Create Funcs
   CreateBookList,
   AddBooks,
+  AddReview,
 
-  // Future
-  /*
-  DeleteList
-  ChangeListName
+  // All Delete Funcs
+  DeleteReview,
   DeleteBook
-  AddReview
-  EditReview
-  DeleteReview
-  AddSummary
-  EditSummary
-  DeleteSummary
-  */
 }
-
-// Styling for listed data
-const styles = StyleSheet.create({
-  container:{
-    backgroundColor: '#e5e5e5',
-    padding: 15,
-    borderRadius: 15,
-    margin: 5,
-    marginHorizontal: 10,
-  },
-  innerContainer:{
-    alignContent: 'center',
-    flexDirection: 'column',
-  },
-  itemHeading:{
-    fontWeight: 'bold',
-  },
-  itemText:{
-    fontWeight: '300'
-  }
-});

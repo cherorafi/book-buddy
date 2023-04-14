@@ -137,7 +137,7 @@ const Registration = () => {
         // email, password, firstName, lastName, username, age, loc, phoneNum, likedGenres 
         const loc = city+", "+state;
         const number = "+"+countryCode+phoneNum;
-        registerUser(email, password, name, lastName, user, age, loc, number, genreList);
+        registerUser(email, password, name, lastName, user, age, loc, number, selectedGenres);
       }
     }
   };

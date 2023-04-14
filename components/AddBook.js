@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import { firebase } from '../config'
-import { GetAllLists } from './Firestore';
+import { Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { AddBooks } from './Firestore';
+import { GetUserData } from './Database';
 
 
 const AddBook = (bookName) => {
     const [modalVisible, setModalVisible] = useState(false);
-
-    const myList = GetAllLists();
+    const userInfo = GetUserData();
+    const myList = Object.keys(userInfo.bookLists);
 
     const SampleFunction = (item) => {
         //console.log(item);
