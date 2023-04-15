@@ -1,60 +1,45 @@
 import React, { useState } from 'react';
-import {
-View,
-Text,
-Modal,
-TextInput,
-TouchableHighlight,
-StyleSheet,
-Pressable,
-} from 'react-native';
-
-
-
-
-import {
-GetFirstName,
-GetLastName,
-GetEmail,
-ChangeFirstName,
-ChangeLastName,
-ChangeEmail,
-ChangePass
-} from '../components/Firestore.js';
-
-
-
+import { View, Text, Modal, TextInput, TouchableHighlight, StyleSheet, Pressable, } from 'react-native';
+import { ChangeFirstName, ChangeLastName, ChangeEmail, ChangePass } from '../components/Firestore.js';
+import { GetUserData } from '../components/Database.js';
 
 const EditYourProfile = () => {
-const [modalVisible, setModalVisible] = useState(false);
-const name = GetFirstName();
-const lastName = GetLastName();
-const email = GetEmail();
-const [currentPassword, setCurrentPassword] = useState('');
+const [nameModalVisible, setNameModalVisible] = useState(false);
+const [lastNameModalVisible, setLastNameModalVisible] = useState(false);
+const [emailModalVisible, setEmailModalVisible] = useState(false);
+const [passModalVisible, setPassModalVisible] = useState(false);
+
+const userInfo = GetUserData();
+const name = userInfo.firstName;
+const lastName = userInfo.lastName;
+const email = userInfo.email;
+
 const [newPassword, setNewPassword] = useState('');
 const [newName, setNewName] = useState(name);
 const [newLastName, setLastName] = useState(lastName);
 const [newEmail, setEmail] = useState(email);
 
-
-
-
-const handleSave = () => {
-  ChangeFirstName(newName);
-  ChangeLastName(newLastName);
-  ChangeEmail(newEmail);
-  if (newPassword) {
-    ChangePass(currentPassword, newPassword);
+const handleSave = (item) => {
+  if (item == "name"){
+    ChangeFirstName(newName);
+  } else if (item == "lastname"){
+    ChangeLastName(newLastName);
+  } else if (item == "email"){
+    ChangeEmail(newEmail);
+  } else if (item == "pass"){
+    ChangePass(newPassword);
   }
-  setModalVisible(false);
+
+  setNameModalVisible(false);
+  setLastNameModalVisible(false);
+  setEmailModalVisible(false);
+  setPassModalVisible(false);
+
 };
 
-
-
-
-const EditProfileItem = ({ label, placeholder, onChangeText }) => (
+const EditProfileName = ({ label, placeholder, onChangeText }) => (
   <TouchableHighlight
-    onPress={() => setModalVisible(true)}
+    onPress={() => setNameModalVisible(true)}
     underlayColor="#f0f0f0"
     style={styles.editProfileItem}
   >
@@ -67,107 +52,276 @@ const EditProfileItem = ({ label, placeholder, onChangeText }) => (
   </TouchableHighlight>
 );
 
+const EditProfileLS = ({ label, placeholder, onChangeText }) => (
+  <TouchableHighlight
+    onPress={() => setLastNameModalVisible(true)}
+    underlayColor="#f0f0f0"
+    style={styles.editProfileItem}
+  >
+    <>
+      <Text style={styles.editProfileLabel}>{label}</Text>
+      <Text style={styles.editProfileValue} numberOfLines={1}>
+        {placeholder}
+      </Text>
+    </>
+  </TouchableHighlight>
+);
 
+const EditProfileEmail = ({ label, placeholder, onChangeText }) => (
+  <TouchableHighlight
+    onPress={() => setEmailModalVisible(true)}
+    underlayColor="#f0f0f0"
+    style={styles.editProfileItem}
+  >
+    <>
+      <Text style={styles.editProfileLabel}>{label}</Text>
+      <Text style={styles.editProfileValue} numberOfLines={1}>
+        {placeholder}
+      </Text>
+    </>
+  </TouchableHighlight>
+);
 
+const EditProfilePass = ({ label, placeholder, onChangeText }) => (
+  <TouchableHighlight
+    onPress={() => setPassModalVisible(true)}
+    underlayColor="#f0f0f0"
+    style={styles.editProfileItem}
+  >
+    <>
+      <Text style={styles.editProfileLabel}>{label}</Text>
+      <Text style={styles.editProfileValue} numberOfLines={1}>
+        {placeholder}
+      </Text>
+    </>
+  </TouchableHighlight>
+);
 
 return (
   <View style={styles.container}>
-    <EditProfileItem
+    <EditProfileName
       label="First Name"
       placeholder={name}
       onChangeText={setNewName}
     />
-    <EditProfileItem
+    <EditProfileLS
       label="Last Name"
       placeholder={lastName}
       onChangeText={setLastName}
     />
-    <EditProfileItem
+    <EditProfileEmail
       label="Email"
       placeholder={email}
       onChangeText={setEmail}
     />
 
-
-
+    <EditProfilePass
+      label="Password"
+      placeholder={"*******"}
+      onChangeText={setNewPassword}
+    />
 
     <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-    >
-      <View style={styles.modalBackground}>
-        <View style={styles.modalContent}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Edit Your Profile</Text>
+        animationType="slide"
+        transparent={true}
+        visible={nameModalVisible}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Edit Your Profile</Text>
+            </View>
+            <View style={styles.modalBody}>
+              <Text style={styles.modalLabel}>New First Name</Text>
+              <TextInput
+                style={styles.modalInput}
+                placeholder={name}
+                placeholderTextColor={'lightgrey'}
+                onChangeText={setNewName}
+              />
           </View>
-          <View style={styles.modalBody}>
-            <Text style={styles.modalLabel}>New First Name</Text>
-            <TextInput
-              style={styles.modalInput}
-              placeholder={name}
-              placeholderTextColor={'lightgrey'}
-              onChangeText={setNewName}
-            />
-            <Text style={styles.modalLabel}>New Last Name</Text>
-            <TextInput
-              style={styles.modalInput}
-              placeholder={lastName}
-              placeholderTextColor={'lightgrey'}
-              onChangeText={setLastName}
-            />
-            <Text style={styles.modalLabel}>New Email</Text>
-            <TextInput
-              style={styles.modalInput}
-              placeholder="Enter new email"
-              onChangeText={setEmail}
-            />
-            <Text style={styles.modalLabel}>Current Password</Text>
-            <TextInput
-              style={styles.modalInput}
-              placeholder="Enter current password"
-              onChangeText={setCurrentPassword}
-              secureTextEntry={true}
-            />
-            <Text style={styles.modalLabel}>New Password</Text>
-            <TextInput
-              style={styles.modalInput}
-              placeholder="Enter new password"
-              onChangeText={setNewPassword}
-              secureTextEntry={true}
-            />
+          <View style={styles.modalFooter}>
+            <Pressable
+              style={{
+                  borderRadius: 35,
+                  padding: 10,
+                  elevation: 2,
+                  alignItems: 'center',
+              }}
+              onPress={() => handleSave("name")}>
+              <Text style={{fontSize: 20,textAlign: 'center'}}>Save Changes</Text>
+            </Pressable>
 
-
-
-
+            <Pressable
+              style={{
+                  borderRadius: 35,
+                  padding: 10,
+                  elevation: 2,
+                  alignItems: 'center',
+                  marginTop: 10,
+          marginBottom: 10,
+              }}
+              onPress={() => setNameModalVisible(false)}>
+              <Text style={{fontSize: 20,textAlign: 'center'}}>Cancel</Text>
+            </Pressable>
+            <View style={styles.footer}>
+            </View>
+          </View>
         </View>
-        <View style={styles.modalFooter}>
-        <Pressable
-     style={{
-         borderRadius: 40,
-         padding: 20,
-         elevation: 2,
-         alignItems: 'center',
-     }}
-     onPress={() => handleSave()}>
-     <Text style={{fontSize: 20,textAlign: 'center'}}>Save Changes</Text>
-   </Pressable>
-   <View style={styles.footer}>
-</View>
-     </View>
       </View>
-    </View>
-  </Modal>
+    </Modal>
+
+    <Modal
+        animationType="slide"
+        transparent={true}
+        visible={lastNameModalVisible}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Edit Your Profile</Text>
+            </View>
+            <View style={styles.modalBody}>
+              <Text style={styles.modalLabel}>New Last Name</Text>
+              <TextInput
+                style={styles.modalInput}
+                placeholder={lastName}
+                placeholderTextColor={'lightgrey'}
+                onChangeText={setLastName}
+              />
+          </View>
+          <View style={styles.modalFooter}>
+          <Pressable
+      style={{
+          borderRadius: 35,
+          padding: 10,
+          elevation: 2,
+          alignItems: 'center',
+      }}
+      onPress={() => handleSave("lastname")}>
+      <Text style={{fontSize: 20,textAlign: 'center'}}>Save Changes</Text>
+    </Pressable>
+
+    <Pressable
+      style={{
+          borderRadius: 35,
+          padding: 10,
+          elevation: 2,
+          alignItems: 'center',
+          marginTop: 10,
+          marginBottom: 10,
+      }}
+      onPress={() => setLastNameModalVisible(false)}>
+      <Text style={{fontSize: 20,textAlign: 'center'}}>Cancel</Text>
+    </Pressable>
+    <View style={styles.footer}>
+  </View>
+      </View>
+        </View>
+      </View>
+    </Modal>
+    
+    <Modal
+        animationType="slide"
+        transparent={true}
+        visible={emailModalVisible}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Edit Your Profile</Text>
+            </View>
+            <View style={styles.modalBody}>
+              <Text style={styles.modalLabel}>New Email</Text>
+              <TextInput
+                style={styles.modalInput}
+                placeholder="Enter new email"
+                onChangeText={setEmail}
+              />
+          </View>
+          <View style={styles.modalFooter}>
+          <Pressable
+      style={{
+          borderRadius: 35,
+          padding: 10,
+          elevation: 2,
+          alignItems: 'center',
+      }}
+      onPress={() => handleSave("email")}>
+      <Text style={{fontSize: 20,textAlign: 'center'}}>Save Changes</Text>
+    </Pressable>
+
+    <Pressable
+      style={{
+          borderRadius: 35,
+          padding: 10,
+          elevation: 2,
+          alignItems: 'center',
+          marginTop: 10,
+          marginBottom: 10,
+      }}
+      onPress={() => setEmailModalVisible(false)}>
+      <Text style={{fontSize: 20,textAlign: 'center'}}>Cancel</Text>
+    </Pressable>
+    <View style={styles.footer}>
+  </View>
+      </View>
+        </View>
+      </View>
+    </Modal>
+    
+    <Modal
+        animationType="slide"
+        transparent={true}
+        visible={passModalVisible}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Edit Your Profile</Text>
+            </View>
+            <View style={styles.modalBody}>
+              <Text style={styles.modalLabel}>New Password</Text>
+              <TextInput
+                style={styles.modalInput}
+                placeholder="Enter new password"
+                onChangeText={setNewPassword}
+              />
+          </View>
+          <View style={styles.modalFooter}>
+          <Pressable
+      style={{
+          borderRadius: 35,
+          padding: 10,
+          elevation: 2,
+          alignItems: 'center',
+      }}
+      onPress={() => handleSave("pass")}>
+      <Text style={{fontSize: 20,textAlign: 'center'}}>Save Changes</Text>
+    </Pressable>
+
+    <Pressable
+      style={{
+          borderRadius: 35,
+          padding: 10,
+          elevation: 2,
+          alignItems: 'center',
+          marginTop: 10,
+          marginBottom: 10,
+      }}
+      onPress={() => setPassModalVisible(false)}>
+      <Text style={{fontSize: 20,textAlign: 'center'}}>Cancel</Text>
+    </Pressable>
+    <View style={styles.footer}>
+  </View>
+      </View>
+        </View>
+      </View>
+    </Modal>
+
 </View>
-);
-};
 
-
-
-
-
-
-
+);};
 
 const styles = StyleSheet.create({
 container: {
@@ -266,4 +420,5 @@ cancelButtonText: {
   color: '#333333',
 },
 });
+
 export default EditYourProfile;

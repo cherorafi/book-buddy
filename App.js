@@ -33,7 +33,7 @@ const Tab = createBottomTabNavigator();
 const HomeStack = () => {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="Home " Options={{ headerShown: false }} component={Home} />
+        <Stack.Screen name="Home" Options={{ headerShown: false }} component={Home} />
         <Stack.Screen name="BookList" component={BookListPage} />
       </Stack.Navigator>
     );
@@ -73,7 +73,7 @@ const ProfileStack = () => {
 function MyTabs() {
     return (
         <Tab.Navigator>
-            <Tab.Screen name="HomeMain" component={HomeStack}
+            <Tab.Screen name="Home " component={HomeStack}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="ios-home" color={color} size={size} />

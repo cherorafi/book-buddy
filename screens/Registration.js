@@ -61,7 +61,8 @@ const Registration = () => {
           bookLists: {"Want to Read":0, "Finished":0, "Currently Reading":0},
           "Want to Read": {"Initialize":"List"},
           "Finished": {"Initialize":"List"},
-          "Currently Reading": {"Initialize":"List"}
+          "Currently Reading": {"Initialize":"List"},
+          "profilePic": "",
         })
       })
       .catch((error) => {
@@ -137,7 +138,7 @@ const Registration = () => {
         // email, password, firstName, lastName, username, age, loc, phoneNum, likedGenres 
         const loc = city+", "+state;
         const number = "+"+countryCode+phoneNum;
-        registerUser(email, password, name, lastName, user, age, loc, number, genreList);
+        registerUser(email, password, name, lastName, user, age, loc, number, selectedGenres);
       }
     }
   };
