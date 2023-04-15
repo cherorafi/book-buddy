@@ -6,8 +6,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons';
 
 
-const BookRatingToStar = ({ isbn } = null, score = 5) => {
-  const [score, setScore] = useState(5);
+const BookRatingToStar = ({ isbn } = null, _score = 5) => {
+  const [score, setScore] = useState(_score);
 
   useEffect(() => {
     const fetchBookTitle = async () => {
@@ -19,8 +19,9 @@ const BookRatingToStar = ({ isbn } = null, score = 5) => {
         //console.error(error);
       }
     };
-    if (isbn != null){
+    if(isbn != null){
       fetchBookTitle();
+
     }
   }, [isbn]);
   let stars = [];
@@ -36,32 +37,32 @@ const BookRatingToStar = ({ isbn } = null, score = 5) => {
   return stars;
 };
 
-const UserRatingToStar = ({starClicked}) => {
-  let stars = [];
-  let scorefloor = Math.floor(starClicked)
+const UserRatingToStar = ({_score}) => {
+  let _stars = [];
+  let _scorefloor = Math.floor(_score)
   // console.log(scorefloor)
-  for (let i = 0; i < scorefloor; i++){
-    stars.push(<AntDesign name="star" key={i} size={12} color="#FFE75C" />)
+  for (let i = 0; i < _scorefloor; i++){
+    _stars.push(<AntDesign name="star" key={i} size={16} color="#FFE75C" />)
   }
-  for (let j = 0; j < 5-scorefloor; j++){
-    stars.push(<AntDesign name="star" key={(j+1)*-1} size={12} color="gray" />)
+  for (let j = 0; j < 5-_scorefloor; j++){
+    _stars.push(<AntDesign name="star" key={(j+1)*-1} size={16} color="gray" />)
   }
 
-  return stars;
+  return _stars;
 };
 
-const ClickableStars = () => {
-  let stars = [];
-  for (let j = 0; j < 5; j++){
-    stars.push(
-      <TouchableOpacity onPress={() => handleStarSelection()}>
-        <AntDesign name="star" key={j} size={12} color="gray" />
-      </TouchableOpacity>
-      )
-  }
+// const ClickableStars = () => {
+//   let stars = [];
+//   for (let j = 0; j < 5; j++){
+//     stars.push(
+//       <TouchableOpacity onPress={() => handleStarSelection()}>
+//         <AntDesign name="star" key={j} size={12} color="gray" />
+//       </TouchableOpacity>
+//       )
+//   }
 
-  return stars;
-}
+//   return stars;
+// }
 
 const styles = StyleSheet.create({
   container: {
@@ -75,4 +76,4 @@ const styles = StyleSheet.create({
 });
 
 export {
-  BookRatingToStar, UserRatingToStar, ClickableStars}
+  BookRatingToStar, UserRatingToStar}
