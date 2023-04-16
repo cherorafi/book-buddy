@@ -59,9 +59,10 @@ const Browse = () => {
       {selectedGenre && (
         <View style={{ marginTop: 10, marginBottom: 70 }}>
           <Button title="Back" onPress={() => handleGenreUnselect()}/>
-          <Text style={{ fontSize: 20, marginBottom: 10 }}>
-            Popular Books in {selectedGenre}
+          <Text style={[{ fontSize: 20, marginBottom: 10 }, {color: colorScheme === 'dark' ? 'white' : 'black'}]}>
+           Popular Books in {selectedGenre}
           </Text>
+
           <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
             {books.map((book, index) => (
               <View key={book.id} style={styles.result}>
@@ -73,8 +74,8 @@ const Browse = () => {
 
               <View style={styles.details}>
                 <TouchableOpacity onPress={() => navigation.navigate('BookView', { isbn: book.volumeInfo.industryIdentifiers.find((identifier) => identifier.type === 'ISBN_13').identifier })} >
-                  <Text style={styles.title}>{book.volumeInfo.title}</Text>
-                  <Text style={styles.author}>{book.volumeInfo.authors?.[0]}</Text>
+                <Text style={[styles.title, {color: colorScheme === 'dark' ? 'white' : 'black'}]}>{book.volumeInfo.title}</Text>
+                <Text style={[styles.author, {color: colorScheme === 'dark' ? 'white' : 'black'}]}>{book.volumeInfo.authors?.[0]}</Text> 
                 </TouchableOpacity>
               </View>
               
