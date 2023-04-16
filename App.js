@@ -74,7 +74,7 @@ const ProfileStack = () => {
 function MyTabs() {
     return (
         <Tab.Navigator>
-            <Tab.Screen name="HomeMain" component={HomeStack}
+            <Tab.Screen name="Home" component={HomeStack}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="ios-home" color={color} size={size} />
