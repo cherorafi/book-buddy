@@ -41,16 +41,18 @@ setQuery("           ");
   
 
   return (          //user input and setting the variable value 
-    <View style= {[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }]}>
+    <View style={[styles.container,  { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }]}>
      <Text style={[styles.title, {color: colorScheme === 'dark' ? 'white' : 'black'}]}>Search Page</Text>
       {/* SEARCH bar with side by side view button and input  */}
-      <View style={[styles.input,{color: colorScheme === 'dark' ? 'white' : 'black'}]}>      
-      <TextInput style={styles.barSearch}
+      <View style={[styles.input, {color: colorScheme === 'dark' ? 'white' : 'black'}]}>      
+      <TextInput style={[styles.barSearch, {color: colorScheme === 'dark' ? 'white' : 'black'}]}
         onChangeText={setQuery}
         placeholder="Search query"
+        placeholderTextColor={colorScheme === 'dark' ? 'white' : 'black'}
         value={query}
+       
       />
-      <View style={styles.botn}>
+      <View style={[styles.botn, {color: colorScheme === 'dark' ? 'white' : 'black'}]}>
       <Button 
         title="Search"
         onPress={handleSearch}      // Calls our function which makes the call to the Api
@@ -78,8 +80,8 @@ setQuery("           ");
 
             <View style={styles.details}>   
               <TouchableOpacity onPress={() => navigation.navigate('BookView', { isbn: result.volumeInfo.industryIdentifiers.find((identifier) => identifier.type === 'ISBN_13').identifier })} >
-                <Text style={styles.title}>{result.volumeInfo.title}</Text>
-                <Text style={styles.author}>{result.volumeInfo.authors?.[0]}</Text>
+              <Text style={[styles.title, {color: colorScheme === 'dark' ? 'white' : 'black'}]}>{result.volumeInfo.title}</Text>
+    <Text style={[styles.author, {color: colorScheme === 'dark' ? 'white' : 'black'}]}>{result.volumeInfo.authors?.[0]}</Text> 
               </TouchableOpacity>
               {/* <Text style={styles.description}>{result.volumeInfo.description }</Text> */}
             </View>
