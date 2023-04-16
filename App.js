@@ -16,6 +16,8 @@ import BookListPage from "./screens/BookListPage.js";
 import Settings from "./screens/Settings.js";
 import EditYourProfile from "./screens/EditYourProfile"
 import Browse from "./screens/Browse.js";
+import ColorSchemeContext from './ColorSchemeContext';
+
 //import { Stack } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
@@ -224,9 +226,17 @@ function App() {
 }
 
 export default () => {
+    const [colorScheme, setColorScheme] = useState('light');
+    const toggleColorScheme = () => {
+        const nextColorScheme = colorScheme === 'light' ? 'dark' : 'light';
+        setColorScheme(nextColorScheme);
+    };
+    
     return (
-        <NavigationContainer>
-            <App></App>
-        </NavigationContainer>
+         <ColorSchemeContext.Provider value={{ colorScheme, toggleColorScheme }}>
+            <NavigationContainer>
+                <App></App>
+            </NavigationContainer>
+        </ColorSchemeContext.Provider>
     )
 }

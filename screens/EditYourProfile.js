@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, Modal, TextInput, TouchableHighlight, StyleSheet, Pressable, } from 'react-native';
 import { ChangeFirstName, ChangeLastName, ChangeEmail, ChangePass } from '../components/Firestore.js';
 import { GetUserData } from '../components/Database.js';
+import { useContext } from 'react';
+import ColorSchemeContext from './../ColorSchemeContext';
 
 const EditYourProfile = () => {
 const [nameModalVisible, setNameModalVisible] = useState(false);
@@ -18,6 +20,7 @@ const [newPassword, setNewPassword] = useState('');
 const [newName, setNewName] = useState(name);
 const [newLastName, setLastName] = useState(lastName);
 const [newEmail, setEmail] = useState(email);
+const { colorScheme } = useContext(ColorSchemeContext);
 
 const handleSave = (item) => {
   if (item == "name"){
@@ -98,7 +101,7 @@ const EditProfilePass = ({ label, placeholder, onChangeText }) => (
 );
 
 return (
-  <View style={styles.container}>
+  <View style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }] }>
     <EditProfileName
       label="First Name"
       placeholder={name}

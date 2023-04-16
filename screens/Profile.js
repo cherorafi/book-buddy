@@ -6,6 +6,8 @@ import { Avatar, Title, Caption, Text, TouchableRipple }  from 'react-native-pap
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useState } from 'react';
 import { GetUserData } from '../components/Database.js';
+import { useContext } from 'react';
+import ColorSchemeContext from './../ColorSchemeContext';
 
 const Profile = () => {
 const userInfo = GetUserData();
@@ -17,28 +19,30 @@ const phoneNumber = userInfo.phoneNum;
 
 const map = new Map(Object.entries(userInfo.bookLists));
 const booksFinished = map.get("Finished");
+const { colorScheme } = useContext(ColorSchemeContext);
 
 const navigation = useNavigation();
 
-return (
-  <SafeAreaView style={styles.container}>
-    <View style={styles.userInfoSection}>
-      <View style={{flexDirection: 'row', marginTop: 15}}>
-        <Avatar.Image
-          source={{
-          
-          }}
-          size={80}
-        />
-        <View style={{marginLeft: 20}}>
+
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }] }>
+      <View style={[styles.userInfoSection, {backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5'}]}>
+        <View style={{flexDirection: 'row', marginTop: 15}}>
+          <Avatar.Image
+            source={{
+            
+            }}
+            size={80}
+          />
+          <View style={{marginLeft: 20} } >
           <Title style={[styles.title, {
             marginTop:15,
             marginBottom: 5,
-          }]}>{name} {lastName} </Title>    
+            color: colorScheme === 'dark' ? 'white' : 'black'
+          }]}>{name} {lastName} </Title>
+        </View>
         </View>
       </View>
-    </View>
-
     <View style={styles.userInfoSection}>
       <View style={styles.row}>
         <Icon name="map-marker-radius" color="#777777" size={20}/>
@@ -61,8 +65,8 @@ return (
           flex: 1,
         }]}>
         <Icon name="book" color="#777777" size={20}/>
-          <Title>{booksFinished}</Title>
-          <Caption>Books Finished</Caption>
+        <Title style={{ color: colorScheme === 'dark' ? 'white' : 'black' }}>{booksFinished}</Title>
+       <Caption style={{color: colorScheme === 'dark' ? 'white' : 'black'}}>Books Finished</Caption>
         </View>
     </View>
 
@@ -143,3 +147,4 @@ menuItemText: {
   lineHeight: 26,
 },
 });
+
