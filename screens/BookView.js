@@ -41,27 +41,29 @@ const BookView = (isbn_) => {
 // console.log()
   return (
     <ScrollView>
-      <View style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }] }>
-      <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: 10, padding: 15, minWidth: '100%' }}>
-        <BookCover isbn={isbn13} />
-        <Text style={{marginTop: 10, fontSize: 20, fontWeight: 'bold', textAlignVertical: "top", textAlign: "center"}}>
-          <BookTitle isbn={isbn13}></BookTitle>
-        </Text>
-        <Text style={{fontSize: 15, textAlignVertical: "top"}}><BookAuthor isbn={isbn13}></BookAuthor></Text>
+    <View style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }]}>
+    <View style={{ marginTop: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: colorScheme === 'dark' ? '#333' : 'white', borderRadius: 10, padding: 15, minWidth: '100%' }}>
+      <BookCover isbn={isbn13} />
+      <Text style={{ marginTop: 10, fontSize: 20, fontWeight: 'bold', textAlignVertical: "top", textAlign: "center", color: colorScheme === 'dark' ? 'white' : 'black' }}>
+        <BookTitle isbn={isbn13}></BookTitle>
+      </Text>
+      <Text style={[{fontSize: 15, textAlignVertical: "top"}, { color: colorScheme === 'dark' ? 'white' : 'black'  }]}><BookAuthor isbn={isbn13}></BookAuthor></Text>
+
         {/* <View style={{flexDirection: "row", paddingVertical: 10}}>
           <View style={{flexDirection: "row"}}>{stars}</View>
           <View style={{flexDirection: "row"}}>{emptystars}</View>
           <Text> ({score.toFixed(1)})</Text>
         </View> */}
-        <TouchableOpacity onPress={() => navigation.navigate('Reviews', isbn13)} style={{flexDirection: 'row'}}>
+         <TouchableOpacity onPress={() => navigation.navigate('Reviews', isbn13)} style={{flexDirection: 'row'}}>
           <BookRatingToStar isbn={isbn13}></BookRatingToStar> 
-          <Text style={{marginTop: 2, marginLeft: 5}}><BookRating isbn={isbn13}></BookRating></Text>
+          <Text style={{marginTop: 2, marginLeft: 5, color: colorScheme === 'dark' ? 'white' : 'black' }}><BookRating isbn={isbn13}></BookRating></Text>
         </TouchableOpacity>
         <AddBook bookName={isbn13}/>
       </View>
 
-      <View style={styles.summary}>
-        <Text style={{fontSize: 17}}><BookDescription isbn={isbn13}></BookDescription></Text>
+
+      <View style={[styles.summary, { backgroundColor: colorScheme === 'dark' ? '#333' : 'white', shadowColor: colorScheme === 'dark' ? '#ddd' : '#000' }]}>
+        <Text style={{fontSize: 17, color: colorScheme === 'dark' ? 'white' : 'black' }}><BookDescription isbn={isbn13}></BookDescription></Text>
       </View>
       
       {/* <TouchableOpacity
