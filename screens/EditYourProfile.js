@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Modal, TextInput, TouchableHighlight, StyleSheet, Pressable, } from 'react-native';
+import { ChangeFirstName, ChangeLastName, ChangeEmail, ChangePass } from '../components/Firestore.js';
+import { GetUserData } from '../components/Database.js';
 import { useContext } from 'react';
-import { GetFirstName, GetLastName, GetEmail,
-ChangeFirstName, ChangeLastName, ChangeEmail, ChangePass
-} from '../components/Firestore.js';
 import ColorSchemeContext from './../ColorSchemeContext';
 
 const EditYourProfile = () => {
@@ -11,16 +10,17 @@ const [nameModalVisible, setNameModalVisible] = useState(false);
 const [lastNameModalVisible, setLastNameModalVisible] = useState(false);
 const [emailModalVisible, setEmailModalVisible] = useState(false);
 const [passModalVisible, setPassModalVisible] = useState(false);
-const { colorScheme } = useContext(ColorSchemeContext);
 
-const name = GetFirstName();
-const lastName = GetLastName();
-const email = GetEmail();
+const userInfo = GetUserData();
+const name = userInfo.firstName;
+const lastName = userInfo.lastName;
+const email = userInfo.email;
 
 const [newPassword, setNewPassword] = useState('');
 const [newName, setNewName] = useState(name);
 const [newLastName, setLastName] = useState(lastName);
 const [newEmail, setEmail] = useState(email);
+const { colorScheme } = useContext(ColorSchemeContext);
 
 const handleSave = (item) => {
   if (item == "name"){
@@ -129,15 +129,16 @@ return (
         transparent={true}
         visible={nameModalVisible}
       >
-        <View style={styles.modalBackground}>
+        <View style={[styles.modalBackground, { backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }]}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Edit Your Profile</Text>
+            <Text style={[styles.modalTitle, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>Edit Your Profile</Text>
             </View>
             <View style={styles.modalBody}>
-              <Text style={styles.modalLabel}>New First Name</Text>
-              <TextInput
-                style={styles.modalInput}
+            <Text style={[styles.modalLabel, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>New First Name</Text>
+        <TextInput
+              
+               style={[styles.modalInput, {color: colorScheme === 'dark' ? 'white' : 'black'}]}
                 placeholder={name}
                 placeholderTextColor={'lightgrey'}
                 onChangeText={setNewName}
@@ -189,7 +190,7 @@ return (
               <TextInput
                 style={styles.modalInput}
                 placeholder={lastName}
-                placeholderTextColor={'lightgrey'}
+                placeholderTextColor={colorScheme === 'dark' ? 'darkgrey' : 'lightgrey'}
                 onChangeText={setLastName}
               />
           </View>
@@ -256,7 +257,7 @@ return (
 
     <Pressable
       style={{
-          borderRadius: 25,
+          borderRadius: 35,
           padding: 10,
           elevation: 2,
           alignItems: 'center',
@@ -332,14 +333,6 @@ container: {
   backgroundColor: '#ffffff',
   paddingHorizontal: 20,
   paddingTop: 20,
-},
-editProfileItem: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingVertical: 15,
-  borderBottomColor: '#f0f0f0',
-  borderBottomWidth: 1,
 },
 editProfileLabel: {
   fontSize: 16,
