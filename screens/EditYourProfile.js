@@ -129,16 +129,15 @@ return (
         transparent={true}
         visible={nameModalVisible}
       >
-        <View style={[styles.modalBackground, { backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }]}>
+        <View style={styles.modalBackground}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-            <Text style={[styles.modalTitle, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>Edit Your Profile</Text>
+              <Text style={styles.modalTitle}>Edit Your Profile</Text>
             </View>
             <View style={styles.modalBody}>
-            <Text style={[styles.modalLabel, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>New First Name</Text>
-        <TextInput
-              
-               style={[styles.modalInput, {color: colorScheme === 'dark' ? 'white' : 'black'}]}
+              <Text style={styles.modalLabel}>New First Name</Text>
+              <TextInput
+                style={styles.modalInput}
                 placeholder={name}
                 placeholderTextColor={'lightgrey'}
                 onChangeText={setNewName}
@@ -190,7 +189,7 @@ return (
               <TextInput
                 style={styles.modalInput}
                 placeholder={lastName}
-                placeholderTextColor={colorScheme === 'dark' ? 'darkgrey' : 'lightgrey'}
+                placeholderTextColor={'lightgrey'}
                 onChangeText={setLastName}
               />
           </View>
@@ -333,6 +332,14 @@ container: {
   backgroundColor: '#ffffff',
   paddingHorizontal: 20,
   paddingTop: 20,
+},
+editProfileItem: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingVertical: 15,
+  borderBottomColor: '#f0f0f0',
+  borderBottomWidth: 1,
 },
 editProfileLabel: {
   fontSize: 16,
