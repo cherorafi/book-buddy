@@ -1,13 +1,18 @@
 import { Text, StyleSheet, SafeAreaView, ScrollView, FlatList, Button, Modal, TextInput, View } from 'react-native';
 import BookListCard from '../components/BookListCard';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Ionicons, Entypo  } from '@expo/vector-icons';
-import { GetAllLists, CreateBookList } from '../components/Firestore';
+import { CreateBookList } from '../components/Firestore';
+import { GetUserData } from '../components/Database';
+import { useContext } from 'react';
 import ColorSchemeContext from './../ColorSchemeContext';
 
+
 const Home = () => {
-  const bookLists = GetAllLists();
+  const userInfo = GetUserData();
+  const bookLists = Object.keys(userInfo.bookLists);
+
   const data = bookLists.map((key, index) => {
     let title = key.charAt(0).toUpperCase() + key.slice(1);
     return { key, title };
@@ -40,12 +45,12 @@ const Home = () => {
 
     <SafeAreaView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }]}>
       <View>
-        <View style={[styles.addListButton, {backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5'}]}>
-          <Ionicons name="add" size={25} style={[{color: colorScheme === 'dark' ? 'white' : 'black'}]}
-              onPress={onModalOpen} />
+      <View style={[styles.addListButton, {backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5'}]}>
+      <Ionicons name="add" size={25} style={[{color: colorScheme === 'dark' ? 'white' : 'black'}]}
+            onPress={onModalOpen} />
           <Text style={[styles.addListText, {color: colorScheme === 'dark' ? 'white' : 'black'}]} onPress={onModalOpen}>Create List</Text>
         </View>
-     
+
         <FlatList
           data={data}
           renderItem={({ item }) => <BookListCard heading={item.title} identity={item.key} />}
