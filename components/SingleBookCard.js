@@ -1,16 +1,45 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { BookAuthor, BookTitle, BookCover } from './GoogleBooks';
-const SingleBookCard = ({ isbn }) => {
+import { DeleteBook } from './Firestore';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+
+const SingleBookCard = ({ listName, isbn }) => {
+  const deleteBook = () => {
+    DeleteBook(listName, isbn);
+  }
+
+  const navigation = useNavigation();
+
+  const fetchBookAndNavigate = async () => {
+    try {
+      const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
+      const bookData = response.data.items[0];
+      navigation.navigate('BookView', { isbn: bookData.volumeInfo.industryIdentifiers.find((identifier) => identifier.type === 'ISBN_13').identifier });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // useEffect(() => {
+  //  fetchBook();
+  // }, [isbn]);
+
   return (
     <View style={styles.container}>
-      <View style={styles.bookContainer}>
-        <BookCover isbn={isbn}></BookCover>
-        <View style={styles.bookDetails}>
-          <Text style={styles.title}><BookTitle isbn={isbn}></BookTitle></Text>
-          <Text style={styles.author}><BookAuthor isbn={isbn}></BookAuthor></Text>
+      <Ionicons name="trash-outline" size={25} style={styles.deleteListButton}
+                  onPress={deleteBook} />
+      <TouchableOpacity onPress={() => fetchBookAndNavigate()}>  
+        <View style={styles.bookContainer} >
+          <BookCover isbn={isbn}></BookCover>
+          <View style={styles.bookDetails}>
+            <Text style={styles.title}><BookTitle isbn={isbn}></BookTitle></Text>
+            <Text style={styles.author}><BookAuthor isbn={isbn}></BookAuthor></Text>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -65,5 +94,13 @@ const styles = StyleSheet.create({
     color: '#757575',
     marginBottom: 16,
     marginLeft: 8,
+  },
+  deleteListButton: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    color: 'red',
+    marginRight: 8,
+    marginTop: 8,
+    
   },
 })
