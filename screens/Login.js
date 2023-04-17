@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, StyleSheet,Image } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { firebase } from '../config'
@@ -18,10 +18,15 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={{fontWeight: 'bold', fontSize:26}}>
-        Login
+      <Image style={styles.image} source={require("../assets/logo.png")} /> 
+
+
+      {/* <Image source={require('../assets/splash.png')} /> */}
+      <Text style={{fontWeight: 'bold', fontSize:25, fontFamily:'Times New Roman'}}>
+        Login to BookBuddy
       </Text>
-      <View style={{marginTop:40}}>
+      
+      <View style={{}}>
         <TextInput
           style={styles.textInput}
           placeholder="Email"
@@ -61,25 +66,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 100,
+    padding:70,
+    backgroundColor: 'white',
   },
   textInput: {
-    paddingTop: 20,
-    paddingBottom: 10,
-    width: 400,
     fontSize: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#000',
-    marginBottom: 10,
-    textAlign: 'center'
+    marginTop: 35,
+    height: 50,
+    width: 300,
+    backgroundColor: '#D9D9D9',
+    borderRadius: 50,
+    fontFamily:"Times New Roman",
+    padding: 12,
+  
   },
+  image: {
+      marginBottom:40,
+      height:150,
+      width:150,
+
+      },
   button: {
     marginTop: 50,
     height: 70,
-    width: 250,
-    backgroundColor: '#026efd',
+    width: 200,
+    backgroundColor: '#C2B7C8',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 50,
+    opacity: .9,
   }
 })
