@@ -22,7 +22,7 @@ const Login = () => {
 
 
       {/* <Image source={require('../assets/splash.png')} /> */}
-      <Text style={{fontWeight: 'bold', fontSize:25, fontFamily:'Times New Roman'}}>
+      <Text style={{fontWeight: 'bold', fontSize:25, }}>
         Login to BookBuddy
       </Text>
       
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     width: 300,
     backgroundColor: '#D9D9D9',
     borderRadius: 50,
-    fontFamily:"Times New Roman",
+    
     padding: 12,
   
   },
