@@ -149,8 +149,8 @@ const AddReview = (bookId, review) => {
         firebase.firestore().collection('books')
         .doc(bookId)
         .update({
-          reviews: { [`${firebase.auth().currentUser.uid}`] : `${review}`}
-        });
+          [`reviews.${firebase.auth().currentUser.uid}`] : `${review}`
+          });
 
     } else {
         firebase.firestore().collection('books')
@@ -168,6 +168,7 @@ const AddReview = (bookId, review) => {
 // Returns a map of all the reviews of a single book, each key being the userID
 // And the corresponding value is the review from the userID
 const GetReviews = (bookId) => {
+  console.log("BOOKID: ", bookId);
   const nameRef = firebase.firestore().collection('books')
   .doc(bookId)
 

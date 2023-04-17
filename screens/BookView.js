@@ -11,7 +11,10 @@ import ColorSchemeContext from './../ColorSchemeContext';
 
 const BookView = (isbn_) => {
   const isbn13 = isbn_.route.params.isbn
-  // console.log(isbn13)
+  console.log("book view: isbn_")
+  console.log(isbn_)
+  console.log("book view isbn13")
+  console.log(isbn13)
   // console.log('hi')
   
  
@@ -54,7 +57,7 @@ const BookView = (isbn_) => {
           <View style={{flexDirection: "row"}}>{emptystars}</View>
           <Text> ({score.toFixed(1)})</Text>
         </View> */}
-         <TouchableOpacity onPress={() => navigation.navigate('Reviews', isbn13)} style={{flexDirection: 'row'}}>
+        <TouchableOpacity onPress={() => navigation.navigate('Reviews', {isbn: isbn13})} style={{flexDirection: 'row'}}>
           <BookRatingToStar isbn={isbn13}></BookRatingToStar> 
           <Text style={{marginTop: 2, marginLeft: 5, color: colorScheme === 'dark' ? 'white' : 'black' }}><BookRating isbn={isbn13}></BookRating></Text>
         </TouchableOpacity>
