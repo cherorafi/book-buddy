@@ -150,7 +150,7 @@ const Registration = () => {
 
           <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
 
-            <Text style={{ marginBottom: 10, fontFamily:'Times New Roman', fontSize:30, fontWeight: 'bold',textAlign:'center'}}>Part 1: Sign Up</Text>
+            <Text style={{ marginBottom: 10, fontSize:30, fontWeight: 'bold',textAlign:'center'}}>Part 1: Sign Up</Text>
 
             <TextInput
               style={{ fontSize: 20,
@@ -159,7 +159,7 @@ const Registration = () => {
                 width: 320,
                 backgroundColor: '#D8D8D8',
                 borderRadius: 50,
-                fontFamily:"Times New Roman",
+                
                 padding: 12,
                 textAlign:'center'}}
               onChangeText={(text) => setEmail(text)}
@@ -175,7 +175,7 @@ const Registration = () => {
                 width: 320,
                 backgroundColor: '#D8D8D8',
                 borderRadius: 50,
-                fontFamily:"Times New Roman",
+                
                 padding: 12, 
                 textAlign:'center'}}
               onChangeText={(text) => setUser(text)}
@@ -191,7 +191,7 @@ const Registration = () => {
                 width: 320,
                 backgroundColor: '#D8D8D8',
                 borderRadius: 50,
-                fontFamily:"Times New Roman",
+                
                 padding: 12,
                 textAlign:'center' }}
               onChangeText={(text) => setPassword(text)}
@@ -208,7 +208,7 @@ const Registration = () => {
                 width: 320,
                 backgroundColor: '#D8D8D8',
                 borderRadius: 50,
-                fontFamily:"Times New Roman",
+                
                 padding: 12, 
                 textAlign:'center'}}
               onChangeText={(text) => setConfirm(text)}
@@ -242,7 +242,7 @@ const Registration = () => {
         <View>
           <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
 
-            <Text style={{ marginBottom: 10, fontFamily:'Times New Roman', fontSize:30, fontWeight: 'bold',textAlign:'center'}}>Part 2: Personal Information</Text>
+            <Text style={{ marginBottom: 10, fontSize:30, fontWeight: 'bold',textAlign:'center'}}>Part 2: Personal Information</Text>
 
             <TextInput
                 style={{   
@@ -252,7 +252,7 @@ const Registration = () => {
                   width: 320,
                   backgroundColor: '#D8D8D8',
                   borderRadius: 50,
-                  fontFamily:"Times New Roman",
+                
                   padding: 12,
                   textAlign:'center' }}
                 onChangeText={(text) => setName(text)}
@@ -268,7 +268,7 @@ const Registration = () => {
                 width: 320,
                 backgroundColor: '#D8D8D8',
                 borderRadius: 50,
-                fontFamily:"Times New Roman",
+                
                 padding: 12, 
                 textAlign:'center'}}
               onChangeText={(text) => setLastName(text)}
@@ -284,7 +284,7 @@ const Registration = () => {
                   width: 320,
                   backgroundColor: '#D8D8D8',
                   borderRadius: 50,
-                  fontFamily:"Times New Roman",
+                  
                   padding: 12, 
                   textAlign:'center'}}
                 onChangeText={(text) => setAge(text)}
@@ -302,7 +302,7 @@ const Registration = () => {
                   width: 160,
                   backgroundColor: '#D8D8D8',
                   borderRadius: 50,
-                  fontFamily:"Times New Roman",
+                  
                   padding: 12, 
                   textAlign:'center'}}
                 onChangeText={(text) => setCity(text)}
@@ -318,7 +318,7 @@ const Registration = () => {
                   width: 160,
                   backgroundColor: '#D8D8D8',
                   borderRadius: 50,
-                  fontFamily:"Times New Roman",
+                
                   padding: 12,
                   textAlign:'center'}}
                 onChangeText={(text) => setStates(text)}
@@ -335,7 +335,7 @@ const Registration = () => {
                   width: 40,
                   backgroundColor: '#D8D8D8',
                   borderRadius: 100,
-                  fontFamily:"Times New Roman",
+                  
                   padding: 12, 
                   textAlign:'center'}}>+</TextInput>
               <TextInput
@@ -346,7 +346,7 @@ const Registration = () => {
                   width: 40,
                   backgroundColor: '#D8D8D8',
                   borderRadius: 50,
-                  fontFamily:"Times New Roman",
+                
                   padding: 12, 
                   textAlign:'center'}}
                 onChangeText={(text) => setCountryCode(text)}
@@ -363,7 +363,7 @@ const Registration = () => {
                   width: 250,
                   backgroundColor: '#D8D8D8',
                   borderRadius: 50,
-                  fontFamily:"Times New Roman",
+                
                   padding: 12,
                   textAlign:'center' }}
                 onChangeText={(text) => setPhoneNum(text)}
@@ -395,7 +395,7 @@ const Registration = () => {
 
       {part === 3 && (
           <View style={styles.container}>
-            <Text style={{ fontSize: 18, marginBottom: 10, fontFamily:'Times New Roman', fontSize:20, fontWeight: 'bold',textAlign:'center'}}>Part 3: Pick some genres you enjoy</Text>
+            <Text style={{ fontSize: 18, marginBottom: 10, fontSize:20, fontWeight: 'bold',textAlign:'center'}}>Part 3: Pick some genres you enjoy</Text>
 
             {genreList.map((genre) => (
               <TouchableOpacity
@@ -438,7 +438,7 @@ const styles = StyleSheet.create({
     margin: 8,
     minWidth: 100,
     alignItems: 'center',
-    fontFamily:'Times New Roman',
+   
     fontWeight: 'Bold',
   },
   selectedGenreButton: {
