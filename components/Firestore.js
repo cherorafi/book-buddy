@@ -149,8 +149,8 @@ const AddReview = (bookId, review) => {
         firebase.firestore().collection('books')
         .doc(bookId)
         .update({
-          reviews: { [`${firebase.auth().currentUser.uid}`] : `${review}`}
-        });
+          [`reviews.${firebase.auth().currentUser.uid}`] : `${review}`
+          });
 
     } else {
         firebase.firestore().collection('books')

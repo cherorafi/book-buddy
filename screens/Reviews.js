@@ -2,10 +2,8 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
   View,
-  Image,
   Modal
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,7 +11,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
 import React, { useState, useEffect } from 'react';
 import {BookRatingToStar, UserRatingToStar} from '../components/BookRatingToStar.js';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import {ScrollView } from 'react-native-gesture-handler';
 import {AddReview, GetReviews, DeleteReview} from '../components/Firestore.js';
 import { BookRating, BookAuthor, BookTitle } from '../components/GoogleBooks.js';
 import {firebase} from '../config.js';
@@ -23,30 +21,63 @@ import {firebase} from '../config.js';
 
 const Reviews = ({route}) => {
   const isbn13 = route.params.isbn;
-  // console.log("review isbn13")
-  // console.log(isbn13);
-
   const reviewlist = GetReviews(isbn13);
-
-  // console.log(typeof(reviewlist));
-
-  // console.log("Object.keys(reviewlist)[0]", Object.keys(reviewlist)[0]);
-
-  // console.log("Object.keys(reviewlist)", Object.keys(reviewlist))
-  // console.log("Object.values(reviewlist)", Object.values(reviewlist))
-
-  console.log(reviewlist)
+  let boo = Object.keys(reviewlist).includes(firebase.auth().currentUser.uid);
   
   const [showField, setShowField] = useState(false);
   const [showEditField, setShowEditField] = useState(false);
   const [newuserReview, setnewUserReview] = useState('');
-  const [reviewExists, setReviewExists] = useState(false);
-  const [userScore, setUserScore] = useState();
+  const [reviewExists, setReviewExists] = useState(boo);
+  const [check, setCheck] = useState();
+  // const [userScore, setUserScore] = useState();
   const [currId, setCurrId] = useState(firebase.auth().currentUser.uid);
+
  
+  const TopReview = ({ reviewlist }) => {
+    
+    return (
+      <View >
+        {Object.keys(reviewlist).map((val,k) => 
+            <View key={k} >
+                {val == firebase.auth().currentUser.uid ? 
+                  <View key={k} style={styles.reviewBox} >
+                    <View style={styles.header}>
+                      <Text style={{fontSize: 18}}>Your review:</Text>
+                          <TouchableOpacity style={{marginTop: 8}} onPress={() => handleDelete(isbn13)}>
+                          <FontAwesome name="trash-o" size={20} color="gray" />
+                          </TouchableOpacity>
+                    </View>
+                    <Text style={{paddingTop: 10, paddingBottom: 10}}>{reviewlist[val]}</Text>
+                    <TouchableOpacity style={{flexDirection: "row"}} onPress={() => setShowEditField(true)}>
+                        <Text style={{color: "gray", fontSize: 10, textDecorationLine: "underline" }}>Edit your review</Text>
+                        <MaterialCommunityIcons style={{padding: 3}} name="lead-pencil" size={10} color="gray" />
+                    </TouchableOpacity>
+                  </View>
+                : null
+                }
+            </View>
+        )}     
+      </View>
+    );
+  };
+
+  const OtherReviews = ({ reviewlist }) => {
+    return (
+      <View>
+        {Object.keys(reviewlist).map((val,k) => 
+            <View key={k}>
+                {val != firebase.auth().currentUser.uid ? 
+                    <View style={styles.reviewBox}>
+                       <Text>{reviewlist[val]}</Text>
+                    </View>
+                : null}
+            </View>
+        )}     
+      </View>
+    );
+  };
 
   const handleSubmit = (isbn13, review) => {
-   // setnewUserReview();
     AddReview(isbn13, review);
     setShowField(false);
     setCurrId(firebase.auth().currentUser.uid)
@@ -54,15 +85,13 @@ const Reviews = ({route}) => {
   };
   const handleEdit = (isbn13, review) => {
     AddReview(isbn13, review);
+    setReviewExists(true);
     setShowEditField(false);
   };
   const handleDelete = (isbn13) => {
     DeleteReview(isbn13);
     setReviewExists(false);
   }
-  // const handleStarClick = (starClicked) => {
-  //   setUserScore()
-  // }
 
   return (
     <ScrollView>
@@ -80,28 +109,31 @@ const Reviews = ({route}) => {
         </Text>
        
       </View>
-      {reviewExists == true ? 
-        null :
+      {reviewExists != true ? 
         <TouchableOpacity 
-          style={{
-            borderRadius: 12,
-            padding: 5,
-            margin: 10,
-            backgroundColor: 'lightgrey'}}
-          onPress={() => setShowField(true)}>
-          <Text>Write a Review</Text>
-        </TouchableOpacity>
+        style={{
+          borderRadius: 12,
+          padding: 5,
+          margin: 10,
+          backgroundColor: 'lightgrey'}}
+        onPressIn={() => setShowField(true)}>
+        <Text>Write a Review</Text>
+      </TouchableOpacity> :
+        null
       }
       
 
      {/* brand new review */}
-      <Modal visible={showField} style={styles.modalContent}>
-        <View>
-          <Text style={styles.bookTitle}>
-            <BookTitle></BookTitle>
+      <Modal visible={showField} >
+        <View> 
+          <View style={styles.modalHeader}>
+          <Text style={styles.modalTitle}>
+            {"Review for "}
+            <BookTitle isbn={isbn13}></BookTitle>
           </Text>
+          </View>
+          
           <View style={{flexDirection: "row"}}>
-          <Text>Rating: </Text>
           {/* <ClickableStars></ClickableStars> */}
           </View>
           
@@ -113,8 +145,10 @@ const Reviews = ({route}) => {
             maxLength={1500}
             onChangeText={setnewUserReview}
             ></TextInput>
+            <View style={{alignContent: "center"}}>
           <TouchableOpacity 
               style={{
+                        alignSelf: "center",
                         borderRadius: 12,
                         padding: 5,
                         margin: 10,
@@ -122,12 +156,11 @@ const Reviews = ({route}) => {
               onPress={() => handleSubmit(isbn13, newuserReview)}>
             <Text>Submit</Text>
           </TouchableOpacity>
+          </View>
         </View>
       </Modal>
 
-
-
-      <Modal visible={showEditField} style={styles.modalContent}>
+      <Modal visible={showEditField} >
           <View>
             <TextInput
               style={styles.input}
@@ -148,41 +181,16 @@ const Reviews = ({route}) => {
             </TouchableOpacity>
           </View>
         </Modal>
-      
+        
       {/* reviews */}
       { Object.keys(reviewlist)[0] === "Loading" ?
         <View><Text>No reviews.</Text></View>
-
         :
-        //getting users review at the top 
-          Object.keys(reviewlist).map((val, k) => 
-          
-            <View key={k} style={styles.reviewBox}>
-              {val === currId ? 
-                <View>
-                  <View style={styles.header}>
-                    <Text style={{fontSize: 20}}>Your review:</Text>
-                    <TouchableOpacity style={{marginTop: 8}} onPress={() => handleDelete(isbn13)}>
-                      <FontAwesome name="trash-o" size={20} color="gray" />
-                    </TouchableOpacity>
-                  </View>
-                  <Text>{reviewlist[val]}</Text>
-                  <Text>{val}</Text>
-                  <TouchableOpacity style={{flexDirection: "row"}} onPress={() => setShowEditField(true)}>
-                    <Text style={{color: "gray", fontSize: 10, textDecorationLine: "underline" }}>Edit your review</Text>
-                    <MaterialCommunityIcons name="lead-pencil" size={10} color="gray" />
-                  </TouchableOpacity>
-                </View>
-                :
-                <View style={styles.reviewBox}>
-                <Text>{reviewlist[val]}</Text>
-                <Text>{val}</Text>
-                {/* <Text>heyi</Text> */}
-                </View>
-              }
-              </View>
-            )
-      } 
+        <View style={{width: "100%"}}> 
+          <TopReview  reviewlist={reviewlist}/>
+          <OtherReviews  reviewlist={reviewlist}/>
+        </View>
+      }   
       {/* end reviews */}
     </View>
     </ScrollView>
@@ -193,66 +201,71 @@ export default Reviews;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center'
+    alignItems: 'center',
+    width: "100%"
   },
-
   input: {
-    backgroundColor: 'pink',
+    backgroundColor: 'white',
     borderBottomColor: '#000000',
     borderBottomWidth: 1,
   },
   bookTitle: {
-    // textAlign: "center",
-    // fontFamily: "Hind",
     textAlign: 'center',
-    fontSize: 25,
+    fontSize: 20,
+    fontWeight: 'bold',
     marginTop: 20,
 
   },
   reviewTitle: {
-    fontSize: 18,
+    fontSize: 15,
+    paddingBottom: 5
     
   },
   bookAuthor: {
-    // textAlign: "center",
-    // fontFamily: "Hind",
     fontSize: 17,
     color: 'gray'
     
   },
   titleText: {
-    // fontFamily: "Hind",
     fontSize: 30,
     marginTop: 20,
 
+  },
+  // modalContent: {
+  //   backgroundColor: '#ffffff',
+  //   borderRadius: 10,
+  // },
+  modalHeader:{
+    backgroundColor: '#f0f0f0',
+  paddingVertical: 15,
+  paddingHorizontal: 20,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333333',
   },
   button: {
     backgroundColor: '#C2B7C8',
   borderRadius: 5,
   paddingHorizontal: 15,
   paddingVertical: 10,
-  // marginRight: 0,
   },
   reviewBox: {
-    // fontFamily: "Hind",
     backgroundColor: "white",
     borderRadius: 10,
     padding: 15,
     marginTop: 17,
     width: '100%',
-    
     shadowColor: '#000'
   },
   modalContent: {
     backgroundColor: '#ffffff',
     borderRadius: 10,
     overflow: 'hidden',
-    width: '80%',
-    maxHeight: '80%',
   },
   header: {
     flexDirection: "row", 
     justifyContent: "space-between",
-
   }
 });
