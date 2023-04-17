@@ -6,8 +6,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons';
 
 
-const BookRatingToStar = ({ isbn }) => {
-  const [score, setScore] = useState('');
+const BookRatingToStar = ({ isbn } = null, _score = 5) => {
+  const [score, setScore] = useState(_score);
 
   useEffect(() => {
     const fetchBookTitle = async () => {
@@ -19,7 +19,10 @@ const BookRatingToStar = ({ isbn }) => {
         //console.error(error);
       }
     };
-    fetchBookTitle();
+    if(isbn != null){
+      fetchBookTitle();
+
+    }
   }, [isbn]);
   let stars = [];
   let scorefloor = Math.floor(score)
@@ -34,6 +37,33 @@ const BookRatingToStar = ({ isbn }) => {
   return stars;
 };
 
+const UserRatingToStar = ({_score}) => {
+  let _stars = [];
+  let _scorefloor = Math.floor(_score)
+  // console.log(scorefloor)
+  for (let i = 0; i < _scorefloor; i++){
+    _stars.push(<AntDesign name="star" key={i} size={16} color="#FFE75C" />)
+  }
+  for (let j = 0; j < 5-_scorefloor; j++){
+    _stars.push(<AntDesign name="star" key={(j+1)*-1} size={16} color="gray" />)
+  }
+
+  return _stars;
+};
+
+// const ClickableStars = () => {
+//   let stars = [];
+//   for (let j = 0; j < 5; j++){
+//     stars.push(
+//       <TouchableOpacity onPress={() => handleStarSelection()}>
+//         <AntDesign name="star" key={j} size={12} color="gray" />
+//       </TouchableOpacity>
+//       )
+//   }
+
+//   return stars;
+// }
+
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -46,4 +76,4 @@ const styles = StyleSheet.create({
 });
 
 export {
-  BookRatingToStar}
+  BookRatingToStar, UserRatingToStar}
