@@ -19,7 +19,7 @@ const BookListPage = ({ route }) => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }]}>
-      <FlatList
+        <FlatList
         data={bookList}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
@@ -37,5 +37,12 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 20,
     width: '100%',
-  }
+  },
+  noBooksText: {
+    fontSize: 28,
+    fontStyle: 'italic',
+    color:'#888',
+    textAlign: 'center',
+  },
+
 })

@@ -47,6 +47,7 @@ const CreateBookList = (listName) => {
   .update({
     [`${listName}`]: {"Initialize":"List"}
   })
+
 }
 
 // @Param takes a book list name, and a bookID (used to find info from Google Books API)
@@ -101,6 +102,7 @@ const GetBooks = (bookListName) => {
 
   const observer = listRef.onSnapshot(docSnapshot => {
     const map = docSnapshot.data()[bookListName];
+
     try {
       const mapKeys = Object.keys(map);
       setBookList(mapKeys);
@@ -117,7 +119,8 @@ const GetBooks = (bookListName) => {
   if (myBookList != ""){
     observer()
     return(myBookList);
-  } 
+  }
+
   return (["Loading"]);
 }
 
@@ -178,7 +181,9 @@ const GetReviews = (bookId) => {
     setData(docSnapshot.data().reviews);
   }, err => {
     console.log(`Encountered error: ${err}`);
-    setData("Error");
+    setData({
+      "Loading": "Loading"
+      });
   });
 
   if (myData != ""){
