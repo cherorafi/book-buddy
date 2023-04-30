@@ -6,14 +6,14 @@ import { dialogflowConfig } from './env';
 
 const BOT = {
   _id: 2,
-  name: 'Mr.Bot',
+  name: 'Book Buddy',
   avatar: 'https://st3.depositphotos.com/8950810/17657/v/600/depositphotos_176577870-stock-illustration-cute-smiling-funny-robot-chat.jpg'
 }
 
 class Chat extends Component{
   state = {
     messages: [
-      {_id: 2, text: 'My name is Mr.Bot', createdAt: new Date(),
+      {_id: 2, text: 'My name is Book Buddy', createdAt: new Date(),
     user: BOT},
       {_id: 1, text: 'Hi!', createdAt: new Date(),
     user: BOT}

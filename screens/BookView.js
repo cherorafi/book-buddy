@@ -11,14 +11,7 @@ import ColorSchemeContext from './../ColorSchemeContext';
 
 const BookView = (isbn_) => {
   const isbn13 = isbn_.route.params.isbn
-  console.log("book view: isbn_")
-  console.log(isbn_)
-  console.log("book view isbn13")
-  console.log(isbn13)
-  // console.log('hi')
-  
- 
-  
+
   const navigation = useNavigation();
   const [title, setTitle] = useState('This Is The Title')
   const [author, setAuthor] = useState('Jane Smith')

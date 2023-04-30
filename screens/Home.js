@@ -1,22 +1,48 @@
 import { Text, StyleSheet, SafeAreaView, ScrollView, FlatList, Button, Modal, TextInput, View } from 'react-native';
 import BookListCard from '../components/BookListCard';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Ionicons, Entypo  } from '@expo/vector-icons';
 import { CreateBookList } from '../components/Firestore';
-import { GetUserData } from '../components/Database';
 import { useContext } from 'react';
 import ColorSchemeContext from './../ColorSchemeContext';
 
+import { firebase } from '../config'
+
 
 const Home = () => {
-  const userInfo = GetUserData();
-  const bookLists = Object.keys(userInfo.bookLists);
+  const [bookLists, setBookLists] = useState([]);
 
-  const data = bookLists.map((key, index) => {
-    let title = key.charAt(0).toUpperCase() + key.slice(1);
-    return { key, title };
-  });
+  useEffect(() => {
+    const unsubscribe = firebase.firestore()
+      .collection('users')
+      .doc(firebase.auth().currentUser.uid) 
+      .onSnapshot(snapshot => {
+        const data = snapshot.data();
+        try{
+        if (data && data.bookLists) {
+         
+          const bookListsData = Object.entries(data.bookLists).map(([bookListName, books]) => ({
+            bookListName,
+            books: Object.entries(data[bookListName]).map(([isbn, timestamp]) => ({
+              isbn,
+              timestamp,
+            })),
+          })
+          );
+          setBookLists(bookListsData);
+        } else {
+          setBookLists([]);
+        }
+      }catch(error){}
+      });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [textInputValue, setTextInputValue] = useState('');
@@ -36,6 +62,13 @@ const Home = () => {
 
   const onFormSubmit = () => {
     CreateBookList(textInputValue);
+
+    firebase.firestore().collection('users')
+      .doc(firebase.auth().currentUser.uid)
+      .update({
+      [`${textInputValue}.Initialize`] : firebase.firestore.FieldValue.delete(),
+    });
+
     onModalClose();
     setTextInputValue('');
   };
@@ -49,13 +82,13 @@ const Home = () => {
       <Ionicons name="add" size={25} style={[{color: colorScheme === 'dark' ? 'white' : 'black'}]}
             onPress={onModalOpen} />
           <Text style={[styles.addListText, {color: colorScheme === 'dark' ? 'white' : 'black'}]} onPress={onModalOpen}>Create List</Text>
-        </View>
+      </View>
+      <ScrollView vertical showsVerticalScrollIndicator={false} style={{marginBottom: 45}}>
+        {bookLists.map(bookList => (
+          <BookListCard key={bookList.bookListName} bookListName={bookList.bookListName} books={bookList.books} />
+        ))}
+      </ScrollView>
 
-        <FlatList
-          data={data}
-          renderItem={({ item }) => <BookListCard heading={item.title} identity={item.key} />}
-          keyExtractor={(item, index) => index.toString()}
-        />
       </View>
       
       {isModalVisible && (
@@ -150,3 +183,4 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   }
 })
+
