@@ -186,31 +186,25 @@ function App() {
     if (!user) {
         return (
             <Stack.Navigator>
-                <Stack.Screen
+                 <Stack.Screen
                     name="Login"
                     component={Login}
                     options={{
                         headerTitle: () => <Header name="Book Buddy" />,
                         headerStyle: {
-                            height: 150,
-                            borderBottomLeftRadius: 50,
-                            borderBottomRightRadius: 50,
-                            backgroundColor: '#00e4d0',
-                            shadowColor: '#000',
-                            elevation: 25
+                            height: 5,
+                            backgroundColor: 'white',
                         }
                     }}
                 />
-                <Stack.Screen
+               <Stack.Screen
                     name="Registration"
                     component={Registration}
                     options={{
                         headerTitle: () => <Header name="Book Buddy" />,
                         headerStyle: {
-                            height: 150,
-                            borderBottomLeftRadius: 50,
-                            borderBottomRightRadius: 50,
-                            backgroundColor: '#00e4d0',
+                            height: 80,
+                            backgroundColor: '#C2B7C8',
                             shadowColor: '#000',
                             elevation: 25
                         }

@@ -61,8 +61,7 @@ const Registration = () => {
           bookLists: {"Want to Read":0, "Finished":0, "Currently Reading":0},
           "Want to Read": {"Initialize":"List"},
           "Finished": {"Initialize":"List"},
-          "Currently Reading": {"Initialize":"List"},
-          "profilePic": "",
+          "Currently Reading": {"Initialize":"List"}
         })
       })
       .catch((error) => {
@@ -138,7 +137,7 @@ const Registration = () => {
         // email, password, firstName, lastName, username, age, loc, phoneNum, likedGenres 
         const loc = city+", "+state;
         const number = "+"+countryCode+phoneNum;
-        registerUser(email, password, name, lastName, user, age, loc, number, selectedGenres);
+        registerUser(email, password, name, lastName, user, age, loc, number, genreList);
       }
     }
   };
@@ -151,10 +150,18 @@ const Registration = () => {
 
           <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
 
-            <Text style={{ fontSize: 18, marginBottom: 10 }}>Part 1: Sign Up</Text>
+            <Text style={{ marginBottom: 10, fontSize:30, fontWeight: 'bold',textAlign:'center'}}>Part 1: Sign Up</Text>
 
             <TextInput
-              style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, textAlign: 'center' }}
+              style={{ fontSize: 20,
+                marginTop: 25,
+                height: 50,
+                width: 320,
+                backgroundColor: '#D8D8D8',
+                borderRadius: 50,
+                
+                padding: 12,
+                textAlign:'center'}}
               onChangeText={(text) => setEmail(text)}
               value={email}
               placeholder="Email"
@@ -162,7 +169,15 @@ const Registration = () => {
             />
 
             <TextInput
-              style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, textAlign: 'center' }}
+              style={{ fontSize: 20,
+                marginTop: 25,
+                height: 50,
+                width: 320,
+                backgroundColor: '#D8D8D8',
+                borderRadius: 50,
+                
+                padding: 12, 
+                textAlign:'center'}}
               onChangeText={(text) => setUser(text)}
               value={user}
               placeholder="Unique Username"
@@ -170,7 +185,15 @@ const Registration = () => {
             />
 
             <TextInput
-              style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, textAlign: 'center' }}
+              style={{ fontSize: 20,
+                marginTop: 25,
+                height: 50,
+                width: 320,
+                backgroundColor: '#D8D8D8',
+                borderRadius: 50,
+                
+                padding: 12,
+                textAlign:'center' }}
               onChangeText={(text) => setPassword(text)}
               value={password}
               placeholder="Password"
@@ -179,7 +202,15 @@ const Registration = () => {
             />
 
             <TextInput
-              style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, textAlign: 'center' }}
+              style={{ fontSize: 20,
+                marginTop: 25,
+                height: 50,
+                width: 320,
+                backgroundColor: '#D8D8D8',
+                borderRadius: 50,
+                
+                padding: 12, 
+                textAlign:'center'}}
               onChangeText={(text) => setConfirm(text)}
               value={confirm}
               placeholder="Confirm Password"
@@ -187,9 +218,20 @@ const Registration = () => {
               autoCapitalize='none'
             />
 
-            <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10 }} onPress={handleNext}>
-              <Text style={{ color: 'white', textAlign: 'center' }}>Next</Text>
-            </TouchableOpacity>
+        <TouchableOpacity
+        onPress={handleNext}
+        style={{
+          marginTop: 40,
+          height: 50,
+          width: 320,
+          backgroundColor: '#C2B7C8',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 50,
+          textAlign:'center'}}
+      >
+        <Text style={{fontWeight: 'bold', fontSize: 22, textAlign: 'center'}}>Next</Text>
+      </TouchableOpacity>
 
           </ScrollView>
 
@@ -200,40 +242,85 @@ const Registration = () => {
         <View>
           <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
 
-            <Text style={{ fontSize: 18, marginBottom: 10 }}>Part 2: Personal Information</Text>
+            <Text style={{ marginBottom: 10, fontSize:30, fontWeight: 'bold',textAlign:'center'}}>Part 2: Personal Information</Text>
 
             <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, textAlign: 'center' }}
+                style={{   
+                  fontSize: 20,
+                  marginTop: 20,
+                  height: 50,
+                  width: 320,
+                  backgroundColor: '#D8D8D8',
+                  borderRadius: 50,
+                
+                  padding: 12,
+                  textAlign:'center' }}
                 onChangeText={(text) => setName(text)}
                 value={name}
                 placeholder="First Name"
             />
 
             <TextInput
-              style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, textAlign: 'center' }}
+              style={{    
+                fontSize: 20,
+                marginTop: 20,
+                height: 50,
+                width: 320,
+                backgroundColor: '#D8D8D8',
+                borderRadius: 50,
+                
+                padding: 12, 
+                textAlign:'center'}}
               onChangeText={(text) => setLastName(text)}
               value={lastName}
               placeholder="Last Name"
             />
 
             <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, textAlign: 'center' }}
+                style={{ 
+                  fontSize: 20,
+                  marginTop: 20,
+                  height: 50,
+                  width: 320,
+                  backgroundColor: '#D8D8D8',
+                  borderRadius: 50,
+                  
+                  padding: 12, 
+                  textAlign:'center'}}
                 onChangeText={(text) => setAge(text)}
                 value={age}
                 placeholder="Age"
                 keyboardType="numeric"
             />
 
-            <View style={{flexDirection: "row"}}>
+            <View style={{flexDirection: "row", justifyContent:'center', padding:15}}>
               <TextInput
-                style={{ height: 40, flex: 1, borderColor: 'gray', borderWidth: 1, marginBottom: 10, marginRight: 2, textAlign: 'center' }}
+                style={{ 
+                  fontSize: 20,
+                  marginTop: 20,
+                  height: 50,
+                  width: 160,
+                  backgroundColor: '#D8D8D8',
+                  borderRadius: 50,
+                  
+                  padding: 12, 
+                  textAlign:'center'}}
                 onChangeText={(text) => setCity(text)}
                 value={city}
                 placeholder="City"
               />
 
               <TextInput
-                style={{ height: 40, flex: 1, borderColor: 'gray', borderWidth: 1, marginBottom: 10, textAlign: 'center' }}
+                style={{    
+                  fontSize: 20,
+                  marginTop: 20,
+                  height: 50,
+                  width: 160,
+                  backgroundColor: '#D8D8D8',
+                  borderRadius: 50,
+                
+                  padding: 12,
+                  textAlign:'center'}}
                 onChangeText={(text) => setStates(text)}
                 value={state}
                 placeholder="State"
@@ -242,9 +329,26 @@ const Registration = () => {
             </View>
 
             <View style={{flexDirection: "row"}}>
-              <Text style={{height: 40, width: 20, backgroundColor: '#999', fontSize: 15, textAlign: 'center', textAlignVertical: 'center', fontWeight: 'bold'}}>+</Text>
+              <TextInput style={{fontSize: 20,
+                  marginTop: 20,
+                  height: 50,
+                  width: 40,
+                  backgroundColor: '#D8D8D8',
+                  borderRadius: 100,
+                  
+                  padding: 12, 
+                  textAlign:'center'}}>+</TextInput>
               <TextInput
-                style={{ height: 40, width: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, marginRight: 4, textAlign: 'center' }}
+                style={{ 
+                  fontSize: 20,
+                  marginTop: 20,
+                  height: 50,
+                  width: 40,
+                  backgroundColor: '#D8D8D8',
+                  borderRadius: 50,
+                
+                  padding: 12, 
+                  textAlign:'center'}}
                 onChangeText={(text) => setCountryCode(text)}
                 value={countryCode}
                 placeholder="1"
@@ -252,7 +356,16 @@ const Registration = () => {
               />
 
               <TextInput
-                style={{ height: 40, flex: 1, borderColor: 'gray', borderWidth: 1, marginBottom: 10, textAlign: 'center' }}
+                style={{    
+                  fontSize: 20,
+                  marginTop: 20,
+                  height: 50,
+                  width: 250,
+                  backgroundColor: '#D8D8D8',
+                  borderRadius: 50,
+                
+                  padding: 12,
+                  textAlign:'center' }}
                 onChangeText={(text) => setPhoneNum(text)}
                 value={phoneNum}
                 placeholder="Phone Number (Optional)"
@@ -260,9 +373,20 @@ const Registration = () => {
               />
             </View>    
 
-            <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10 }} onPress={handleNext}>
-              <Text style={{ color: 'white', textAlign: 'center' }}>Next</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+        onPress={handleNext}
+        style={{
+          marginTop: 30,
+          height: 50,
+          width: 320,
+          backgroundColor: '#C2B7C8',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 50,
+          textAlign:'center'}}
+      >
+        <Text style={{fontWeight: 'bold', fontSize: 22, textAlign: 'center'}}>Next</Text>
+      </TouchableOpacity>
 
           </ScrollView>
           
@@ -271,7 +395,7 @@ const Registration = () => {
 
       {part === 3 && (
           <View style={styles.container}>
-            <Text style={{ fontSize: 18, marginBottom: 10 }}>Part 3: Pick some genres you enjoy</Text>
+            <Text style={{ fontSize: 18, marginBottom: 10, fontSize:20, fontWeight: 'bold',textAlign:'center'}}>Part 3: Pick some genres you enjoy</Text>
 
             {genreList.map((genre) => (
               <TouchableOpacity
@@ -287,8 +411,8 @@ const Registration = () => {
               </TouchableOpacity>
             ))}
 
-            <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, marginTop: 25, width: 100 }} onPress={handleNext}>
-              <Text style={{ color: 'white', textAlign: 'center' }}>Finish</Text>
+            <TouchableOpacity style={{ backgroundColor: '#C2B7C8', padding: 10, marginTop: 25, width: 100 }} onPress={handleNext}>
+              <Text style={{ color: 'black', textAlign: 'center' }}>Finish</Text>
             </TouchableOpacity>
           </View>
       )}
@@ -314,6 +438,8 @@ const styles = StyleSheet.create({
     margin: 8,
     minWidth: 100,
     alignItems: 'center',
+   
+    fontWeight: 'Bold',
   },
   selectedGenreButton: {
     backgroundColor: '#B9B9B9',
