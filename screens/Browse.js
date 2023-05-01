@@ -9,58 +9,89 @@ import ColorSchemeContext from './../ColorSchemeContext';
 const Browse = () => {
   const navigation = useNavigation();
   const defaultImage = 'https://via.placeholder.com/64';
-  const [genres, setGenres] = useState([
-    'Fiction',
-    'History',
-    'Mystery',
-    'Thriller',
-    'Romance',
-    'Horror',
-    'Nonfiction',
-    'Biography',
-    'Fantasy',
-    'Manga',
+  
+  const genreList = [
+    { id: 1, name: 'Fiction' },
+    { id: 2, name: 'Romance' },
+    { id: 3, name: 'Horror' },
+    { id: 4, name: 'Mystery' },
+    { id: 5, name: 'Nonfiction' },
+    { id: 6, name: 'Fantasy' },
+    { id: 7, name: 'Science Fiction' },
+    { id: 13, name: 'Manga' },
+    { id: 8, name: "Children's Literature" },
+    { id: 9, name: 'Thriller' },
+    { id: 10, name: 'Humor' },
+    { id: 11, name: 'Action' },
+    { id: 12, name: 'Poetry' },
+    { id: 14, name: 'Biography'}
+  ];
 
-  ]);
-  const [selectedGenre, setSelectedGenre] = useState(null);
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [searchConducted, setSearchConducted] = useState(false);
   const [books, setBooks] = useState([]);
 
-  const handleGenreSelect = async (genre) => {
-    setSelectedGenre(genre);
-    const response = await axios.get(
-      `https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&orderBy=newest&maxResults=30`,
-      key='AIzaSyBlVC6WfM_KkX6ccq7HnaJ7jO8mem9rUvk',  
-    );
-    setBooks(response.data.items);
+  const handleGenreSelect = (genreName) => {
+    if (selectedGenres.includes(genreName)) {
+      setSelectedGenres(selectedGenres.filter((f) => f !== genreName));
+    } else {
+      setSelectedGenres([...selectedGenres, genreName]);
+    }
+  };
+
+  const handleSearch = async () => {
+    if (selectedGenres.length <= 0){
+      alert("Select at least one genre")
+    } else {
+      const genre = selectedGenres.join('+')
+      const response = await axios.get(
+        `https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&orderBy=newest&maxResults=30&minResults=1`,
+        key='AIzaSyBlVC6WfM_KkX6ccq7HnaJ7jO8mem9rUvk',  
+      );
+      setBooks(response.data.items);
+      setSearchConducted(true)
+    }
   };
 
   const handleGenreUnselect = () => {
-    setSelectedGenre(null);
+    setSelectedGenres([]);
+    setSearchConducted(false);
   }
   const { colorScheme } = useContext(ColorSchemeContext);
 
 
   return (
     <View style={[{ flex: 1, padding: 20 , backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5'}]}>
-      {selectedGenre == null &&(
-          <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
+      {searchConducted == false &&(
+        <ScrollView vertical>
           <Text style={{ fontSize: 24, color: colorScheme === 'dark' ? 'white' : 'black' }}>Book Genres</Text>
-          {genres.map((genre, index) => (
-            <Button
-              key={index}
-              title={genre}
-              onPress={() => handleGenreSelect(genre)}
-              containerStyle={{ marginRight: 10, marginBottom: 15, padding: 10 }}
-            />
-          ))}
+          {genreList.map((genre) => (
+              <TouchableOpacity
+                key={genre.id}
+                style={[
+                  styles.genreButton,
+                  selectedGenres.includes(genre.name) && styles.selectedGenreButton,
+                ]}
+                onPress={() => handleGenreSelect(genre.name)}
+              >
+                <Text style={styles.genreButtonText}>{genre.name}</Text>
+                
+              </TouchableOpacity>
+            ))}
+          <TouchableOpacity onPress={() => handleSearch()} 
+            style={styles.keyButtons}>
+            <Text style={{fontSize: 20, alignContent: 'center'}}>Search</Text>
+          </TouchableOpacity>
         </ScrollView>
       )}
       
-      {selectedGenre && (
+      {searchConducted && (
         <View style={{ marginTop: 10, marginBottom: 70 }}>
-          <Button title="Back" onPress={() => handleGenreUnselect()}/>
+          <TouchableOpacity style={styles.backButton} onPress={() => handleGenreUnselect()}>
+            <Text style={{fontSize: 20, alignContent: 'center'}}>Back</Text>
+          </TouchableOpacity>
           <Text style={[{ fontSize: 20, marginBottom: 10 }, {color: colorScheme === 'dark' ? 'white' : 'black'}]}>
-           Popular Books in {selectedGenre}
+           Popular Books {selectedGenres.join(" and ")}
           </Text>
 
           <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
@@ -154,4 +185,41 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 14,
   },
+  genreButton: {
+    backgroundColor: '#E9E9E9',
+    borderRadius: 8,
+    padding: 16,
+    margin: 8,
+    minWidth: 100,
+    alignItems: 'center',
+   
+    fontWeight: 'Bold',
+  },
+  selectedGenreButton: {
+    backgroundColor: '#B9B9B9',
+  },
+  genreButtonText: {
+    fontSize: 16,
+  },
+  keyButtons: {
+    alignContent: 'center', 
+    alignItems: 'center',  
+    backgroundColor: '#0055CC',
+    borderRadius: 8,
+    padding: 16,
+    margin: 8,
+    minWidth: 100,
+    alignItems: 'center',
+    fontWeight: 'Bold', 
+  },
+  backButton: {
+    alignContent: 'center', 
+    alignItems: 'center',  
+    backgroundColor: '#0055CC',
+    borderRadius: 8,
+    padding: 16,
+    minWidth: 100,
+    alignItems: 'center',
+    fontWeight: 'Bold', 
+  }
 });

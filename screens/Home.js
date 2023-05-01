@@ -1,6 +1,5 @@
-import { Text, StyleSheet, SafeAreaView, ScrollView, FlatList, Button, Modal, TextInput, View } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, ScrollView, Button, Modal, TextInput, View } from 'react-native';
 import BookListCard from '../components/BookListCard';
-import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { Ionicons, Entypo  } from '@expo/vector-icons';
 import { CreateBookList } from '../components/Firestore';
@@ -73,7 +72,6 @@ const Home = () => {
     setTextInputValue('');
   };
 
-  const navigation = useNavigation();
   return (
 
     <SafeAreaView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }]}>
