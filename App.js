@@ -38,6 +38,7 @@ const HomeStack = () => {
         <Stack.Screen name="Home" Options={{ headerShown: false }} component={Home} />
         <Stack.Screen name="BookList" component={BookListPage} />
         <Stack.Screen name="BookView" component={BookView} />
+        <Stack.Screen name="Reviews" component={Reviews} />
       </Stack.Navigator>
     );
 };
@@ -47,6 +48,7 @@ const BrowseStack = () => {
       <Stack.Navigator>
         <Stack.Screen name="Browse " Options={{ headerShown: false }} component={Browse} />
         <Stack.Screen name="BookView" component={BookView} />
+        <Stack.Screen name="Reviews" component={Reviews} />
       </Stack.Navigator>
     );
 };
