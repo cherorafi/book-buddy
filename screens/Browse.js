@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Button, ListItem } from 'react-native-elements';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useContext } from 'react';
@@ -45,7 +44,7 @@ const Browse = () => {
     } else {
       const genre = selectedGenres.join('+')
       const response = await axios.get(
-        `https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&orderBy=newest&maxResults=30&minResults=1`,
+        `https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&orderBy=newest&maxResults=30`,
         key='AIzaSyBlVC6WfM_KkX6ccq7HnaJ7jO8mem9rUvk',  
       );
       setBooks(response.data.items);
@@ -95,8 +94,8 @@ const Browse = () => {
           </Text>
 
           <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
-            {books.map((book, index) => (
-              <View key={book.id} style={styles.result}>
+            {books.map((book) => (
+              <View style={styles.result}>
             
               <Image
                 style={styles.thumbnail}

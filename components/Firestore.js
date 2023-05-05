@@ -178,9 +178,15 @@ const GetReviews = (bookId) => {
   const [myData, setData] = useState("");
   
   const observer = nameRef.onSnapshot(docSnapshot => {
-    setData(docSnapshot.data().reviews);
+    try{
+      setData(docSnapshot.data().reviews);
+    } catch (error){
+      setData({
+        "Loading": "Loading"
+        });
+    }
+    
   }, err => {
-    console.log(`Encountered error: ${err}`);
     setData({
       "Loading": "Loading"
       });
