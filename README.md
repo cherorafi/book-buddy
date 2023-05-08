@@ -10,5 +10,5 @@
 5. (make sure ur in project folder) and run ```npm install``` to recognize it as a project
 6. to run app: ```npx expo start```
 		 
-## Error handling
+## Error Fixes
 7. If you get connection error try ```npx expo start --tunnel```
