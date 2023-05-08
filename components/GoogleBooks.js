@@ -79,6 +79,7 @@ const BookRating = ({ isbn }) => {
         setAuthor(bookData.averageRating);
       } catch (error) {
         //console.error(error);
+        return 0;
       }
     };
     fetchBookTitle();

@@ -84,7 +84,7 @@ const Browse = () => {
         </ScrollView>
       )}
       
-      {searchConducted && (
+      {searchConducted && books && (
         <View style={{ marginTop: 10, marginBottom: 70 }}>
           <TouchableOpacity style={styles.backButton} onPress={() => handleGenreUnselect()}>
             <Text style={{fontSize: 20, alignContent: 'center'}}>Back</Text>
@@ -95,7 +95,7 @@ const Browse = () => {
 
           <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
             {books.map((book) => (
-              <View style={styles.result}>
+              <View key={book.id+Math.random()} style={styles.result}>
             
               <Image
                 style={styles.thumbnail}
@@ -113,6 +113,17 @@ const Browse = () => {
             </View>
             ))}
           </ScrollView>
+        </View>
+      )}
+
+      {searchConducted && (
+        <View>
+          <TouchableOpacity style={styles.backButton} onPress={() => handleGenreUnselect()}>
+            <Text style={{fontSize: 20, alignContent: 'center'}}>Back</Text>
+          </TouchableOpacity>
+          <Text style={{marginTop:10, justifyContent: 'center', alignSelf:'center', fontSize: 20}}>
+            No books found
+          </Text>
         </View>
       )}
     </View>
