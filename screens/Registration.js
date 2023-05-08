@@ -90,7 +90,7 @@ const Registration = () => {
 
     // Checks for part 1
     if (part == 1){
-      if (email.length < 4){
+      if (email.length < 7){
         alert("Invalid email")
         setPart(1);
       } else if (password != confirm){
@@ -99,8 +99,8 @@ const Registration = () => {
       } else if (user.length <= 3){
         alert("Username must be longer than 3 characters.")
         setPart(1);
-      } else if (password.length < 1){
-        alert("Password must be at least 1 character.")
+      } else if (password.length < 6){
+        alert("Password must be at least 6 characters.")
         setPart(1);
       }
     }
@@ -119,7 +119,7 @@ const Registration = () => {
       } else if (city.length < 1){
         alert("Please enter a valid city.")
         setPart(2);
-      } else if (state.length < 1){
+      } else if (state.length < 2){
         alert("Please enter a valid state.")
         setPart(2);
       } else if (state.length >= 3){
@@ -161,7 +161,10 @@ const Registration = () => {
                 borderRadius: 50,
                 
                 padding: 12,
-                textAlign:'center'}}
+                textAlign:'center',
+                alignSelf: 'center'
+              
+              }}
               onChangeText={(text) => setEmail(text)}
               value={email}
               placeholder="Email"
@@ -177,7 +180,9 @@ const Registration = () => {
                 borderRadius: 50,
                 
                 padding: 12, 
-                textAlign:'center'}}
+                textAlign:'center',
+                alignSelf: 'center'
+              }}
               onChangeText={(text) => setUser(text)}
               value={user}
               placeholder="Unique Username"
@@ -193,7 +198,8 @@ const Registration = () => {
                 borderRadius: 50,
                 
                 padding: 12,
-                textAlign:'center' }}
+                textAlign:'center',
+                alignSelf: 'center' }}
               onChangeText={(text) => setPassword(text)}
               value={password}
               placeholder="Password"
@@ -210,7 +216,8 @@ const Registration = () => {
                 borderRadius: 50,
                 
                 padding: 12, 
-                textAlign:'center'}}
+                textAlign:'center',
+                alignSelf: 'center'}}
               onChangeText={(text) => setConfirm(text)}
               value={confirm}
               placeholder="Confirm Password"
@@ -228,7 +235,8 @@ const Registration = () => {
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: 50,
-          textAlign:'center'}}
+          textAlign:'center',
+          alignSelf: 'center'}}
       >
         <Text style={{fontWeight: 'bold', fontSize: 22, textAlign: 'center'}}>Next</Text>
       </TouchableOpacity>
@@ -254,7 +262,8 @@ const Registration = () => {
                   borderRadius: 50,
                 
                   padding: 12,
-                  textAlign:'center' }}
+                  textAlign:'center',
+                  alignSelf: 'center' }}
                 onChangeText={(text) => setName(text)}
                 value={name}
                 placeholder="First Name"
@@ -270,7 +279,8 @@ const Registration = () => {
                 borderRadius: 50,
                 
                 padding: 12, 
-                textAlign:'center'}}
+                textAlign:'center',
+                alignSelf: 'center'}}
               onChangeText={(text) => setLastName(text)}
               value={lastName}
               placeholder="Last Name"
@@ -286,7 +296,8 @@ const Registration = () => {
                   borderRadius: 50,
                   
                   padding: 12, 
-                  textAlign:'center'}}
+                  textAlign:'center',
+                  alignSelf: 'center'}}
                 onChangeText={(text) => setAge(text)}
                 value={age}
                 placeholder="Age"
@@ -328,7 +339,8 @@ const Registration = () => {
               />
             </View>
 
-            <View style={{flexDirection: "row"}}>
+            <View style={{flexDirection: "row",
+                alignSelf: 'center'}}>
               <TextInput style={{fontSize: 20,
                   marginTop: 20,
                   height: 50,
@@ -365,7 +377,7 @@ const Registration = () => {
                   borderRadius: 50,
                 
                   padding: 12,
-                  textAlign:'center' }}
+                  textAlign:'center'}}
                 onChangeText={(text) => setPhoneNum(text)}
                 value={phoneNum}
                 placeholder="Phone Number (Optional)"
@@ -383,7 +395,8 @@ const Registration = () => {
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: 50,
-          textAlign:'center'}}
+          textAlign:'center',
+          alignSelf: 'center'}}
       >
         <Text style={{fontWeight: 'bold', fontSize: 22, textAlign: 'center'}}>Next</Text>
       </TouchableOpacity>
