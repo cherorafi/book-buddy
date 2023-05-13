@@ -8,6 +8,12 @@ import { AntDesign } from '@expo/vector-icons';
 
 const BookRatingToStar = ({ isbn } = null, _score = 5) => {
   const [score, setScore] = useState(_score);
+  console.log("score: ", score);
+  console.log("_score: ", _score);
+  console.log("isInt: ", typeof(score) == 'undefined')
+  if(typeof(score) == 'undefined'){
+    setScore(0);
+  }
 
   useEffect(() => {
     const fetchBookTitle = async () => {
