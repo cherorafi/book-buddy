@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Modal, Pressable } from 'react-native';
 import { BookAuthor, BookTitle, BookCover } from './GoogleBooks';
 import { DeleteBook } from './Firestore';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,8 +7,11 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
 const SingleBookCard = ({ listName, isbn }) => {
+  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+
   const deleteBook = () => {
     DeleteBook(listName, isbn);
+    setConfirmModalVisible(false);
   }
 
   const navigation = useNavigation();
@@ -23,17 +26,35 @@ const SingleBookCard = ({ listName, isbn }) => {
     }
   };
 
-  // useEffect(() => {
-  //  fetchBook();
-  // }, [isbn]);
-
   return (
     <View style={styles.container}>
-      <Ionicons name="trash-outline" size={25} style={styles.deleteListButton}
-                  onPress={deleteBook} />
-      <TouchableOpacity onPress={() => fetchBookAndNavigate()}>  
+       <Ionicons name="trash-outline" size={25} style={styles.deleteListButton} onPress={() => setConfirmModalVisible(true)} />
+      <Modal
+      animationType="slide"
+      transparent={true}
+      visible={confirmModalVisible}
+>
+  <View style={styles.modalContainer}>
+    <View style={styles.boxModal}>
+      <View style={styles.modalHeader}>
+        <Text style={styles.modalTitle}>Are you sure you want to delete this book?</Text>
+      </View>
+      <View style={styles.modalButtons}>
+        <Pressable style={[styles.modalButton, { backgroundColor: 'red' }]} onPress={deleteBook}>
+          <Text style={[styles.modalButtonText, { color: 'white' }]}>Delete</Text>
+        </Pressable>
+        <Pressable style={[styles.modalButton, { backgroundColor: 'blue' }]} onPress={() => setConfirmModalVisible(false)}>
+          <Text style={[styles.modalButtonText, { color: 'white' }]}>Cancel</Text>
+        </Pressable>
+      </View>
+    </View>
+  </View>
+</Modal>
+
+      
+   <TouchableOpacity onPress={() => fetchBookAndNavigate()}>  
         <View style={styles.bookContainer} >
-          <BookCover isbn={isbn}></BookCover>
+          <BookCover iisbn={isbn}></BookCover>
           <View style={styles.bookDetails}>
             <Text style={styles.title}><BookTitle isbn={isbn}></BookTitle></Text>
             <Text style={styles.author}><BookAuthor isbn={isbn}></BookAuthor></Text>
@@ -45,6 +66,7 @@ const SingleBookCard = ({ listName, isbn }) => {
 };
 
 export default SingleBookCard;
+
 const styles = StyleSheet.create({
   container: {
     borderRadius: 8,
@@ -103,4 +125,42 @@ const styles = StyleSheet.create({
     marginTop: 8,
     
   },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  boxModal: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    width: '70%'
+  },
+  modalHeader: {
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+    alignItems: 'center'
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 20
+  },
+  modalButton: {
+    borderRadius: 5,
+    padding: 8,
+    width: '45%',
+    alignItems: 'center'
+  },
+  modalButtonText: {
+    fontSize: 14,
+    fontWeight: 'bold'
+  }
+  
 })
