@@ -54,7 +54,7 @@ const SingleBookCard = ({ listName, isbn }) => {
       
    <TouchableOpacity onPress={() => fetchBookAndNavigate()}>  
         <View style={styles.bookContainer} >
-          <BookCover iisbn={isbn}></BookCover>
+          <BookCover isbn={isbn}></BookCover>
           <View style={styles.bookDetails}>
             <Text style={styles.title}><BookTitle isbn={isbn}></BookTitle></Text>
             <Text style={styles.author}><BookAuthor isbn={isbn}></BookAuthor></Text>
