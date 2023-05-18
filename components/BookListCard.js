@@ -8,6 +8,8 @@ const BookListCard = ({ bookListName, books }) => {
   let nextScreen = 'BookList';
   const navigation = useNavigation();
 
+  //Renders a nav bar with list names with horizontal view of book covers and an arrow button
+  //https://www.codedaily.io/tutorials/React-Native-Tinder-like-cards
   return (
     <View style={styles.card}>
     {books.length > 0 ? (
