@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Text, SafeAreaView, TouchableOpacity, StyleSheet, Switch, useColorScheme } from 'react-native';
+import { Text, SafeAreaView, StyleSheet, Switch, useColorScheme } from 'react-native';
 import { firebase } from '../config';
 import ColorSchemeContext from './../ColorSchemeContext';
 
@@ -9,16 +9,8 @@ const Settings = () => {
  const { toggleColorScheme } = useContext(ColorSchemeContext);
  const { colorScheme } = useContext(ColorSchemeContext);
 
+
  // Function to toggle dark mode
-
-
-
- // Function to sign out
- const handleSignOut = () => {
-   firebase.auth().signOut();
- };
-
-
  return (
    <SafeAreaView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }]}>
      <SafeAreaView style={styles.section}>
@@ -31,19 +23,9 @@ const Settings = () => {
          value={colorScheme === 'dark'}
        />
      </SafeAreaView>
-
-
-     <TouchableOpacity onPress={handleSignOut} style={styles.button}>
- <Text style={[styles.buttonText]}>Sign Out</Text>
-
-
-
-
-     </TouchableOpacity>
    </SafeAreaView>
  );
 };
-
 
 export default Settings;
 
@@ -55,41 +37,17 @@ const styles = StyleSheet.create({
    justifyContent: 'center',
    padding: 10,
  },
- button: {
-   marginTop: 50,
-   height: 50,
-   width: 200,
-   backgroundColor: '#026efd',
-   alignItems: 'center',
-   justifyContent: 'center',
-   borderRadius: 10,
-   shadowColor: '#000',
-   shadowOffset: {
-     width: 0,
-     height: 2,
-   },
-   shadowOpacity: 0.25,
-   shadowRadius: 3.84,
-   elevation: 5,
- },
- buttonText: {
-   color: '#fff',
-   fontSize: 20,
-   fontWeight: 'bold',
- },
  title: {
    fontSize: 30,
    fontWeight: 'bold',
    marginBottom: 30,
  },
  section: {
-   marginTop: 20,
+   marginTop: 10,
    flexDirection: 'row',
    alignItems: 'center',
    justifyContent: 'space-between',
-   borderBottomColor: '#ccc',
-   borderBottomWidth: 1,
-   paddingBottom: 10,
+   paddingBottom: 500,
    width: '100%',
  },
  sectionHeader: {
@@ -97,3 +55,4 @@ const styles = StyleSheet.create({
    fontWeight: 'bold',
  },
 });
+
