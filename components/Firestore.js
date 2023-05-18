@@ -305,11 +305,62 @@ const BookCreation = (bookId) => {
     });
 }
 
+const GetAuthor = (id) => {
+  const docRef = firebase.firestore().collection('users')
+  .doc(id);
+  // console.log("docRef: ", docRef);
+
+  const [myData, setData] = useState("");
+  
+  const observer = docRef.onSnapshot(docSnapshot => {
+    setData(docSnapshot.data().firstName);
+  }, err => {
+    console.log(`Encountered error: ${err}`);
+    setData("Error");
+  });
+
+  if (myData != ""){
+    observer()
+    return(myData);
+  }
+  
+  // return(
+  //   "Loading"
+  //   );;
+}
+
+// const GetUserReview = (bookId, id) => {
+//   const docRef = firebase.firestore().collection('books')
+//   .doc(bookId);
+//   // console.log("docRef: ", docRef);
+
+//   const [myData, setData] = useState("");
+  
+//   const observer = docRef.onSnapshot(docSnapshot => {
+//     setData(docSnapshot.data().reviews.data(id));
+//   }, err => {
+//     console.log(`Encountered error: ${err}`);
+//     setData("Error");
+//   });
+
+//   if (myData != ""){
+//     observer()
+//     console.log("myData:",myData)
+//     return(myData);
+//   }
+  
+  // return(
+  //   "Loading"
+  //   );;
+// }
+
 export {
   // All Get Funcs
   GetBooks,
   GetReviews,
   GetScores,
+  GetAuthor,
+  // GetUserReview,
 
   // All Update Funcs
   ChangeFirstName,
