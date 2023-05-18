@@ -54,7 +54,6 @@ const SingleBookCard = ({ listName, isbn }) => {
   </View>
 </Modal>
 
-   //renders the book cover,title,author for a single book   
    <TouchableOpacity onPress={() => fetchBookAndNavigate()}>  
         <View style={styles.bookContainer} >
           <BookCover isbn={isbn}></BookCover>
