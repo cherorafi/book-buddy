@@ -6,16 +6,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
+//controls visibility of the modal
 const SingleBookCard = ({ listName, isbn }) => {
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
-
+  
+  //function for deleting book
   const deleteBook = () => {
     DeleteBook(listName, isbn);
     setConfirmModalVisible(false);
   }
 
   const navigation = useNavigation();
-
+  //navigates to BookView screen when a book is clicked
   const fetchBookAndNavigate = async () => {
     try {
       const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
@@ -26,6 +28,7 @@ const SingleBookCard = ({ listName, isbn }) => {
     }
   };
 
+  //delete icon
   return (
     <View style={styles.container}>
        <Ionicons name="trash-outline" size={25} style={styles.deleteListButton} onPress={() => setConfirmModalVisible(true)} />
@@ -51,7 +54,7 @@ const SingleBookCard = ({ listName, isbn }) => {
   </View>
 </Modal>
 
-      
+   //renders the book cover,title,author for a single book   
    <TouchableOpacity onPress={() => fetchBookAndNavigate()}>  
         <View style={styles.bookContainer} >
           <BookCover isbn={isbn}></BookCover>
