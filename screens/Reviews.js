@@ -92,7 +92,7 @@ const Reviews = ({route}) => {
     DeleteReview(isbn13);
     setReviewExists(false);
   }
-
+  console.log("button testing");
   return (
     <ScrollView>
     <View style={styles.container}>
@@ -109,7 +109,7 @@ const Reviews = ({route}) => {
         </Text>
        
       </View>
-      {reviewExists != true ? 
+      {Object.keys(reviewlist).includes(firebase.auth().currentUser.uid)  != true ? 
         <TouchableOpacity 
         style={{
           borderRadius: 12,
