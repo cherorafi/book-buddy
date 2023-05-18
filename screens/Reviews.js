@@ -9,10 +9,10 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
-import React, { useState, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import {BookRatingToStar, UserRatingToStar} from '../components/BookRatingToStar.js';
 import {ScrollView } from 'react-native-gesture-handler';
-import {AddReview, GetReviews, DeleteReview} from '../components/Firestore.js';
+import {AddReview, GetReviews, DeleteReview, AddScore, GetScores, DeleteScore, BookCreation} from '../components/Firestore.js';
 import { BookRating, BookAuthor, BookTitle } from '../components/GoogleBooks.js';
 import {firebase} from '../config.js';
 // import { ClickableStars } from '../components/BookRatingToStar.js';
@@ -22,15 +22,52 @@ import {firebase} from '../config.js';
 const Reviews = ({route}) => {
   const isbn13 = route.params.isbn;
   const reviewlist = GetReviews(isbn13);
-  let boo = Object.keys(reviewlist).includes(firebase.auth().currentUser.uid);
+  const scoreList = GetScores(isbn13);
+  BookCreation(isbn13);
+  let rBool = (Object.keys(reviewlist).includes(firebase.auth().currentUser.uid));
   
   const [showField, setShowField] = useState(false);
   const [showEditField, setShowEditField] = useState(false);
-  const [newuserReview, setnewUserReview] = useState('');
-  const [reviewExists, setReviewExists] = useState(boo);
-  const [check, setCheck] = useState();
-  // const [userScore, setUserScore] = useState();
+  const [newUserReview, setNewUserReview] = useState('');
+  const [newUserScore, setNewUserScore] = useState('');
   const [currId, setCurrId] = useState(firebase.auth().currentUser.uid);
+  
+  const UserScore = ({scoreList}) => {
+    return (
+      <View >
+        {Object.keys(scoreList).map((val,k) => 
+            <View key={k} >
+                {val == firebase.auth().currentUser.uid ? 
+                  <View key={k} style={{flexDirection: "row", paddingTop: 10}}>                  
+
+                  {/* score mapping */}
+                    <UserRatingToStar _score={scoreList[val]} style={{paddingTop: 10, paddingBottom: 10}}></UserRatingToStar>
+                  </View>
+                : null
+                }
+            </View>
+        )}     
+      </View>
+    );
+  };
+  const OtherScore = ({scoreList}) => {
+    return (
+      <View >
+        {Object.keys(scoreList).map((val,k) => 
+            <View key={k} >
+                {val != firebase.auth().currentUser.uid ? 
+                  <View key={k}  style={{flexDirection: "row"}}>                  
+
+                  {/* score mapping */}
+                  <UserRatingToStar _score={scoreList[val]} style={{size:12 ,paddingTop: 10, paddingBottom: 10}}></UserRatingToStar>
+                  </View>
+                : null
+                }
+            </View>
+        )}     
+      </View>
+    );
+  } ;
 
  
   const TopReview = ({ reviewlist }) => {
@@ -47,6 +84,9 @@ const Reviews = ({route}) => {
                           <FontAwesome name="trash-o" size={20} color="gray" />
                           </TouchableOpacity>
                     </View>
+
+                  {/* score mapping */}
+                    <UserScore scoreList={scoreList}></UserScore>
                     <Text style={{paddingTop: 10, paddingBottom: 10}}>{reviewlist[val]}</Text>
                     <TouchableOpacity style={{flexDirection: "row"}} onPress={() => setShowEditField(true)}>
                         <Text style={{color: "gray", fontSize: 10, textDecorationLine: "underline" }}>Edit your review</Text>
@@ -66,10 +106,14 @@ const Reviews = ({route}) => {
       <View>
         {Object.keys(reviewlist).map((val,k) => 
             <View key={k}>
-                {val != firebase.auth().currentUser.uid ? 
+                {val != firebase.auth().currentUser.uid ?
+                    
+                    
                     <View style={styles.reviewBox}>
+                    <OtherScore scoreList={scoreList}></OtherScore>
                        <Text>{reviewlist[val]}</Text>
                     </View>
+                    
                 : null}
             </View>
         )}     
@@ -77,22 +121,21 @@ const Reviews = ({route}) => {
     );
   };
 
-  const handleSubmit = (isbn13, review) => {
+  const handleSubmit = (isbn13, review, score) => {
     AddReview(isbn13, review);
+    AddScore(isbn13, score);
     setShowField(false);
-    setCurrId(firebase.auth().currentUser.uid)
-    setReviewExists(true);
   };
-  const handleEdit = (isbn13, review) => {
+  const handleEdit = (isbn13, review, score) => {
     AddReview(isbn13, review);
-    setReviewExists(true);
+    AddScore(isbn13, score);
     setShowEditField(false);
   };
   const handleDelete = (isbn13) => {
     DeleteReview(isbn13);
-    setReviewExists(false);
-  }
-
+    DeleteScore(isbn13);
+  };
+ console.log(Object.keys(reviewlist))
   return (
     <ScrollView>
     <View style={styles.container}>
@@ -109,13 +152,14 @@ const Reviews = ({route}) => {
         </Text>
        
       </View>
-      {reviewExists != true ? 
+      {Object.keys(reviewlist).includes(firebase.auth().currentUser.uid) != true ? 
         <TouchableOpacity 
         style={{
           borderRadius: 12,
           padding: 5,
           margin: 10,
           backgroundColor: 'lightgrey'}}
+          // onPress={()=> handleDocCreation(isbn13)}
         onPressIn={() => setShowField(true)}>
         <Text>Write a Review</Text>
       </TouchableOpacity> :
@@ -125,26 +169,39 @@ const Reviews = ({route}) => {
 
      {/* brand new review */}
       <Modal visible={showField} >
-        <View> 
+        <View style={styles.modalContent}> 
           <View style={styles.modalHeader}>
           <Text style={styles.modalTitle}>
             {"Review for "}
             <BookTitle isbn={isbn13}></BookTitle>
           </Text>
           </View>
+          <View style={{padding: 20}}>
+          <Text style={styles.modalLabel}>Rating: </Text>
+          
           
           <View style={{flexDirection: "row"}}>
           {/* <ClickableStars></ClickableStars> */}
           </View>
-          
+
+          {/* Score Field */}
+
           <TextInput
-            style={styles.input}
+            style={styles.modalInput}
+            editable
+            onChangeText={setNewUserScore}
+            ></TextInput>
+
+          {/* Review Field */}
+          <TextInput
+            style={styles.modalInput}
             editable
             multiline
             numberOfLines={5}
             maxLength={1500}
-            onChangeText={setnewUserReview}
+            onChangeText={setNewUserReview}
             ></TextInput>
+            </View>
             <View style={{alignContent: "center"}}>
           <TouchableOpacity 
               style={{
@@ -153,22 +210,42 @@ const Reviews = ({route}) => {
                         padding: 5,
                         margin: 10,
                         backgroundColor: 'lightgrey' }} 
-              onPress={() => handleSubmit(isbn13, newuserReview)}>
+              onPress={() => handleSubmit(isbn13, newUserReview, newUserScore)}>
             <Text>Submit</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+              style={{
+                  alignSelf: "center",
+                  borderRadius: 12,
+                  padding: 5,
+                  margin: 10,
+                  backgroundColor: 'lightgrey' }} 
+        onPress={() => setShowField(false)}>
+      <Text>Cancel</Text>
+    </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
       <Modal visible={showEditField} >
           <View>
+
+            {/* Score Field */}
+            <TextInput
+            style={styles.input}
+            editable
+            value={newUserScore}
+            onChangeText={setNewUserScore}
+            ></TextInput>
+
+            {/* Review Field */}
             <TextInput
               style={styles.input}
               editable
               multiline
               numberOfLines={5}
-              value={newuserReview}
-              onChangeText={setnewUserReview}
+              value={newUserReview}
+              onChangeText={setNewUserReview}
               ></TextInput>
             <TouchableOpacity 
               style={{
@@ -176,17 +253,19 @@ const Reviews = ({route}) => {
                 padding: 5,
                 margin: 10,
                 backgroundColor: 'lightgrey'}}
-              onPress={() => handleEdit(isbn13, newuserReview)}>
+              onPress={() => handleEdit(isbn13, newUserReview, newUserScore)}>
               <Text>Save</Text>
             </TouchableOpacity>
+            
           </View>
         </Modal>
         
       {/* reviews */}
-      { Object.keys(reviewlist)[0] === "Loading" ?
+      { Object.keys(reviewlist)[0] === "Loading" || Object.keys(reviewlist).length === 0  ?
         <View><Text>No reviews.</Text></View>
+        
         :
-        <View style={{width: "100%"}}> 
+        <View style={{width: "95%", }}> 
           <TopReview  reviewlist={reviewlist}/>
           <OtherReviews  reviewlist={reviewlist}/>
         </View>
@@ -231,6 +310,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
 
   },
+  modalInput: {
+      fontSize: 16,
+      color: '#666666',
+      backgroundColor: '#f0f0f0',
+      borderRadius: 5,
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      marginBottom: 10,},
   // modalContent: {
   //   backgroundColor: '#ffffff',
   //   borderRadius: 10,
@@ -259,6 +346,13 @@ const styles = StyleSheet.create({
     width: '100%',
     shadowColor: '#000'
   },
+  modalLabel: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: '#333333',
+      marginBottom: 5,
+      marginTop: 10,
+    },
   modalContent: {
     backgroundColor: '#ffffff',
     borderRadius: 10,

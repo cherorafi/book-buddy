@@ -74,8 +74,14 @@ const AddBooks = (listName, isbn) => {
         firebase.firestore().collection('books')
         .doc(bookId)
         .set({
-          reviews: {}
+          reviews: {},
+          scores: {}
         });
+        // firebase.firestore().collection('books')
+        // .doc(bookId)
+        // .set({
+        //   scores: {}
+        // }, {merge:true});
 
         // Add book ref into book list
         firebase.firestore().collection('users')
@@ -212,10 +218,98 @@ const DeleteReview = (bookId) => {
   });
 }
 
+const AddScore = (bookId, score) => {
+  const docRef = firebase.firestore().collection('books')
+  .doc(bookId);
+    docRef.get().then((doc) => {
+    if (doc.exists) {
+        firebase.firestore().collection('books')
+        .doc(bookId)
+        .update({
+          [`scores.${firebase.auth().currentUser.uid}`] : `${score}`
+          });
+
+    } else {
+        firebase.firestore().collection('books')
+        .doc(bookId)
+        .set({
+          scores: { [`${firebase.auth().currentUser.uid}`] : `${score}`}
+        }, {merge: true});
+    }
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+}
+
+// @Param takes in a book isbn
+// Returns a map of all the scores of a single book, each key being the userID
+// And the corresponding value is the score from the userID
+const GetScores = (bookId) => {
+  console.log("BOOKID: ", bookId);
+  const nameRef = firebase.firestore().collection('books')
+  .doc(bookId)
+
+  const [myData, setData] = useState("");
+  
+  const observer = nameRef.onSnapshot(docSnapshot => {
+    try{
+      setData(docSnapshot.data().scores);
+    } catch (error){
+      setData({
+        "Loading": "Loading"
+        });
+    }
+    
+  }, err => {
+    setData({
+      "Loading": "Loading"
+      });
+  });
+
+  if (myData != ""){
+    observer()
+    return(myData);
+  }
+  
+  return({
+    "Loading": "Loading"
+    });;
+}
+
+// @Param takes in a book isbn
+// Delete score of the book
+const DeleteScore = (bookId) => {
+  firebase.firestore().collection('books')
+  .doc(bookId)
+  .update({
+    [`scores.${firebase.auth().currentUser.uid}`] : firebase.firestore.FieldValue.delete()
+  });
+}
+
+const BookCreation = (bookId) => {
+  const docRef = firebase.firestore().collection('books')
+  .doc(bookId);
+    docRef.get().then((doc) => {
+    if (doc.exists) {
+      console.log("Document already exists.")
+    } else {
+      firebase.firestore().collection('books')
+      .doc(bookId)
+      .set({
+        reviews: {},
+        scores: {}
+      });
+    }
+  }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+}
+
 export {
   // All Get Funcs
   GetBooks,
   GetReviews,
+  GetScores,
 
   // All Update Funcs
   ChangeFirstName,
@@ -227,8 +321,12 @@ export {
   CreateBookList,
   AddBooks,
   AddReview,
+  AddScore,
 
   // All Delete Funcs
   DeleteReview,
-  DeleteBook
+  DeleteBook,
+  DeleteScore,
+
+  BookCreation
 }

@@ -5,8 +5,8 @@ import { firebase } from '../config'
 
 const Login = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('syeda@test.com')
+  const [password, setPassword] = useState('rafi1234')
 
   loginUser = async(email, password) => {
     try {
