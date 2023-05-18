@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 import React, { memo, useState, useEffect } from 'react';
 import {BookRatingToStar, UserRatingToStar} from '../components/BookRatingToStar.js';
 import {ScrollView } from 'react-native-gesture-handler';
-import {AddReview, GetReviews, DeleteReview, AddScore, GetScores, DeleteScore} from '../components/Firestore.js';
+import {AddReview, GetReviews, DeleteReview, AddScore, GetScores, DeleteScore, BookCreation} from '../components/Firestore.js';
 import { BookRating, BookAuthor, BookTitle } from '../components/GoogleBooks.js';
 import {firebase} from '../config.js';
 // import { ClickableStars } from '../components/BookRatingToStar.js';
@@ -21,10 +21,9 @@ import {firebase} from '../config.js';
 
 const Reviews = ({route}) => {
   const isbn13 = route.params.isbn;
-  console.log(route.params.isbn)
   const reviewlist = GetReviews(isbn13);
   const scoreList = GetScores(isbn13);
-
+  BookCreation(isbn13);
   let rBool = (Object.keys(reviewlist).includes(firebase.auth().currentUser.uid));
   
   const [showField, setShowField] = useState(false);
@@ -51,7 +50,6 @@ const Reviews = ({route}) => {
       </View>
     );
   };
-
   const OtherScore = ({scoreList}) => {
     return (
       <View >
@@ -136,8 +134,8 @@ const Reviews = ({route}) => {
   const handleDelete = (isbn13) => {
     DeleteReview(isbn13);
     DeleteScore(isbn13);
-  }
- 
+  };
+ console.log(Object.keys(reviewlist))
   return (
     <ScrollView>
     <View style={styles.container}>
@@ -161,6 +159,7 @@ const Reviews = ({route}) => {
           padding: 5,
           margin: 10,
           backgroundColor: 'lightgrey'}}
+          // onPress={()=> handleDocCreation(isbn13)}
         onPressIn={() => setShowField(true)}>
         <Text>Write a Review</Text>
       </TouchableOpacity> :
@@ -262,7 +261,7 @@ const Reviews = ({route}) => {
         </Modal>
         
       {/* reviews */}
-      { Object.keys(reviewlist)[0] === "Loading" ?
+      { Object.keys(reviewlist)[0] === "Loading" || Object.keys(reviewlist).length === 0  ?
         <View><Text>No reviews.</Text></View>
         
         :

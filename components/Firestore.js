@@ -74,13 +74,14 @@ const AddBooks = (listName, isbn) => {
         firebase.firestore().collection('books')
         .doc(bookId)
         .set({
-          reviews: {}
-        });
-        firebase.firestore().collection('books')
-        .doc(bookId)
-        .set({
+          reviews: {},
           scores: {}
-        }, {merge:true});
+        });
+        // firebase.firestore().collection('books')
+        // .doc(bookId)
+        // .set({
+        //   scores: {}
+        // }, {merge:true});
 
         // Add book ref into book list
         firebase.firestore().collection('users')
@@ -233,7 +234,7 @@ const AddScore = (bookId, score) => {
         .doc(bookId)
         .set({
           scores: { [`${firebase.auth().currentUser.uid}`] : `${score}`}
-        });
+        }, {merge: true});
     }
     }).catch((error) => {
       console.log("Error getting document:", error);
@@ -285,6 +286,25 @@ const DeleteScore = (bookId) => {
   });
 }
 
+const BookCreation = (bookId) => {
+  const docRef = firebase.firestore().collection('books')
+  .doc(bookId);
+    docRef.get().then((doc) => {
+    if (doc.exists) {
+      console.log("Document already exists.")
+    } else {
+      firebase.firestore().collection('books')
+      .doc(bookId)
+      .set({
+        reviews: {},
+        scores: {}
+      });
+    }
+  }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+}
+
 export {
   // All Get Funcs
   GetBooks,
@@ -306,5 +326,7 @@ export {
   // All Delete Funcs
   DeleteReview,
   DeleteBook,
-  DeleteScore
+  DeleteScore,
+
+  BookCreation
 }
