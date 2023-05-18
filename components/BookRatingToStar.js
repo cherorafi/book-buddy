@@ -45,10 +45,10 @@ const UserRatingToStar = ({_score}) => {
   let _scorefloor = Math.floor(_score)
   // console.log(scorefloor)
   for (let i = 0; i < _scorefloor; i++){
-    _stars.push(<AntDesign name="star" key={i} size={16} color="#FFE75C" />)
+    _stars.push(<AntDesign name="star" key={i} size={20} color="#FFE75C" />)
   }
   for (let j = 0; j < 5-_scorefloor; j++){
-    _stars.push(<AntDesign name="star" key={(j+1)*-1} size={16} color="gray" />)
+    _stars.push(<AntDesign name="star" key={(j+1)*-1} size={20} color="gray" />)
   }
 
   return _stars;
