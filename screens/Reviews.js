@@ -13,10 +13,8 @@ import React, { memo, useState, useEffect } from 'react';
 import {BookRatingToStar, UserRatingToStar, RatingToStar} from '../components/BookRatingToStar.js';
 import {ScrollView } from 'react-native-gesture-handler';
 import { AddReview, GetReviews, DeleteReview, AddScore, GetScores, DeleteScore, BookCreation, GetAuthor, UpdateAverage, GetAverage} from '../components/Firestore.js';
-import { GetUserData } from '../components/Database.js';
 import { BookRating, BookAuthor, BookTitle } from '../components/GoogleBooks.js';
 import {firebase} from '../config.js';
-// import { ClickableStars } from '../components/BookRatingToStar.js';
 
 
 
@@ -25,12 +23,11 @@ const Reviews = ({route}) => {
   const reviewlist = GetReviews(isbn13);
   const scoreList = GetScores(isbn13);
   const avg = GetAverage(isbn13);
-  const userData = GetUserData();
+
   var rev;
   var sco;
  
   const userid = firebase.auth().currentUser.uid;
-  // const currentauthor = Object.values(userData)[10];
   if(Object.keys(reviewlist).includes(userid) && Object.keys(scoreList).includes(userid)){
     rev = reviewlist[userid];
     sco = scoreList[userid];
