@@ -467,7 +467,6 @@ export {
   AddBooks,
   AddReview,
   AddScore,
-  BookCreation,
 
   // All Delete Funcs
   DeleteReview,
