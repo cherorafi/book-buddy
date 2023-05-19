@@ -8,7 +8,7 @@ import React, {useState} from 'react';
 import { Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { AddBooks } from './Firestore';
-import { GetUserData } from './Database';
+import { GetUserData } from './Firestore';
 
 
 const AddBook = (bookName) => {

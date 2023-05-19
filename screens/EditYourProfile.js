@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Modal, TextInput, TouchableHighlight, StyleSheet, Pressable, } from 'react-native';
 import { ChangeFirstName, ChangeLastName, ChangeEmail, ChangePass } from '../components/Firestore.js';
-import { GetUserData } from '../components/Database.js';
+import { GetUserData } from '../components/Firestore.js';
 import { useContext } from 'react';
 import ColorSchemeContext from './../ColorSchemeContext';
 
