@@ -1,7 +1,53 @@
-import React, { useState, useEffect } from 'react'
+/* 
+This file contains a handful of CRUD functions
+that can be used to communicate with the Firestore database
+involving the 2 collections users and books 
+*/
+import { useState } from 'react'
 import { firebase } from '../config'
 
-// @Param takes a string, changes the user's first name
+/* 
+Returns the logged in user's entire document
+from the users collection in the form of a map
+with each field being accessible through dot notation
+*/
+const GetUserData = () => {
+  // Sets the name reference with the current user's user ID
+  const nameRef = firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+
+  // Utilizing hooks to store changing data
+  const [myData, setData] = useState("");
+  
+  // Fetches the data from Firestore using a subscriber
+  const observer = nameRef.onSnapshot(docSnapshot => {
+    setData(docSnapshot.data());
+  }, err => {
+    console.log(`Encountered error: ${err}`);
+    setData("Error");
+  });
+
+  // Checks if the data isn't empty, if not unsubscribes and returns
+  if (myData != ""){
+    observer()
+    return(myData);
+  }
+  
+  // Until data is found, a default map is sent to the View with preloaded data
+  return({
+    age: "Loading",
+    bookLists: {"Loading": 0, "Finished": 0},
+    email: "Loading",
+    firstName: "Loading",
+    lastName: "",
+    loc: "Loading",
+    phoneNum: "Loading",
+    username: "Loading",
+    Loading: ["Loading"],
+    });;
+}
+
+// Takes in a string and updates the User's first Name
 const ChangeFirstName = (newName) => {
   firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
@@ -10,7 +56,7 @@ const ChangeFirstName = (newName) => {
   })
 }
 
-// @Param takes a string, changes the user's last name
+// Takes in a string and updates the User's last name
 const ChangeLastName = (newName) => {
   firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
@@ -19,8 +65,9 @@ const ChangeLastName = (newName) => {
   })
 }
 
-// @Param takes a string, changes the user's email
+// Takes in a string and updates the user's email
 const ChangeEmail = (newEmail) => {
+  // Updates Firebase auth before updating Firestore
   firebase.auth().currentUser.updateEmail(newEmail)
   firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
@@ -29,19 +76,23 @@ const ChangeEmail = (newEmail) => {
   })
 }
 
-// @Param takes a string, changes the user's pass
+// Takes in a string and updates the user's password
+// Only updates Firebase auth as passwords are not stored in Firestore
 const ChangePass = (newPass) => {
   firebase.auth().currentUser.updatePassword(newPass)
 }
 
-// @Param takes a string list name, and makes a new list
+// Takes in a string and creates a reading list with that name
 const CreateBookList = (listName) => {
+  // Updates the bookLists field with a new key-value pair
   firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
   .update({
     [`bookLists.${listName}`]: 0
   })
 
+  // Creates a new document field of a map type
+  // with the list name given and a default value
   firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
   .update({
@@ -50,27 +101,27 @@ const CreateBookList = (listName) => {
 
 }
 
-// @Param takes a book list name, and a bookID (used to find info from Google Books API)
-// Adds the book to the user's book list
-// Adds the book to the book collections if it already didnt exist b4
+// Takes in 2 strings, a list name and a isbn of a book
+// Adds the book of that isbn to that list
 const AddBooks = (listName, isbn) => {
   const bookId = isbn.bookName
-  const docRef = firebase.firestore().collection('books')
-  .doc(bookId);
-    docRef.get().then((doc) => {
+  const docRef = firebase.firestore().collection('books').doc(bookId);
+
+  // Tries to get the document from reference
+  docRef.get().then((doc) => {
+    // If the book document exists in the book collections 
+    // Only updates the user's personal data
     if (doc.exists) {
-        // Exists
-        // Add book ref into book list
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
         .update({
             [`${listName}.${bookId}`]: firebase.firestore.FieldValue.serverTimestamp(),
             [`bookLists.${listName}`]: firebase.firestore.FieldValue.increment(1)
         })
+
+    // The book document does not exist in the books collection
+    // Creates a book document first then updates the user's information
     } else {
-        // doc.data() will be undefined in this case
-        // create the new book doc
-        // which will hold empty reviews
         firebase.firestore().collection('books')
         .doc(bookId)
         .set({
@@ -79,13 +130,7 @@ const AddBooks = (listName, isbn) => {
           total: 0,
           average: 0
         });
-        // firebase.firestore().collection('books')
-        // .doc(bookId)
-        // .set({
-        //   scores: {}
-        // }, {merge:true});
 
-        // Add book ref into book list
         firebase.firestore().collection('users')
         .doc(firebase.auth().currentUser.uid)
         .update({
@@ -95,22 +140,26 @@ const AddBooks = (listName, isbn) => {
 
 
     }
-    }).catch((error) => {
-      console.log("Error getting document:", error);
-    });
+  // Handles other errors
+  }).catch((error) => {
+    console.log("Error getting document:", error);
+  });
 }
 
-// @Param takes in a book list name
-// Returns an array of ISBNs of the books in that book list
+// Takes a list name and returns an array of
+// All the ISBNs stored in that reading list
 const GetBooks = (bookListName) => {
   const listRef = firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
 
   const [myBookList, setBookList] = useState("");
 
+  // Fetches the data from Firestore using a subscriber/listener
   const observer = listRef.onSnapshot(docSnapshot => {
+    // Gets the document field with the book list name given
     const map = docSnapshot.data()[bookListName];
 
+    // Converts the map stored to an array with just the ISBNs
     try {
       const mapKeys = Object.keys(map);
       setBookList(mapKeys);
@@ -123,17 +172,18 @@ const GetBooks = (bookListName) => {
     console.log('Encountered error: ${err}');
   });
 
-  
+  // Checks if the data found isn't empty, if not then unsubscribes and returns the data
   if (myBookList != ""){
     observer()
     return(myBookList);
   }
 
+  // Until the data is found, returns a default array with the element Loading
   return (["Loading"]);
 }
 
-// @Param a string of the book list name, and a string of the isbn of a book
-// Removes the book from that list
+// Takes a reading list name and an ISBN from that list
+// Deletes the book of that ISBN from the reading list
 const DeleteBook = (listName, isbn) => {
   firebase.firestore().collection('users')
   .doc(firebase.auth().currentUser.uid)
@@ -144,25 +194,22 @@ const DeleteBook = (listName, isbn) => {
 
 }
 
-
-/*******
-        IMPORTANT READ IF FUNCTIONS BELOW ARE NOT WORKING ACCORDINGLY
-        May need to be adjusted based on how the paramaters are being passed in
-*******/
-
-// @Param takes in a book isbn and a string of the user review of that book
+// Takes in a ISBN of a book and a string review written by the user
 // Can be used to add or update a review of the book
 const AddReview = (bookId, review) => {
   const docRef = firebase.firestore().collection('books')
   .doc(bookId);
     docRef.get().then((doc) => {
+    // If the book exists, updates the reviews field to add/edit the current review by the user
     if (doc.exists) {
         firebase.firestore().collection('books')
         .doc(bookId)
         .update({
           [`reviews.${firebase.auth().currentUser.uid}`] : `${review}`
           });
-
+    
+    // If the book document does not exist yet
+    // Creates a book document of that ISBN in the books collection and adds the review
     } else {
         firebase.firestore().collection('books')
         .doc(bookId)
@@ -175,23 +222,23 @@ const AddReview = (bookId, review) => {
     });
 }
 
-// @Param takes in a book isbn
-// Returns a map of all the reviews of a single book, each key being the userID
-// And the corresponding value is the review from the userID
+// Takes in a string with a book ISBN, Returns a map of all the reviews of the book
+// Each key is the user's ID and the corresponding value is the review
 const GetReviews = (bookId) => {
-  console.log("BOOKID: ", bookId);
   const nameRef = firebase.firestore().collection('books')
   .doc(bookId)
 
   const [myData, setData] = useState("");
   
+  // Uses a subscriber/listner to fetch data
   const observer = nameRef.onSnapshot(docSnapshot => {
     try{
       setData(docSnapshot.data().reviews);
+    // Handles instance where book selected in not in the books collection
     } catch (error){
       setData({
         "Loading": "Loading"
-        });
+      });
     }
     
   }, err => {
@@ -200,18 +247,20 @@ const GetReviews = (bookId) => {
       });
   });
 
+  // Once data is found, listener unsubscribes and the data is returned
   if (myData != ""){
     observer()
     return(myData);
   }
   
+  // Until data is found returns a default map to show data is loading
   return({
     "Loading": "Loading"
     });;
 }
 
-// @Param takes in a book isbn
-// Delete review of the book
+// Takes in a string with a book ISBN
+// Deletes the user's review of that book
 const DeleteReview = (bookId) => {
   firebase.firestore().collection('books')
   .doc(bookId)
@@ -361,10 +410,7 @@ const UpdateAverage = (bookId, type, newScore, oldScore) => {
   newScore = Number(newScore);
   const docRef = firebase.firestore().collection('books')
   .doc(bookId);
-  // console.log( "TOTALLLLLLLL++++++++++++++++: ",firebase.firestore().collection('books')
-  // .doc(bookId).total)
     docRef.get().then((doc) => {
-      console.log("-----------------------------", doc.data(), "-----------------------------");
     if(type == "submission" && doc.exists){
       const newTotal =  doc.data().total +1;
       console.log("NewTL ", newTotal)
@@ -395,40 +441,14 @@ const UpdateAverage = (bookId, type, newScore, oldScore) => {
         average: newAverage
         });
     }
-    console.log("------------update:", doc.data().average);
     }).catch((error) => {
-      console.log("--------------------------Error getting document:", error);
+      console.log("Error getting document:", error);
     });
 }
 
-
-// const GetUserReview = (bookId, id) => {
-//   const docRef = firebase.firestore().collection('books')
-//   .doc(bookId);
-//   // console.log("docRef: ", docRef);
-
-//   const [myData, setData] = useState("");
-  
-//   const observer = docRef.onSnapshot(docSnapshot => {
-//     setData(docSnapshot.data().reviews.data(id));
-//   }, err => {
-//     console.log(`Encountered error: ${err}`);
-//     setData("Error");
-//   });
-
-//   if (myData != ""){
-//     observer()
-//     console.log("myData:",myData)
-//     return(myData);
-//   }
-  
-  // return(
-  //   "Loading"
-  //   );;
-// }
-
 export {
   // All Get Funcs
+  GetUserData,
   GetBooks,
   GetReviews,
   GetScores,
@@ -447,6 +467,7 @@ export {
   AddBooks,
   AddReview,
   AddScore,
+  BookCreation,
 
   // All Delete Funcs
   DeleteReview,

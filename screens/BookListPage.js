@@ -6,13 +6,15 @@ import { useContext } from 'react';
 import ColorSchemeContext from './../ColorSchemeContext';
 import { useNavigation } from '@react-navigation/native'
 
-const BookListPage = ({ route }) => {
+  // displays list of books based on the list names
+  const BookListPage = ({ route }) => {
   const { listName } = route.params;
+  //calls getbooks function
   let bookList = GetBooks(listName);
 
   const { colorScheme } = useContext(ColorSchemeContext);
   const navigation = useNavigation();
-
+  //shows the title for each list screen
   useEffect(()=>{
     navigation.setOptions({title: listName});
   }, [navigation]);
@@ -28,7 +30,7 @@ const BookListPage = ({ route }) => {
       />
     </SafeAreaView>
   )
-}
+}//displays the flat list of books and a SingleBookCard component for each book
 
 export default BookListPage
 

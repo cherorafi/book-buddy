@@ -8,10 +8,11 @@ import ColorSchemeContext from './../ColorSchemeContext';
 
 import { firebase } from '../config'
 
-
+//setter function
 const Home = () => {
   const [bookLists, setBookLists] = useState([]);
-
+  
+//sets up listener for firestore document to retrive updated data
   useEffect(() => {
     const unsubscribe = firebase.firestore()
       .collection('users')
@@ -20,7 +21,7 @@ const Home = () => {
         const data = snapshot.data();
         try{
         if (data && data.bookLists) {
-         
+         {/* organizes book lists and its books} /> */}
           const bookListsData = Object.entries(data.bookLists).map(([bookListName, books]) => ({
             bookListName,
             books: Object.entries(data[bookListName]).map(([isbn, timestamp]) => ({
@@ -42,11 +43,13 @@ const Home = () => {
   }, []);
 
 
-
+  
+  //declares state variables
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [textInputValue, setTextInputValue] = useState('');
   const { colorScheme } = useContext(ColorSchemeContext);
-
+  
+  //functions to open,close,text input and submit form
   const onModalOpen = () => {
     setIsModalVisible(true);
   };
@@ -73,7 +76,7 @@ const Home = () => {
   };
 
   return (
-
+  //renders the add list button
     <SafeAreaView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5' }]}>
       <View>
       <View style={[styles.addListButton, {backgroundColor: colorScheme === 'dark' ? '#222' : '#f5f5f5'}]}>
@@ -81,6 +84,7 @@ const Home = () => {
             onPress={onModalOpen} />
           <Text style={[styles.addListText, {color: colorScheme === 'dark' ? 'white' : 'black'}]} onPress={onModalOpen}>Create List</Text>
       </View>
+      {/* displays a list of book list} */}
       <ScrollView vertical showsVerticalScrollIndicator={false} style={{marginBottom: 45}}>
         {bookLists.map(bookList => (
           <BookListCard key={bookList.bookListName} bookListName={bookList.bookListName} books={bookList.books} />
@@ -88,7 +92,7 @@ const Home = () => {
       </ScrollView>
 
       </View>
-      
+      {/* renders the create list text box} */} 
       {isModalVisible && (
         <View style={styles.modal}>
           <View style={styles.modalInner}>
