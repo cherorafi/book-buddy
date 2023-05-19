@@ -75,7 +75,9 @@ const AddBooks = (listName, isbn) => {
         .doc(bookId)
         .set({
           reviews: {},
-          scores: {}
+          scores: {},
+          total: 0,
+          average: 0
         });
         // firebase.firestore().collection('books')
         // .doc(bookId)
@@ -166,7 +168,7 @@ const AddReview = (bookId, review) => {
         .doc(bookId)
         .set({
           reviews: { [`${firebase.auth().currentUser.uid}`] : `${review}`}
-        });
+        }, {merge: true});
     }
     }).catch((error) => {
       console.log("Error getting document:", error);
@@ -297,7 +299,9 @@ const BookCreation = (bookId) => {
       .doc(bookId)
       .set({
         reviews: {},
-        scores: {}
+        scores: {},
+        total: 0,
+        average: 0
       });
     }
   }).catch((error) => {
@@ -328,6 +332,75 @@ const GetAuthor = (id) => {
   //   "Loading"
   //   );;
 }
+const GetAverage = (bookId) => {
+  const docRef = firebase.firestore().collection('books')
+  .doc(bookId);
+  // console.log("docRef: ", docRef);
+
+  const [myData, setData] = useState("");
+  
+  const observer = docRef.onSnapshot(docSnapshot => {
+    try{
+      setData(docSnapshot.data().average);
+    } catch(error){
+      return(0);
+    }
+    
+  }, err => {
+    console.log(`Encountered error: ${err}`);
+    setData(0);
+  });
+  console.log("get: ", myData)
+  if (myData != ""){
+    observer()
+    return(myData);
+  }
+}
+
+const UpdateAverage = (bookId, type, newScore, oldScore) => {
+  newScore = Number(newScore);
+  const docRef = firebase.firestore().collection('books')
+  .doc(bookId);
+  // console.log( "TOTALLLLLLLL++++++++++++++++: ",firebase.firestore().collection('books')
+  // .doc(bookId).total)
+    docRef.get().then((doc) => {
+      console.log("-----------------------------", doc.data(), "-----------------------------");
+    if(type == "submission" && doc.exists){
+      const newTotal =  doc.data().total +1;
+      console.log("NewTL ", newTotal)
+      const newAverage = (( doc.data().average * (newTotal-1))+newScore)/newTotal;
+      console.log("AVGGGGGGGL ", newAverage)
+        firebase.firestore().collection('books')
+        .doc(bookId)
+        .update({
+          total: newTotal,
+          average: newAverage
+          });
+    } else if (type == "edit" && doc.exists){
+      const newAverage = (( doc.data().average * ( doc.data().total)) - oldScore +newScore)/ doc.data().total;
+
+        firebase.firestore().collection('books')
+        .doc(bookId)
+        .update({
+          average: newAverage
+          });
+    } else if (type == "delete"){
+      const newTotal =  doc.data().total -1;
+      const newAverage = (( doc.data().average * (newTotal+1)) - oldScore)/newTotal;
+
+      firebase.firestore().collection('books')
+      .doc(bookId)
+      .update({
+        total: newTotal,
+        average: newAverage
+        });
+    }
+    console.log("------------update:", doc.data().average);
+    }).catch((error) => {
+      console.log("--------------------------Error getting document:", error);
+    });
+}
+
 
 // const GetUserReview = (bookId, id) => {
 //   const docRef = firebase.firestore().collection('books')
@@ -360,6 +433,7 @@ export {
   GetReviews,
   GetScores,
   GetAuthor,
+  GetAverage,
   // GetUserReview,
 
   // All Update Funcs
@@ -379,5 +453,6 @@ export {
   DeleteBook,
   DeleteScore,
 
-  BookCreation
+  BookCreation,
+  UpdateAverage
 }

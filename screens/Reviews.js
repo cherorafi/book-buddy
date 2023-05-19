@@ -10,9 +10,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { memo, useState, useEffect } from 'react';
-import {BookRatingToStar, UserRatingToStar} from '../components/BookRatingToStar.js';
+import {BookRatingToStar, UserRatingToStar, RatingToStar} from '../components/BookRatingToStar.js';
 import {ScrollView } from 'react-native-gesture-handler';
-import {AddReview, GetReviews, DeleteReview, AddScore, GetScores, DeleteScore, BookCreation, GetAuthor} from '../components/Firestore.js';
+import { AddReview, GetReviews, DeleteReview, AddScore, GetScores, DeleteScore, BookCreation, GetAuthor, UpdateAverage, GetAverage} from '../components/Firestore.js';
 import { GetUserData } from '../components/Database.js';
 import { BookRating, BookAuthor, BookTitle } from '../components/GoogleBooks.js';
 import {firebase} from '../config.js';
@@ -24,10 +24,11 @@ const Reviews = ({route}) => {
   const isbn13 = route.params.isbn;
   const reviewlist = GetReviews(isbn13);
   const scoreList = GetScores(isbn13);
+  const avg = GetAverage(isbn13);
   const userData = GetUserData();
   var rev;
   var sco;
-  BookCreation(isbn13);
+ 
   const userid = firebase.auth().currentUser.uid;
   // const currentauthor = Object.values(userData)[10];
   if(Object.keys(reviewlist).includes(userid) && Object.keys(scoreList).includes(userid)){
@@ -43,8 +44,8 @@ const Reviews = ({route}) => {
   const [currId, setCurrId] = useState(firebase.auth().currentUser.uid);
 
   useEffect(() => {
-    setNewUserReview(rev || "");
-    setNewUserScore(sco || "");
+    setNewUserReview(rev );
+    setNewUserScore(sco );
   }, [showEditField]);
   
   const Author = ({id}) => {
@@ -150,19 +151,23 @@ const Reviews = ({route}) => {
   };
 
   const handleSubmit = (isbn13, review, score) => {
+    UpdateAverage(isbn13, "submission", score, 0);
     AddReview(isbn13, review);
     AddScore(isbn13, score);
     setShowField(false);
   };
   const handleEdit = (isbn13, review, score) => {
+    UpdateAverage(isbn13, "edit", score, sco);
     AddReview(isbn13, review);
     AddScore(isbn13, score);
     setShowEditField(false);
   };
   const handleDelete = (isbn13) => {
+    UpdateAverage(isbn13, "delete", 0, sco);
     DeleteReview(isbn13);
     DeleteScore(isbn13);
   };
+
  console.log(Object.keys(reviewlist))
   return (
     <ScrollView>
@@ -174,9 +179,9 @@ const Reviews = ({route}) => {
         <BookAuthor isbn={isbn13}></BookAuthor>
       </Text>
       <View style={{marginTop: 7, flexDirection: "row"}}>
-        <BookRatingToStar isbn={isbn13}></BookRatingToStar>
+      <RatingToStar _score={avg}></RatingToStar>
         <Text style={{marginLeft: 5, marginTop: .5 }} >
-          <BookRating isbn={isbn13}></BookRating>
+          {Number(avg).toFixed(1)}
         </Text>
        
       </View>
@@ -206,16 +211,13 @@ const Reviews = ({route}) => {
           </View>
           <View style={{padding: 20}}>
           <Text style={styles.modalLabel}>Rating: </Text>
-          
-          
-          <View style={{flexDirection: "row"}}>
-          {/* <ClickableStars></ClickableStars> */}
-          </View>
+
 
           {/* Score Field */}
 
           <TextInput
             style={styles.modalInput}
+            maxLength={1}
             editable
             onChangeText={setNewUserScore}
             ></TextInput>
@@ -256,25 +258,36 @@ const Reviews = ({route}) => {
       </Modal>
 
       <Modal visible={showEditField} >
-          <View>
+      <View style={styles.modalContent}> 
+          <View style={styles.modalHeader}>
+          <Text style={styles.modalTitle}>
+            {"Review for "}
+            <BookTitle isbn={isbn13}></BookTitle>
+          </Text>
+          </View>
+          <View style={{padding: 20}}>
+          <Text style={styles.modalLabel}>Rating: </Text>
 
             {/* Score Field */}
             <TextInput
-            style={styles.input}
+            style={styles.modalInput}
             editable
+            maxLength={1}
             value={newUserScore}
             onChangeText={setNewUserScore}
             ></TextInput>
 
             {/* Review Field */}
             <TextInput
-              style={styles.input}
+              style={styles.modalInput}
               editable
               multiline
               numberOfLines={5}
               value={newUserReview}
               onChangeText={setNewUserReview}
               ></TextInput>
+              </View>
+              <View style={{alignContent: "center"}}>
             <TouchableOpacity 
               style={{
                 alignSelf: "center",
@@ -283,7 +296,7 @@ const Reviews = ({route}) => {
                 margin: 10,
                 backgroundColor: 'lightgrey'}}
               onPress={() => handleEdit(isbn13, newUserReview, newUserScore)}>
-              <Text>Save</Text>
+              <Text>Save</Text>              
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -292,9 +305,10 @@ const Reviews = ({route}) => {
                   padding: 5,
                   margin: 10,
                   backgroundColor: 'lightgrey' }} 
-        onPress={() => setShowField(false)}>
+        onPress={() => setShowEditField(false)}>
       <Text>Cancel</Text>
     </TouchableOpacity>
+          </View>
           </View>
         </Modal>
         

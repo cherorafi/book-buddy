@@ -1,17 +1,21 @@
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { BookRatingToStar } from '../components/BookRatingToStar';
+import { BookRatingToStar, RatingToStar } from '../components/BookRatingToStar';
 import { BookAuthor, BookTitle, BookCover, BookRating, BookDescription } from '../components/GoogleBooks';
 import AddBook from '../components/AddBook.js'
 import Reviews from './Reviews.js'
 import { ScrollView } from 'react-native-gesture-handler';
 import { useContext } from 'react';
 import ColorSchemeContext from './../ColorSchemeContext';
+import { GetAuthor, GetAverage, BookCreation } from '../components/Firestore';
+// import { RatingToStar, BookRatingToStar, UserRatingToStar } from '../components/BookRatingToStar';
+// import AverageRating from '../components/AverageRating';
 
 const BookView = (isbn_) => {
   const isbn13 = isbn_.route.params.isbn
-
+  BookCreation(isbn13);
+  console.log(isbn13)
   const navigation = useNavigation();
   const [title, setTitle] = useState('This Is The Title')
   const [author, setAuthor] = useState('Jane Smith')
@@ -19,6 +23,8 @@ const BookView = (isbn_) => {
   const [summary, setSummary] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')
   const [review, setReview] = useState('')
   const { colorScheme } = useContext(ColorSchemeContext);
+  
+  const avg = GetAverage(isbn13);
 
   //get number of stars
 
@@ -51,8 +57,8 @@ const BookView = (isbn_) => {
           <Text> ({score.toFixed(1)})</Text>
         </View> */}
         <TouchableOpacity onPress={() => navigation.navigate('Reviews', {isbn: isbn13})} style={{flexDirection: 'row'}}>
-          <BookRatingToStar isbn={isbn13}></BookRatingToStar> 
-          <Text style={{marginTop: 2, marginLeft: 5, color: colorScheme === 'dark' ? 'white' : 'black' }}><BookRating isbn={isbn13}></BookRating></Text>
+          <RatingToStar _score={avg}></RatingToStar>
+          <Text style={{marginTop: 2, marginLeft: 5, color: colorScheme === 'dark' ? 'white' : 'black' }}>{Number(avg).toFixed(1)}</Text>
         </TouchableOpacity>
         <AddBook bookName={isbn13}/>
       </View>
@@ -60,6 +66,11 @@ const BookView = (isbn_) => {
 
       <View style={[styles.summary, { backgroundColor: colorScheme === 'dark' ? '#333' : 'white', shadowColor: colorScheme === 'dark' ? '#ddd' : '#000' }]}>
         <Text style={{fontSize: 17, color: colorScheme === 'dark' ? 'white' : 'black' }}><BookDescription isbn={isbn13}></BookDescription></Text>
+        <View style={{flexDirection: "row"}}>
+        <Text style={{fontSize: 17, color: colorScheme === 'dark' ? 'white' : 'black' }}>Google rating: </Text>
+        <BookRatingToStar isbn={isbn13}></BookRatingToStar> 
+        <Text style={{marginTop: 2, marginLeft: 5, color: colorScheme === 'dark' ? 'white' : 'black' }}><BookRating isbn={isbn13}></BookRating></Text>
+        </View>
       </View>
       
       {/* <TouchableOpacity

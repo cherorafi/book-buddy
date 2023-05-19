@@ -55,6 +55,25 @@ const UserRatingToStar = ({_score}) => {
   return _stars;
 };
 
+const RatingToStar = ({_score}) => {
+  if(typeof(_score) == 'undefined'){
+    _score = 0;
+  }
+
+  console.log("Scxore: ", _score)
+  let _stars = [];
+  let _scorefloor = Math.floor(_score)
+  // console.log(scorefloor)
+  for (let i = 0; i < _scorefloor; i++){
+    _stars.push(<AntDesign name="star" key={i} size={24} color="#FFE75C" />)
+  }
+  for (let j = 0; j < 5-_scorefloor; j++){
+    _stars.push(<AntDesign name="star" key={(j+1)*-1} size={24} color="gray" />)
+  }
+
+  return _stars;
+};
+
 // const ClickableStars = () => {
 //   let stars = [];
 //   for (let j = 0; j < 5; j++){
@@ -80,4 +99,4 @@ const styles = StyleSheet.create({
 });
 
 export {
-  BookRatingToStar, UserRatingToStar}
+  BookRatingToStar, UserRatingToStar, RatingToStar}
