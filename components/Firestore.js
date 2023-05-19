@@ -192,7 +192,6 @@ const DeleteBook = (listName, isbn) => {
 
 }
 
-
 // Takes in a ISBN of a book and a string review written by the user
 // Can be used to add or update a review of the book
 const AddReview = (bookId, review) => {
