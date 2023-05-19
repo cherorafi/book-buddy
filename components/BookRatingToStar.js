@@ -6,8 +6,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons';
 
 
-const BookRatingToStar = ({ isbn } = null, _score = 5) => {
-  const [score, setScore] = useState(_score);
+const BookRatingToStar = ({ isbn } = null) => {
+  const [score, setScore] = useState();
   if(typeof(score) == 'undefined'){
     setScore(0);
   }
@@ -41,6 +41,7 @@ const BookRatingToStar = ({ isbn } = null, _score = 5) => {
 };
 
 const UserRatingToStar = ({_score}) => {
+  console.log("Scxore: ", _score)
   let _stars = [];
   let _scorefloor = Math.floor(_score)
   // console.log(scorefloor)
