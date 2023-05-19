@@ -22,49 +22,30 @@ import {firebase} from '../config.js';
 
 const Reviews = ({route}) => {
   const isbn13 = route.params.isbn;
+  BookCreation(isbn13);
   const reviewlist = GetReviews(isbn13);
   const scoreList = GetScores(isbn13);
-  BookCreation(isbn13);
-  const userID = firebase.auth().currentUser.uid;
-  // const userReview = reviewlist[userID];
-  // const userScore = scoreList[userID];
-
-  // console.log("reviewlist[userID]: ", reviewlist[userID])
+   const userID = firebase.auth().currentUser.uid;
   
   const [showField, setShowField] = useState(false);
   const [showEditField, setShowEditField] = useState(false);
-  const [newUserReview, setNewUserReview] = useState(reviewlist[userID]);
-  const [newUserScore, setNewUserScore] = useState(scoreList[userID]);
+  const [newUserReview, setNewUserReview] = useState();
+  const [newUserScore, setNewUserScore] = useState();
 
   const Author = ({id}) => {
     const author = GetAuthor(id);
-    // console.log("author: " ,author);
     return (<Text style={{color: "gray"}}>{author}</Text>);
   };
 
-  // useEffect(() => {
-  //   setNewUserReview(newUserReview)
-  // });
-  
   const UserScore = ({scoreList}) => {
     return (
-      <View >
-        {Object.keys(scoreList).map((val,k) => 
-            <View key={k} >
-                {val == firebase.auth().currentUser.uid ? 
-                  <View key={k} style={{flexDirection: "row", paddingTop: 10}}>                  
-
-                  {/* score mapping */}
-                    <UserRatingToStar _score={scoreList[val]} style={{paddingTop: 10, paddingBottom: 10}}></UserRatingToStar>
-                  </View>
-                : null
-                }
-            </View>
-        )}     
+      <View style={{flexDirection: "row"}}>
+        <UserRatingToStar _score={scoreList[userID]} style={{paddingTop: 10, paddingBottom: 10}}></UserRatingToStar>
       </View>
     );
   };
-  const OtherScore = ({scoreList}) => {
+
+  const OtherScores = ({scoreList}) => {
     return (
       <View >
         {Object.keys(scoreList).map((val,k) => 
@@ -83,39 +64,29 @@ const Reviews = ({route}) => {
     );
   } ;
 
- 
-  const TopReview = ({ reviewlist }) => {
+   const TopReview = ({ reviewlist }) => {
     
     return (
       <View >
-        {Object.keys(reviewlist).map((val,k) => 
-            <View key={k} >
-                {val == firebase.auth().currentUser.uid ? 
-                  <View key={k} style={styles.reviewBox} >
-                    <View style={styles.header}>
-                      <Text style={{fontSize: 18}}>Your review:</Text>
-                          <TouchableOpacity style={{marginTop: 8}} onPress={() => handleDelete(isbn13)}>
-                          <FontAwesome name="trash-o" size={20} color="gray" />
-                          </TouchableOpacity>
-                    </View>
-
-                  {/* score mapping */}
-                    <UserScore scoreList={scoreList}></UserScore>
-                    <View style={{flexDirection: "row"}}>
-                      <Text style={{color: "gray"}}>by </Text> 
-                      <Author id={val}></Author>
-                    </View>
-                    <Text style={{paddingTop: 10, paddingBottom: 10}}>{reviewlist[val]}</Text>
-                    <TouchableOpacity style={{flexDirection: "row"}} onPress={() => setShowEditField(true)}>
-                        <Text style={{color: "gray", fontSize: 10, textDecorationLine: "underline" }}>Edit your review</Text>
-                        <MaterialCommunityIcons style={{padding: 3}} name="lead-pencil" size={10} color="gray" />
-                    </TouchableOpacity>
-                  </View>
-                : null
-                }
-            </View>
-        )}     
-      </View>
+        <View style={styles.reviewBox} >
+          <View style={styles.header}>
+            <Text style={{fontSize: 18}}>Your review:</Text>
+                <TouchableOpacity style={{marginTop: 8}} onPress={() => handleDelete(isbn13)}>
+                <FontAwesome name="trash-o" size={20} color="gray" />
+                </TouchableOpacity>
+          </View>
+          <UserScore scoreList={scoreList}></UserScore>
+          <View style={{flexDirection: "row"}}>
+            <Text style={{color: "gray"}}>by </Text> 
+            <Author id={userID}></Author>
+          </View>
+          <Text style={{paddingTop: 10, paddingBottom: 10}}>{reviewlist[userID]}</Text>
+          <TouchableOpacity style={{flexDirection: "row"}} onPress={() => setShowEditField(true)}>
+              <Text style={{color: "gray", fontSize: 10, textDecorationLine: "underline" }}>Edit your review</Text>
+              <MaterialCommunityIcons style={{padding: 3}} name="lead-pencil" size={10} color="gray" />
+          </TouchableOpacity>
+        </View>
+      </View>    
     );
   };
 
@@ -128,7 +99,7 @@ const Reviews = ({route}) => {
                     
                     
                     <View style={styles.reviewBox}>
-                    <OtherScore scoreList={scoreList}></OtherScore>
+                    <OtherScores scoreList={scoreList}></OtherScores>
                       <View style={{flexDirection: "row"}}>
                       <Text style={{color: "gray"}}>by </Text> 
                       <Author id={val}></Author>
