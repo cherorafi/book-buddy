@@ -1,8 +1,11 @@
+//This file handles the front and back end for registering a new user
+
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { firebase } from '../config'
 
+// Prededined list of genres for the user to select in part 3 of registration
 const genreList = [
   { id: 1, name: 'Fiction' },
   { id: 2, name: 'Romance' },
@@ -134,7 +137,6 @@ const Registration = () => {
         alert("Please select at least 1 genre")
         setPart(3);
       } else {
-        // email, password, firstName, lastName, username, age, loc, phoneNum, likedGenres 
         const loc = city+", "+state;
         const number = "+"+countryCode+phoneNum;
         registerUser(email, password, name, lastName, user, age, loc, number, genreList);
@@ -144,27 +146,16 @@ const Registration = () => {
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
-
+      {/* Handles the view for part one
+      Email, Username, and Password */}
       {part === 1 && (
         <View>
-
           <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
 
             <Text style={{ marginBottom: 10, fontSize:30, fontWeight: 'bold',textAlign:'center'}}>Part 1: Sign Up</Text>
 
             <TextInput
-              style={{ fontSize: 20,
-                marginTop: 25,
-                height: 50,
-                width: 320,
-                backgroundColor: '#D8D8D8',
-                borderRadius: 50,
-                
-                padding: 12,
-                textAlign:'center',
-                alignSelf: 'center'
-              
-              }}
+              style={styles.partOneTextInput}
               onChangeText={(text) => setEmail(text)}
               value={email}
               placeholder="Email"
@@ -172,17 +163,7 @@ const Registration = () => {
             />
 
             <TextInput
-              style={{ fontSize: 20,
-                marginTop: 25,
-                height: 50,
-                width: 320,
-                backgroundColor: '#D8D8D8',
-                borderRadius: 50,
-                
-                padding: 12, 
-                textAlign:'center',
-                alignSelf: 'center'
-              }}
+              style={styles.partOneTextInput}
               onChangeText={(text) => setUser(text)}
               value={user}
               placeholder="Unique Username"
@@ -190,16 +171,7 @@ const Registration = () => {
             />
 
             <TextInput
-              style={{ fontSize: 20,
-                marginTop: 25,
-                height: 50,
-                width: 320,
-                backgroundColor: '#D8D8D8',
-                borderRadius: 50,
-                
-                padding: 12,
-                textAlign:'center',
-                alignSelf: 'center' }}
+              style={styles.partOneTextInput}
               onChangeText={(text) => setPassword(text)}
               value={password}
               placeholder="Password"
@@ -208,16 +180,7 @@ const Registration = () => {
             />
 
             <TextInput
-              style={{ fontSize: 20,
-                marginTop: 25,
-                height: 50,
-                width: 320,
-                backgroundColor: '#D8D8D8',
-                borderRadius: 50,
-                
-                padding: 12, 
-                textAlign:'center',
-                alignSelf: 'center'}}
+              style={styles.partOneTextInput}
               onChangeText={(text) => setConfirm(text)}
               value={confirm}
               placeholder="Confirm Password"
@@ -225,27 +188,16 @@ const Registration = () => {
               autoCapitalize='none'
             />
 
-        <TouchableOpacity
-        onPress={handleNext}
-        style={{
-          marginTop: 40,
-          height: 50,
-          width: 320,
-          backgroundColor: '#C2B7C8',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 50,
-          textAlign:'center',
-          alignSelf: 'center'}}
-      >
-        <Text style={{fontWeight: 'bold', fontSize: 22, textAlign: 'center'}}>Next</Text>
-      </TouchableOpacity>
+            <TouchableOpacity onPress={handleNext} style={styles.nextButton}>
+              <Text style={{fontWeight: 'bold', fontSize: 22, textAlign: 'center'}}>Next</Text>
+            </TouchableOpacity>
 
           </ScrollView>
-
         </View>
       )}
 
+      {/* Handles the view for part two, Name, Age
+      Location, and Phone Number */}
       {part === 2 && (
         <View>
           <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
@@ -253,51 +205,21 @@ const Registration = () => {
             <Text style={{ marginBottom: 10, fontSize:30, fontWeight: 'bold',textAlign:'center'}}>Part 2: Personal Information</Text>
 
             <TextInput
-                style={{   
-                  fontSize: 20,
-                  marginTop: 20,
-                  height: 50,
-                  width: 320,
-                  backgroundColor: '#D8D8D8',
-                  borderRadius: 50,
-                
-                  padding: 12,
-                  textAlign:'center',
-                  alignSelf: 'center' }}
+                style={styles.partTwoTextInput}
                 onChangeText={(text) => setName(text)}
                 value={name}
                 placeholder="First Name"
             />
 
             <TextInput
-              style={{    
-                fontSize: 20,
-                marginTop: 20,
-                height: 50,
-                width: 320,
-                backgroundColor: '#D8D8D8',
-                borderRadius: 50,
-                
-                padding: 12, 
-                textAlign:'center',
-                alignSelf: 'center'}}
+              style={styles.partTwoTextInput}
               onChangeText={(text) => setLastName(text)}
               value={lastName}
               placeholder="Last Name"
             />
 
             <TextInput
-                style={{ 
-                  fontSize: 20,
-                  marginTop: 20,
-                  height: 50,
-                  width: 320,
-                  backgroundColor: '#D8D8D8',
-                  borderRadius: 50,
-                  
-                  padding: 12, 
-                  textAlign:'center',
-                  alignSelf: 'center'}}
+                style={styles.partTwoTextInput}
                 onChangeText={(text) => setAge(text)}
                 value={age}
                 placeholder="Age"
@@ -306,32 +228,14 @@ const Registration = () => {
 
             <View style={{flexDirection: "row", justifyContent:'center', padding:15}}>
               <TextInput
-                style={{ 
-                  fontSize: 20,
-                  marginTop: 20,
-                  height: 50,
-                  width: 160,
-                  backgroundColor: '#D8D8D8',
-                  borderRadius: 50,
-                  
-                  padding: 12, 
-                  textAlign:'center'}}
+                style={styles.locationTextInput}
                 onChangeText={(text) => setCity(text)}
                 value={city}
                 placeholder="City"
               />
 
               <TextInput
-                style={{    
-                  fontSize: 20,
-                  marginTop: 20,
-                  height: 50,
-                  width: 160,
-                  backgroundColor: '#D8D8D8',
-                  borderRadius: 50,
-                
-                  padding: 12,
-                  textAlign:'center'}}
+                style={styles.locationTextInput}
                 onChangeText={(text) => setStates(text)}
                 value={state}
                 placeholder="State"
@@ -339,28 +243,10 @@ const Registration = () => {
               />
             </View>
 
-            <View style={{flexDirection: "row",
-                alignSelf: 'center'}}>
-              <TextInput style={{fontSize: 20,
-                  marginTop: 20,
-                  height: 50,
-                  width: 40,
-                  backgroundColor: '#D8D8D8',
-                  borderRadius: 100,
-                  
-                  padding: 12, 
-                  textAlign:'center'}}>+</TextInput>
+            <View style={{flexDirection: "row", alignSelf: 'center'}}>
+              <TextInput style={{fontSize: 20, marginTop: 20, height: 50, width: 40, backgroundColor: '#D8D8D8', borderRadius: 100, padding: 12, textAlign:'center'}}>+</TextInput>
               <TextInput
-                style={{ 
-                  fontSize: 20,
-                  marginTop: 20,
-                  height: 50,
-                  width: 40,
-                  backgroundColor: '#D8D8D8',
-                  borderRadius: 50,
-                
-                  padding: 12, 
-                  textAlign:'center'}}
+                style={{ fontSize: 20, marginTop: 20, height: 50, width: 40, backgroundColor: '#D8D8D8', borderRadius: 50, padding: 12, textAlign:'center'}}
                 onChangeText={(text) => setCountryCode(text)}
                 value={countryCode}
                 placeholder="1"
@@ -368,16 +254,7 @@ const Registration = () => {
               />
 
               <TextInput
-                style={{    
-                  fontSize: 20,
-                  marginTop: 20,
-                  height: 50,
-                  width: 250,
-                  backgroundColor: '#D8D8D8',
-                  borderRadius: 50,
-                
-                  padding: 12,
-                  textAlign:'center'}}
+                style={{fontSize: 20, marginTop: 20, height: 50, width: 250, backgroundColor: '#D8D8D8', borderRadius: 50, padding: 12, textAlign:'center'}}
                 onChangeText={(text) => setPhoneNum(text)}
                 value={phoneNum}
                 placeholder="Phone Number (Optional)"
@@ -385,31 +262,22 @@ const Registration = () => {
               />
             </View>    
 
-          <TouchableOpacity
-        onPress={handleNext}
-        style={{
-          marginTop: 30,
-          height: 50,
-          width: 320,
-          backgroundColor: '#C2B7C8',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 50,
-          textAlign:'center',
-          alignSelf: 'center'}}
-      >
-        <Text style={{fontWeight: 'bold', fontSize: 22, textAlign: 'center'}}>Next</Text>
-      </TouchableOpacity>
+            <TouchableOpacity onPress={handleNext} style={styles.nextButton}>
+              <Text style={{fontWeight: 'bold', fontSize: 22, textAlign: 'center'}}>Next</Text>
+            </TouchableOpacity>
 
           </ScrollView>
-          
         </View>
       )}
 
+      {/* Handles the view for part 3
+      Allows the user to select genres they like */}
       {part === 3 && (
           <View style={styles.container}>
             <Text style={{ fontSize: 18, marginBottom: 10, fontSize:20, fontWeight: 'bold',textAlign:'center'}}>Part 3: Pick some genres you enjoy</Text>
 
+            {/* Maps each element of the genres list as a pressable filter button 
+            Once a button is selected, the view of the button becomes darker */}
             {genreList.map((genre) => (
               <TouchableOpacity
                 key={genre.id}
@@ -424,6 +292,7 @@ const Registration = () => {
               </TouchableOpacity>
             ))}
 
+            {/* Registers the user */}
             <TouchableOpacity style={{ backgroundColor: '#C2B7C8', padding: 10, marginTop: 25, width: 100 }} onPress={handleNext}>
               <Text style={{ color: 'black', textAlign: 'center' }}>Finish</Text>
             </TouchableOpacity>
@@ -444,6 +313,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   genreButton: {
     backgroundColor: '#E9E9E9',
     borderRadius: 8,
@@ -454,10 +324,59 @@ const styles = StyleSheet.create({
    
     fontWeight: 'Bold',
   },
+
   selectedGenreButton: {
     backgroundColor: '#B9B9B9',
   },
+
   genreButtonText: {
     fontSize: 16,
   },
+
+  partOneTextInput: { 
+    fontSize: 20,
+    marginTop: 25,
+    height: 50,
+    width: 320,
+    backgroundColor: '#D8D8D8',
+    borderRadius: 50,
+    padding: 12,
+    textAlign:'center',
+    alignSelf: 'center'
+  },
+
+  partTwoTextInput: {
+      fontSize: 20,
+      marginTop: 20,
+      height: 50,
+      width: 320,
+      backgroundColor: '#D8D8D8',
+      borderRadius: 50,
+      padding: 12,
+      textAlign:'center',
+      alignSelf: 'center' 
+  },
+
+  locationTextInput: {
+    fontSize: 20,
+    marginTop: 20,
+    height: 50,
+    width: 160,
+    backgroundColor: '#D8D8D8',
+    borderRadius: 50,
+    padding: 12, 
+    textAlign:'center'
+  },
+
+  nextButton: {
+    marginTop: 30,
+    height: 50,
+    width: 320,
+    backgroundColor: '#C2B7C8',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 50,
+    textAlign:'center',
+    alignSelf: 'center'
+  }
 });
