@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Avatar, Title, Caption, Text, TouchableRipple, TouchableOpacity } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useState } from 'react';
-import { GetUserData } from '../components/Database.js';
+import { GetUserData } from '../components/Firestore';
 import { useContext } from 'react';
 import ColorSchemeContext from './../ColorSchemeContext';
 import { firebase } from '../config';

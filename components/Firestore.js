@@ -1,6 +1,38 @@
 import React, { useState, useEffect } from 'react'
 import { firebase } from '../config'
 
+const GetUserData = () => {
+  
+  const nameRef = firebase.firestore().collection('users')
+  .doc(firebase.auth().currentUser.uid)
+
+  const [myData, setData] = useState("");
+  
+  const observer = nameRef.onSnapshot(docSnapshot => {
+    setData(docSnapshot.data());
+  }, err => {
+    console.log(`Encountered error: ${err}`);
+    setData("Error");
+  });
+
+  if (myData != ""){
+    observer()
+    return(myData);
+  }
+  
+  return({
+    age: "Loading",
+    bookLists: {"Loading": 0, "Finished": 0},
+    email: "Loading",
+    firstName: "Loading",
+    lastName: "",
+    loc: "Loading",
+    phoneNum: "Loading",
+    username: "Loading",
+    Loading: ["Loading"],
+    });;
+}
+
 // @Param takes a string, changes the user's first name
 const ChangeFirstName = (newName) => {
   firebase.firestore().collection('users')
@@ -307,6 +339,7 @@ const BookCreation = (bookId) => {
 
 export {
   // All Get Funcs
+  GetUserData,
   GetBooks,
   GetReviews,
   GetScores,
