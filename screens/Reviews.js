@@ -15,9 +15,6 @@ import {ScrollView } from 'react-native-gesture-handler';
 import {AddReview, GetReviews, DeleteReview, AddScore, GetScores, DeleteScore, BookCreation, GetAuthor, GetUserReview} from '../components/Firestore.js';
 import { BookRating, BookAuthor, BookTitle } from '../components/GoogleBooks.js';
 import {firebase} from '../config.js';
-// import { GetUserData } from '../components/Database.js';
-// import { ClickableStars } from '../components/BookRatingToStar.js';
-
 
 
 const Reviews = ({route}) => {
@@ -26,11 +23,18 @@ const Reviews = ({route}) => {
   const reviewlist = GetReviews(isbn13);
   const scoreList = GetScores(isbn13);
    const userID = firebase.auth().currentUser.uid;
+   var rev = reviewlist[userID];
+   var sco = scoreList[userID];
   
   const [showField, setShowField] = useState(false);
   const [showEditField, setShowEditField] = useState(false);
   const [newUserReview, setNewUserReview] = useState();
   const [newUserScore, setNewUserScore] = useState();
+
+  useEffect(() => {
+    setNewUserReview(rev);
+    setNewUserScore(sco);
+  }, [showEditField]);
 
   const Author = ({id}) => {
     const author = GetAuthor(id);
