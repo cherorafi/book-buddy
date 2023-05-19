@@ -6,8 +6,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons';
 
 
-const BookRatingToStar = ({ isbn } = null, _score = 5) => {
-  const [score, setScore] = useState(_score);
+const BookRatingToStar = ({ isbn } = null) => {
+  const [score, setScore] = useState();
   if(typeof(score) == 'undefined'){
     setScore(0);
   }
@@ -41,6 +41,7 @@ const BookRatingToStar = ({ isbn } = null, _score = 5) => {
 };
 
 const UserRatingToStar = ({_score}) => {
+  console.log("Scxore: ", _score)
   let _stars = [];
   let _scorefloor = Math.floor(_score)
   // console.log(scorefloor)
@@ -49,6 +50,25 @@ const UserRatingToStar = ({_score}) => {
   }
   for (let j = 0; j < 5-_scorefloor; j++){
     _stars.push(<AntDesign name="star" key={(j+1)*-1} size={20} color="gray" />)
+  }
+
+  return _stars;
+};
+
+const RatingToStar = ({_score}) => {
+  if(typeof(_score) == 'undefined'){
+    _score = 0;
+  }
+
+  console.log("Scxore: ", _score)
+  let _stars = [];
+  let _scorefloor = Math.floor(_score)
+  // console.log(scorefloor)
+  for (let i = 0; i < _scorefloor; i++){
+    _stars.push(<AntDesign name="star" key={i} size={24} color="#FFE75C" />)
+  }
+  for (let j = 0; j < 5-_scorefloor; j++){
+    _stars.push(<AntDesign name="star" key={(j+1)*-1} size={24} color="gray" />)
   }
 
   return _stars;
@@ -79,4 +99,4 @@ const styles = StyleSheet.create({
 });
 
 export {
-  BookRatingToStar, UserRatingToStar}
+  BookRatingToStar, UserRatingToStar, RatingToStar}
