@@ -361,8 +361,6 @@ const BookCreation = (bookId) => {
 const GetAuthor = (id) => {
   const docRef = firebase.firestore().collection('users')
   .doc(id);
-  // console.log("docRef: ", docRef);
-
   const [myData, setData] = useState("");
   
   const observer = docRef.onSnapshot(docSnapshot => {
@@ -377,9 +375,9 @@ const GetAuthor = (id) => {
     return(myData);
   }
   
-  // return(
-  //   "Loading"
-  //   );;
+  return(
+    "Anonymous"
+    );;
 }
 const GetAverage = (bookId) => {
   const docRef = firebase.firestore().collection('books')
@@ -467,7 +465,6 @@ export {
   AddBooks,
   AddReview,
   AddScore,
-  BookCreation,
 
   // All Delete Funcs
   DeleteReview,

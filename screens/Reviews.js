@@ -8,12 +8,11 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import React, { memo, useState, useEffect } from 'react';
-import {BookRatingToStar, UserRatingToStar, RatingToStar} from '../components/BookRatingToStar.js';
+import React, { useState, useEffect } from 'react';
+import { UserRatingToStar, RatingToStar} from '../components/BookRatingToStar.js';
 import {ScrollView } from 'react-native-gesture-handler';
-import { AddReview, GetReviews, DeleteReview, AddScore, GetScores, DeleteScore, BookCreation, GetAuthor, UpdateAverage, GetAverage} from '../components/Firestore.js';
-import { BookRating, BookAuthor, BookTitle } from '../components/GoogleBooks.js';
+import { AddReview, GetReviews, DeleteReview, AddScore, GetScores, DeleteScore, GetAuthor, UpdateAverage, GetAverage} from '../components/Firestore.js';
+import { BookAuthor, BookTitle } from '../components/GoogleBooks.js';
 import {firebase} from '../config.js';
 
 
@@ -33,12 +32,10 @@ const Reviews = ({route}) => {
     sco = scoreList[userid];
   }
   
-  
   const [showField, setShowField] = useState(false);
   const [showEditField, setShowEditField] = useState(false);
   const [newUserReview, setNewUserReview] = useState('');
   const [newUserScore, setNewUserScore] = useState('');
-  const [currId, setCurrId] = useState(firebase.auth().currentUser.uid);
 
   useEffect(() => {
     setNewUserReview(rev );
@@ -57,7 +54,6 @@ const Reviews = ({route}) => {
             <View key={k} >
                 {val == firebase.auth().currentUser.uid ? 
                   <View key={k} style={{flexDirection: "row", paddingTop: 10}}>                  
-
                   {/* score mapping */}
                     <UserRatingToStar _score={scoreList[val]} style={{paddingTop: 10, paddingBottom: 10}}></UserRatingToStar>
                   </View>
@@ -68,28 +64,8 @@ const Reviews = ({route}) => {
       </View>
     );
   };
-  const OtherScore = ({scoreList}) => {
-    return (
-      <View >
-        {Object.keys(scoreList).map((val,k) => 
-            <View key={k} >
-                {val != firebase.auth().currentUser.uid ? 
-                  <View key={k}  style={{flexDirection: "row"}}>                  
-
-                  {/* score mapping */}
-                  <UserRatingToStar _score={scoreList[val]} style={{size:12 ,paddingTop: 10, paddingBottom: 10}}></UserRatingToStar>
-                  </View>
-                : null
-                }
-            </View>
-        )}     
-      </View>
-    );
-  } ;
-
  
   const TopReview = ({ reviewlist }) => {
-    
     return (
       <View >
         {Object.keys(reviewlist).map((val,k) => 
@@ -360,17 +336,14 @@ const styles = StyleSheet.create({
 
   },
   modalInput: {
-      fontSize: 16,
-      color: '#666666',
-      backgroundColor: '#f0f0f0',
-      borderRadius: 5,
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-      marginBottom: 10,},
-  // modalContent: {
-  //   backgroundColor: '#ffffff',
-  //   borderRadius: 10,
-  // },
+    fontSize: 16,
+    color: '#666666',
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginBottom: 10,
+  },
   modalHeader:{
     backgroundColor: '#f0f0f0',
   paddingVertical: 15,

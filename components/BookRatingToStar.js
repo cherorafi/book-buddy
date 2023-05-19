@@ -19,7 +19,7 @@ const BookRatingToStar = ({ isbn } = null) => {
         const bookData = response.data.items[0].volumeInfo;
         setScore(bookData.averageRating);
       } catch (error) {
-        //console.error(error);
+        console.error(error);
       }
     };
     if(isbn != null){
@@ -29,7 +29,6 @@ const BookRatingToStar = ({ isbn } = null) => {
   }, [isbn]);
   let stars = [];
   let scorefloor = Math.floor(score)
-  // console.log(scorefloor)
   for (let i = 0; i < scorefloor; i++){
     stars.push(<AntDesign name="star" key={i} size={24} color="#FFE75C" />)
   }
@@ -73,19 +72,6 @@ const RatingToStar = ({_score}) => {
 
   return _stars;
 };
-
-// const ClickableStars = () => {
-//   let stars = [];
-//   for (let j = 0; j < 5; j++){
-//     stars.push(
-//       <TouchableOpacity onPress={() => handleStarSelection()}>
-//         <AntDesign name="star" key={j} size={12} color="gray" />
-//       </TouchableOpacity>
-//       )
-//   }
-
-//   return stars;
-// }
 
 const styles = StyleSheet.create({
   container: {
