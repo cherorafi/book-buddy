@@ -1,6 +1,4 @@
-/* 
-This file handles the front and back end for logging in/authentication
-*/
+//This file handles the front and back end for logging in/authentication
 
 import { View, Text, TouchableOpacity, TextInput, StyleSheet,Image } from 'react-native'
 import React, { useState } from 'react'
