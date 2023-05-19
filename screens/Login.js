@@ -1,3 +1,7 @@
+/* 
+This file handles the front and back end for logging in/authentication
+*/
+
 import { View, Text, TouchableOpacity, TextInput, StyleSheet,Image } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
@@ -5,27 +9,31 @@ import { firebase } from '../config'
 
 const Login = () => {
   const navigation = useNavigation();
+  
+  // Creates the 2 variables needed to login
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  // Function to handle the backend 
   loginUser = async(email, password) => {
     try {
+      // Built in Firebase Auth Function to login
       await firebase.auth().signInWithEmailAndPassword(email, password)
     } catch (error){
+      // Handles different kinds of errors (wrong password/email)
       alert(error.message)
     }
   }
 
   return (
     <View style={styles.container}>
+      {/* App Logo */}
       <Image style={styles.image} source={require("../assets/logo.png")} /> 
-
-
-      {/* <Image source={require('../assets/splash.png')} /> */}
       <Text style={{fontWeight: 'bold', fontSize:25, }}>
         Login to BookBuddy
       </Text>
       
+      {/* Text fields to enter the email and password for authentication */}
       <View style={{}}>
         <TextInput
           style={styles.textInput}
@@ -43,6 +51,8 @@ const Login = () => {
           secureTextEntry={true}
         />
       </View>
+
+      {/* Calls the function to handle log in */}
       <TouchableOpacity
         onPress={() => loginUser(email, password)}
         style={styles.button}
@@ -50,6 +60,7 @@ const Login = () => {
         <Text style={{fontWeight: 'bold', fontSize: 22}}>Login</Text>
       </TouchableOpacity>
 
+      {/* If the user doesn't already have an account, navigates them to Registration */}
       <TouchableOpacity
         onPress={() => navigation.navigate('Registration')}
         style={{marginTop:20}}
