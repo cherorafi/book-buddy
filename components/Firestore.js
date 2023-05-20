@@ -269,6 +269,8 @@ const DeleteReview = (bookId) => {
   });
 }
 
+// Takes in book ISBN and score string
+// Adds score 
 const AddScore = (bookId, score) => {
   const docRef = firebase.firestore().collection('books')
   .doc(bookId);
@@ -375,14 +377,13 @@ const GetAuthor = (id) => {
     return(myData);
   }
   
-  return(
-    "Anonymous"
+  return (
+    "Loading..."
     );;
 }
 const GetAverage = (bookId) => {
   const docRef = firebase.firestore().collection('books')
   .doc(bookId);
-  // console.log("docRef: ", docRef);
 
   const [myData, setData] = useState("");
   
@@ -397,7 +398,7 @@ const GetAverage = (bookId) => {
     console.log(`Encountered error: ${err}`);
     setData(0);
   });
-  console.log("get: ", myData)
+
   if (myData != ""){
     observer()
     return(myData);
