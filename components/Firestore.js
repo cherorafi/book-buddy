@@ -269,10 +269,24 @@ const DeleteReview = (bookId) => {
   });
 }
 
+
+//SOURCE (*For all functions below using set() and merge:
+// Section: Set a document
+// https://firebase.google.com/docs/firestore/manage-data/add-data
+
+//SOURCE (*For all functions below using update():
+// Section: Update a document
+// https://firebase.google.com/docs/firestore/manage-data/add-data
+
+// Takes in book ISBN and score string
+// Adds score to book's score field, as the value corresponding
+// to user's ID
 const AddScore = (bookId, score) => {
   const docRef = firebase.firestore().collection('books')
   .doc(bookId);
     docRef.get().then((doc) => {
+
+    // If book document exists, and score for user exists, update value  
     if (doc.exists) {
         firebase.firestore().collection('books')
         .doc(bookId)
@@ -280,6 +294,9 @@ const AddScore = (bookId, score) => {
           [`scores.${firebase.auth().currentUser.uid}`] : `${score}`
           });
 
+    // If book document does not exist, score field does not exist. Creates a
+    // score field with set(), with a merge set to true, so other existing fields 
+    // are not replaced
     } else {
         firebase.firestore().collection('books')
         .doc(bookId)
@@ -291,6 +308,9 @@ const AddScore = (bookId, score) => {
       console.log("Error getting document:", error);
     });
 }
+
+//SOURCE (*For all functions below using observe/snapshot):
+// https://firebase.google.com/docs/firestore/query-data/listen
 
 // @Param takes in a book isbn
 // Returns a map of all the scores of a single book, each key being the userID
@@ -337,6 +357,8 @@ const DeleteScore = (bookId) => {
   });
 }
 
+// Takes in a book ISBN. If it does not have a document yet, it will
+// create one, and set empty data fields for data storing
 const BookCreation = (bookId) => {
   const docRef = firebase.firestore().collection('books')
   .doc(bookId);
@@ -344,6 +366,7 @@ const BookCreation = (bookId) => {
     if (doc.exists) {
       console.log("Document already exists.")
     } else {
+      //if document does not exist, create one using the ISBN, and give it the necessary empty field
       firebase.firestore().collection('books')
       .doc(bookId)
       .set({
@@ -358,13 +381,14 @@ const BookCreation = (bookId) => {
     });
 }
 
+// Takes in a user ID, gets data from the field firstName, and returns
+// it.
 const GetAuthor = (id) => {
   const docRef = firebase.firestore().collection('users')
   .doc(id);
-  // console.log("docRef: ", docRef);
-
   const [myData, setData] = useState("");
   
+  // Listens for data
   const observer = docRef.onSnapshot(docSnapshot => {
     setData(docSnapshot.data().firstName);
   }, err => {
@@ -372,19 +396,21 @@ const GetAuthor = (id) => {
     setData("Error");
   });
 
+  //If data is not blank, return it
   if (myData != ""){
     observer()
     return(myData);
   }
   
-  // return(
-  //   "Loading"
-  //   );;
+  return (
+    "Loading..."
+    );;
 }
+
+// Takes in book ISBN, gpes into book document, and retrieves average rating 
 const GetAverage = (bookId) => {
   const docRef = firebase.firestore().collection('books')
   .doc(bookId);
-  // console.log("docRef: ", docRef);
 
   const [myData, setData] = useState("");
   
@@ -392,6 +418,7 @@ const GetAverage = (bookId) => {
     try{
       setData(docSnapshot.data().average);
     } catch(error){
+      //  Returns 0 if average field is empty (no reviews/scores)
       return(0);
     }
     
@@ -399,29 +426,43 @@ const GetAverage = (bookId) => {
     console.log(`Encountered error: ${err}`);
     setData(0);
   });
-  console.log("get: ", myData)
+
   if (myData != ""){
     observer()
     return(myData);
   }
 }
 
+//Takes in an ISBN, type of score change, the new score (if there is one, 
+// if there is not, 0 is passed), and the old score (if there is one, if
+// there isn't, 0 is passed in)
 const UpdateAverage = (bookId, type, newScore, oldScore) => {
+
+  // converts new score string to integer 
   newScore = Number(newScore);
+
+  // Goes into book's document
   const docRef = firebase.firestore().collection('books')
   .doc(bookId);
     docRef.get().then((doc) => {
+    
+      // If change was a submission (brand new), the total # of 
+      // reviews/scores must increment, and the new average is calculated using the
+      // stored average and the new score. *NOTE: oldScore does not exist for a 
+      // brand new submission, and therefore 0 was passed in. 
     if(type == "submission" && doc.exists){
-      const newTotal =  doc.data().total +1;
-      console.log("NewTL ", newTotal)
+      const newTotal =  doc.data().total + 1;
       const newAverage = (( doc.data().average * (newTotal-1))+newScore)/newTotal;
-      console.log("AVGGGGGGGL ", newAverage)
         firebase.firestore().collection('books')
         .doc(bookId)
         .update({
           total: newTotal,
           average: newAverage
           });
+
+      // If change was an edit of the old score, the total # of 
+      // reviews/scores stays the same, and the new average is calculated using the
+      // stored average, old score, and the new score.
     } else if (type == "edit" && doc.exists){
       const newAverage = (( doc.data().average * ( doc.data().total)) - oldScore +newScore)/ doc.data().total;
 
@@ -430,6 +471,11 @@ const UpdateAverage = (bookId, type, newScore, oldScore) => {
         .update({
           average: newAverage
           });
+
+      // If change was a deletion of a score, the total # of 
+      // reviews/scores must decrement, and the new average is calculated using the
+      // stored average and the old score. *NOTE: newScore does not exist for a 
+      // deletion, and therefore 0 was passed in. 
     } else if (type == "delete"){
       const newTotal =  doc.data().total -1;
       const newAverage = (( doc.data().average * (newTotal+1)) - oldScore)/newTotal;
