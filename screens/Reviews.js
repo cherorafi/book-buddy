@@ -40,6 +40,10 @@ const Reviews = ({route}) => {
   const [newUserReview, setNewUserReview] = useState('');
   const [newUserScore, setNewUserScore] = useState('');
 
+  // SOURCE: Used for useEffect
+  // Section: Example 3, Props or State Values
+  // https://www.w3schools.com/react/react_useeffect.as
+
   // Sets newUserScore and newUserReview to the stored values.
   // Updates them on initial render, and on change of showEditField value,
   // in order to have stored review+score show in their respective edit fields
@@ -278,7 +282,7 @@ const Reviews = ({route}) => {
                 <Text>Cancel</Text>
               </TouchableOpacity>
             </View>
-            
+
           </View>
         </Modal>
 
