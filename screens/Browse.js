@@ -66,7 +66,7 @@ const Browse = () => {
       // API request
       const response = await axios.get(
         `https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&orderBy=newest&maxResults=30`,
-        key='AIzaSyBlVC6WfM_KkX6ccq7HnaJ7jO8mem9rUvk',  
+        key='',  
       );
       // Gets the list of books
       setBooks(response.data.items);
