@@ -1,4 +1,7 @@
 # Set up project:
+1. Set up a firebase project, insert project config in config.js
+2. Retrieve an API Key from Google, replace key in Browse.js and Search.js
+3. Set up a dialogflow agent, insert agent config in env.js
 
 ## One time expo setup
 1. Install node.js
