@@ -19,7 +19,7 @@ export default function SearchPage() {
     try {
       const response = await axios.get(
         `https://www.googleapis.com/books/v1/volumes?q=${query}`,
-        key='AIzaSyBlVC6WfM_KkX6ccq7HnaJ7jO8mem9rUvk',        // Making simple request to Api without preWriten functions We can add a parameter key here 
+        key='',        // Making simple request to Api without preWriten functions We can add a parameter key here 
         
       );
       setResults(response.data.items);
